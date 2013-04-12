@@ -183,7 +183,7 @@ function DisplayPackagesJSON($packagesAvailable){
 		"version" => $packageInfo["version"],
 		"dname" => $packageInfo["displayname"],
 		"desc" => $packageInfo["description"],
-		"link" => "http://".$_SERVER['HTTP_HOST']."/".$packageInfo['spk'],
+		"link" => "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], "/"))."/".$packageInfo['spk'],
 		"md5" => md5_file($packageInfo['spk']),
 		"size" => filesize($packageInfo['spk']),
 		"qinst" => !empty($packageInfo['qinst'])?$packageInfo['qinst']:false,					// quick install

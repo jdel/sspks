@@ -1,0 +1,141 @@
+html {
+	background-color: #fff;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	font-family: 'Alice', sans-serif;
+	font-size: x-large;
+	font-weight: bold;
+	color: #3F5E8A;
+}
+
+ul.fancy {
+	list-style-type: none;
+	padding: 0;
+}
+
+li a {
+	font-family: 'Marvel', sans-serif;
+	text-decoration: none;
+}
+
+li.package {
+	min-height: 72px;
+	
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff));
+	background: -moz-linear-gradient(top,  #eee,  #fff);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#ffffff');
+	
+	border-radius: 7px; 
+	-moz-border-radius: 7px; 
+	-webkit-border-radius: 7px; 
+	border: 1px solid #ddd;
+	
+	width: 350px;
+	padding: 7px;
+	margin: 0 0 10px 0;
+}
+
+li.package table {
+	font-family: 'Marvel', serif;
+	font-size: 12px;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+li.package table td {
+	padding: 5px;
+	border: 1px solid #ddd;
+}
+
+.spk_icon {
+	float: left;
+	margin-right: 13px;
+	display: block;
+}
+
+.spk_icon a {
+	display: inline-block;
+	position: relative;
+	line-height: 0;
+}
+
+.spk_icon a ins {
+	background: url('/data/images/beta_badge.png') no-repeat 0 0;
+	position: absolute;
+	left: 42px;
+	top: -7px;
+	width: 40px;
+	height: 40px;
+}
+
+.spk_desc {
+	text-align:justify;
+	display: block;
+	font-family: 'Marvel', serif;
+	font-size:12px;
+}
+
+.sub1 {
+	font-family: 'Alice', sans-serif;
+	font-size:large;
+	font-weight: bold;
+	color:#3F5E8A;
+}
+
+hr {
+	border: 0;
+	border-bottom: 1px solid #3F5E8A;
+}
+
+#menu ul {
+	list-style-type: none;
+	padding: 1em 0;
+	margin-top: -19px;
+	background-color: #3F5E8A;
+	border-top: 3px double #fff;
+}
+
+#menu ul li {
+	margin: 0;
+	padding: 0 1em 0 1em;
+	display: inline;
+	border-right: 1px solid #fff;
+}
+
+#menu ul li.last {
+	border: 0;
+}
+
+a img {
+	border: 0;
+}
+
+#menu ul li a:visited, 
+#menu ul li a {
+	color: #fff;
+	font-family: 'Alice', sans-serif;
+	font-variant: small-caps;
+}
+
+#footer {
+	font-family: 'Marvel', serif;
+	font-size: smaller;
+}
+	
+@font-face {
+  font-family: 'Alice';
+  font-style: normal;
+  font-weight: normal;
+  src: url('/data/css/alice-webfont.eot');
+  src: url('/data/css/alice.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Marvel';
+  font-style: normal;
+  font-weight: normal;
+  src: url('/data/css/merri.eot');
+  src: url('/data/css/merri.woff') format('woff');
+}

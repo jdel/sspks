@@ -149,10 +149,11 @@ function DisplaySynoModels($synologyModelsFile) {
 }
 
 function DisplayPackagesHTML($packagesAvailable){
+	$host = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], "/"))."/";
 	foreach($packagesAvailable as $packageInfo){
 		echo "\t\t\t<li class=\"package\">\n";
 		echo "\t\t\t\t<div class=\"spk_icon\">\n";
-		echo "\t\t\t\t\t<a href=\"".$packageInfo['spk']."\"><img src=\"".$packageInfo['png']."\" alt=\"".$packageInfo["displayname"]."\" />".($packageInfo['beta']?"<ins></ins>":"")."</a>\n";
+		echo "\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk']."\"><img src=\"".$packageInfo['png']."\" alt=\"".$packageInfo["displayname"]."\" />".($packageInfo['beta']?"<ins></ins>":"")."</a>\n";
 		echo "\t\t\t\t</div>\n";
 		echo "\t\t\t\t<div class=\"spk_desc\">\n";
 		echo "\t\t\t\t\t<span class=\"sub1\">".$packageInfo["displayname"]." v".$packageInfo["version"]."</span><br />\n";
@@ -177,13 +178,14 @@ function DisplayPackagesHTML($packagesAvailable){
 
 function DisplayPackagesJSON($packagesAvailable){
 	$packagesJSON = array();
+	$host = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], "/"))."/";
 	foreach($packagesAvailable as $packageInfo){
 		$packageJson = array(
 		"package" => $packageInfo["package"],
 		"version" => $packageInfo["version"],
 		"dname" => $packageInfo["displayname"],
 		"desc" => $packageInfo["description"],
-		"link" => "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], "/"))."/".$packageInfo['spk'],
+		"link" => "http://".$host.$packageInfo['spk'],
 		"md5" => md5_file($packageInfo['spk']),
 		"size" => filesize($packageInfo['spk']),
 		"qinst" => !empty($packageInfo['qinst'])?$packageInfo['qinst']:false,					// quick install
@@ -203,8 +205,9 @@ function DisplayPackagesJSON($packagesAvailable){
 
 function DisplayAllPackages($spkDir) {
         $packagesList = getDirectoryList($spkDir, ".*\.spk");
+	$host = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], "/"))."/";
         foreach($packagesList as $spkFile){
-                echo "\t\t\t<li><a href=\"".$spkFile."\">".$spkFile."</a></li>\n";
+                echo "\t\t\t<li><a href=\"http://".$host.$spkDir.$spkFile."\">".$spkFile."</a></li>\n";
         }
 }
 

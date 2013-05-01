@@ -73,6 +73,9 @@ elseif($_SERVER['REQUEST_METHOD'] == 'GET')
     echo "\t\t\t\t<li class=\"last\"><a href=\"http://github.com/jdel/sspks\">Host your own packages</a></li>\n";
     echo "\t\t\t</ul>\n";
     echo "\t\t</div>\n";
+    echo "\t\t<div id=\"source-info\">\n";
+    echo "\t\t\tAdd <pre>http://".$host."</pre> to your Synology NAS Package Center sources !";
+    echo "\t\t</div>\n";
     echo "\t\t<ul ".($arch?"class=\"fancy\"":"").">\n";
     if ($arch){
         DisplayPackagesHTML(GetPackageList($arch, $channel, "skip"));
@@ -84,7 +87,7 @@ elseif($_SERVER['REQUEST_METHOD'] == 'GET')
     echo "\t\t</ul>\n";
     echo "\t\t<hr style=\"clear: both;\"/>\n";
     echo "\t\t<div id=\"footer\">\n";
-    echo "\t\t\tHelp this server get better on <a href=\"http://github.com/jdel/sspks\">Github</a>\n";
+    echo "\t\t\tHelp this website get better on <a href=\"http://github.com/jdel/sspks\">Github</a>\n";
     echo "\t\t</div>\n";
     echo "\t</body>\n";
     echo "</html>";

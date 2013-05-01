@@ -96,6 +96,19 @@ hr {
 	border-bottom: 1px solid #3F5E8A;
 }
 
+#source-info pre {
+    display: inline;
+}
+
+#source-info {
+    font-size: small;
+    padding: 1em;
+    margin-top: -19px;
+    background-color: #DF3A01;
+    color: white;
+    border-top: 3px double #fff;
+}
+
 #menu ul {
 	list-style-type: none;
 	padding: 1em 0;

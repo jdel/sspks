@@ -10,6 +10,13 @@ h1 {
 	color: #3F5E8A;
 }
 
+li.syno-model {
+    float: left;
+    display: block;
+    width: 200px;
+    margin-bottom: 1em;
+}
+
 ul.fancy {
 	list-style-type: none;
 	padding: 0;

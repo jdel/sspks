@@ -7,7 +7,7 @@ example data passed by a syno
 
 language = enu
 timezone = Brussels
-unique = synology_cedarview_412 
+unique = synology_cedarview_412
 arch = cedarview
 major = 4
 minor = 1
@@ -40,6 +40,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		header('Status: 404 Not Found');
 	} else {
 		echo stripslashes(json_encode(DisplayPackagesJSON(GetPackageList($spkDir, $arch, $channel, $major.".".$minor.".".$build))));
+//		echo stripslashes(json_encode(DisplayPackagesJSON(GetPackageList($spkDir, $arch, $channel, $major.".".$minor.".".$build))));
 	}
 }
 elseif($_SERVER['REQUEST_METHOD'] == 'GET')
@@ -95,24 +96,38 @@ else
 }
 
 function GetPackageList($spkDir="packages/", $arch="noarch", $beta=false, $version="") {
+    $host = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], "/"))."/";
 	$packagesList = getDirectoryList($spkDir, ".*\.nfo");
 	$packagesAvailable = array();
 	if (!empty($packagesList)){
 		foreach($packagesList as $nfoFile){
 			$packageInfo = array();
 			$spkFile = basename($nfoFile, ".nfo").".spk";
-			$pngFile = basename($nfoFile, ".nfo").".png";
-			if(file_exists($spkDir.$nfoFile) && file_exists($spkDir.$pngFile) && file_exists($spkDir.$spkFile)){
-		        	$fileHandle = fopen($spkDir.$nfoFile, 'r');
+			$thumb_72 = basename($nfoFile, ".nfo")."_thumb_72.png";
+			$thumb_120 = basename($nfoFile, ".nfo")."_thumb_120.png";
+			if(file_exists($spkDir.$nfoFile) && file_exists($spkDir.$spkFile)){
+				$fileHandle = fopen($spkDir.$nfoFile, 'r');
 				while(!feof($fileHandle))
 				{
 			                $line = explode("=", chop(str_replace("\"", "", fgets($fileHandle))));
 			                if (trim($line[0])){ $packageInfo[$line[0]] = $line[1]; }
 				}
-		               	fclose($fileHandle);
+		        fclose($fileHandle);
 				$packageInfo['nfo'] = $spkDir.$nfoFile;
 				$packageInfo['spk'] = $spkDir.$spkFile;
-				$packageInfo['png'] = $spkDir.$pngFile;
+				if(file_exists($spkDir.$thumb_72)){
+				    $packageInfo['thumbnail'][] = "http://".$host.$spkDir.$thumb_72;
+				} else {
+				    $packageInfo['thumbnail'][] = "http://".$host.$spkDir."default_package_icon_72.png";
+				}
+				if(file_exists($spkDir.$thumb_120)){
+				    $packageInfo['thumbnail'][] = "http://".$host.$spkDir.$thumb_120;
+				} else {
+				    $packageInfo['thumbnail'][] = "http://".$host.$spkDir."default_package_icon_120.png";
+				}
+                foreach(getDirectoryList($spkDir, basename($nfoFile, ".nfo").".*_screen_.*\.png") as $snapshot){
+                    $packageInfo['snapshot'][] = "http://".$host.$spkDir.$snapshot;
+                }
 				if (	(empty($packagesAvailable[$packageInfo['package']])
 					|| version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], ">"))
 					&& ($packageInfo['arch'] == $arch || $packageInfo['arch'] == "noarch")
@@ -153,7 +168,7 @@ function DisplayPackagesHTML($packagesAvailable){
 	foreach($packagesAvailable as $packageInfo){
 		echo "\t\t\t<li class=\"package\">\n";
 		echo "\t\t\t\t<div class=\"spk_icon\">\n";
-		echo "\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk']."\"><img src=\"".$packageInfo['png']."\" alt=\"".$packageInfo["displayname"]."\" />".($packageInfo['beta']?"<ins></ins>":"")."</a>\n";
+		echo "\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk']."\"><img src=\"".$packageInfo['thumbnail'][0]."\" alt=\"".$packageInfo["displayname"]."\" />".($packageInfo['beta']?"<ins></ins>":"")."</a>\n";
 		echo "\t\t\t\t</div>\n";
 		echo "\t\t\t\t<div class=\"spk_desc\">\n";
 		echo "\t\t\t\t\t<span class=\"sub1\">".$packageInfo["displayname"]." v".$packageInfo["version"]."</span><br />\n";
@@ -196,7 +211,14 @@ function DisplayPackagesJSON($packagesAvailable){
 		"changelog" => !empty($packageInfo["changelog"])?$packageInfo["changelog"]:"",
 		"beta" => !empty($packageInfo['beta'])?$packageInfo['beta']:false,					// beta channel
 		//"icon" => $packageInfo['package_icon']
-		"icon" => base64_encode(file_get_contents($packageInfo['png']))
+		//"icon" => base64_encode(file_get_contents($packageInfo['png']))
+		"thumbnail" => $packageInfo['thumbnail'],
+//		"category" => 2,
+		"download_count" => 6000,
+		"price" => 0,
+//		"recent_download_count" => 1222,
+		"type" => 0,
+		"snapshot" => $packageInfo['snapshot']
 		);
 		array_push($packagesJSON, $packageJson);
 	}
@@ -216,7 +238,7 @@ function getDirectoryList ($directory, $filter){
 	$handler = opendir($directory);
 	while ($file = readdir($handler)) {
 		if ($file != "." && $file != ".." && preg_match("/".$filter."/", $file)) {
-		      	$results[] = $file;
+		      $results[] = $file;
 		}
 	}
 	closedir($handler);

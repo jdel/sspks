@@ -22,9 +22,10 @@ $spkDir = "packages/";  // This has to be a directory relative to
 $synologyModels = "conf/synology_models.conf";  // File where Syno models are
                                                 // stored in "DS412+=cedarview"
                                                 // type format
-$siteName = "Simple SPK Server";
-
+$excludedSynoServices = array("apache-sys","apache-web","mdns","samba","db","applenetwork","cron","nfs","firewall");
 $host = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], "/"))."/";
+
+$siteName = "Simple SPK Server";
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $language = trim($_POST['language']);
@@ -178,8 +179,9 @@ function DisplayPackagesHTML($packagesAvailable){
 function DisplayPackagesJSON($packagesAvailable){
     $packagesJSON = array();
     global $host;
+    global $excludedSynoServices;
     foreach($packagesAvailable as $packageInfo){
-        $packageJson = array(
+        $packageJSON = array(
         "package" => $packageInfo["package"],
         "version" => $packageInfo["version"],
         "dname" => $packageInfo["displayname"],
@@ -190,11 +192,13 @@ function DisplayPackagesJSON($packagesAvailable){
         "qinst" => !empty($packageInfo['qinst'])?$packageInfo['qinst']:false,                               // quick install
         "qstart" => !empty($packageInfo['start'])?$packageInfo['start']:false,                              // quick start
         "depsers" => !empty($packageInfo['start_dep_services'])?$packageInfo['start_dep_services']:"",      // required started packages
-        "deppkgs" => !empty($packageInfo['install_dep_services'])?$packageInfo['install_dep_services']:"",  // required installed packages
+        "deppkgs" => !empty($packageInfo['install_dep_services'])?trim(str_replace($excludedSynoServices, "", $packageInfo['install_dep_services'])):"",
+                                                                                                            // required installed packages, skips the known syno services
         "maintainer" => $packageInfo["maintainer"],
         "changelog" => !empty($packageInfo["changelog"])?$packageInfo["changelog"]:"",
         "beta" => !empty($packageInfo['beta'])?$packageInfo['beta']:false,                                  // beta channel
         "thumbnail" => $packageInfo['thumbnail'],                                                           // New property for newer synos, need to check if it works with old synos
+        "icon" => $packageInfo['thumbnail'][0],                                                             // Old icon property for pre 4.2 compatibility
         //"icon" => $packageInfo['package_icon'],                                                           // Get icon from INFO file
 
         //"category" => 2,                                                                                  // New property introduced, no effect on othersources packages
@@ -204,7 +208,7 @@ function DisplayPackagesJSON($packagesAvailable){
         "type" => 0,                                                                                        // New property introduced, no effect on othersources packages
         "snapshot" => $packageInfo['snapshot']                                                              // Adds multiple screenshots to package view
         );
-        $packagesJSON[] = $packageJson;
+        $packagesJSON[] = $packageJSON;
     }
     return $packagesJSON;
 }

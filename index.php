@@ -1,8 +1,5 @@
 <?php
 /*
-error_reporting(E_ALL);
-ini_set('display_errors', True);
-
 example data passed by a syno
 
 language = enu
@@ -13,8 +10,6 @@ major = 4
 minor = 1
 build = 2636
 package_update_channel = stable
-
-http://hackst.com/#X0j4l
 */
 
 $spkDir = "packages/";  // This has to be a directory relative to
@@ -75,9 +70,10 @@ elseif($_SERVER['REQUEST_METHOD'] == 'GET')
     echo "\t\t\t</ul>\n";
     echo "\t\t</div>\n";
     echo "\t\t<div id=\"source-info\">\n";
-    echo "\t\t\tAdd <pre>http://".$host."</pre> to your Synology NAS Package Center sources !";
+    echo "\t\t\t</p>Add <span>http://".$host."</span> to your Synology NAS Package Center sources !</p>\n";
     echo "\t\t</div>\n";
-    echo "\t\t<ul ".($arch?"class=\"fancy\"":"").">\n";
+    echo "\t\t<div id=\"content\">\n";
+    echo "\t\t\t<ul>\n";
     if ($arch){
         DisplayPackagesHTML(GetPackageList($arch, $channel, "skip"));
     } elseif ($fullList) {
@@ -85,10 +81,11 @@ elseif($_SERVER['REQUEST_METHOD'] == 'GET')
     } else {
         DisplaySynoModels($synologyModels);
     }
-    echo "\t\t</ul>\n";
-    echo "\t\t<hr style=\"clear: both;\"/>\n";
+    echo "\t\t\t</ul>\n";
+    echo "\t\t</div>\n";
+    echo "\t\t<hr />\n";
     echo "\t\t<div id=\"footer\">\n";
-    echo "\t\t\tHelp this website get better on <a href=\"http://github.com/jdel/sspks\">Github</a>\n";
+    echo "\t\t\t<p>Help this website get better on <a href=\"http://github.com/jdel/sspks\">Github</a></p>\n";
     echo "\t\t</div>\n";
     echo "\t</body>\n";
     echo "</html>";
@@ -151,28 +148,29 @@ function GetPackageList($arch="noarch", $beta=false, $version="") {
 function DisplayPackagesHTML($packagesAvailable){
     global $host;
     foreach($packagesAvailable as $packageInfo){
-        echo "\t\t\t<li class=\"package\">\n";
-        echo "\t\t\t\t<div class=\"spk_icon\">\n";
-        echo "\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk']."\"><img src=\"".$packageInfo['thumbnail'][0]."\" alt=\"".$packageInfo["displayname"]."\" />".($packageInfo['beta']?"<ins></ins>":"")."</a>\n";
-        echo "\t\t\t\t</div>\n";
-        echo "\t\t\t\t<div class=\"spk_desc\">\n";
-        echo "\t\t\t\t\t<span class=\"sub1\">".$packageInfo["displayname"]." v".$packageInfo["version"]."</span><br />\n";
-        echo "\t\t\t\t\t<p>".$packageInfo["description"];
-        echo " <a id=\"".$packageInfo['package']."_show\" href=\"#nogo\" onclick=\"Effect.toggle('".$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3, delay: 0.5 }); return false;\">More...</a>";
-        echo " <a id=\"".$packageInfo['package']."_hide\" href=\"#nogo\" onclick=\"Effect.toggle('".$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3, delay: 0.5 }); return false;\" style=\"display: none;\">Hide</a>\n";
-        echo "\t\t\t\t\t</p>\n";
-        echo "\t\t\t\t\t<div style=\"display: none;\" id=\"".$packageInfo['package']."_detail\">\n";
-        echo "\t\t\t\t\t<table>\n";
-        echo "\t\t\t\t\t\t<tr><td>Package</td><td>".$packageInfo["package"]."</td></tr>\n";
-        echo "\t\t\t\t\t\t<tr><td>Version</td><td>".$packageInfo["version"]."</td></tr>\n";
-        echo "\t\t\t\t\t\t<tr><td>Display Name</td><td>".$packageInfo["displayname"]."</td></tr>\n";
-        echo "\t\t\t\t\t\t<tr><td>Maintainer</td><td>".$packageInfo["maintainer"]."</td></tr>\n";
-        echo "\t\t\t\t\t\t<tr><td>Arch</td><td>".$packageInfo["arch"]."</td></tr>\n";
-        echo "\t\t\t\t\t\t<tr><td>Firmware</td><td>".$packageInfo["firmware"]."</td></tr>\n";
-        echo "\t\t\t\t\t</table>\n";
+        echo "\t\t\t\t<li class=\"package\">\n";
+        echo "\t\t\t\t\t<div class=\"spk-icon\">\n";
+        echo "\t\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk']."\"><img src=\"".$packageInfo['thumbnail'][0]."\" alt=\"".$packageInfo["displayname"]."\" />".($packageInfo['beta']?"<ins></ins>":"")."</a>\n";
         echo "\t\t\t\t\t</div>\n";
-        echo "\t\t\t\t</div>\n";
-        echo "\t\t\t</li>\n";
+        echo "\t\t\t\t\t<div class=\"spk-desc\">\n";
+        echo "\t\t\t\t\t\t<span class=\"spk-title\">".$packageInfo["displayname"]." v".$packageInfo["version"]."</span><br />\n";
+        echo "\t\t\t\t\t\t<p class=\"dsm-version\">Minimum DSM verison: ".$packageInfo["firmware"]."</p>\n";
+        echo "\t\t\t\t\t\t<p>".$packageInfo["description"]."</p>\n";
+/*        echo " <a id=\"".$packageInfo['package']."_show\" href=\"#nogo\" onclick=\"Effect.toggle('".$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3, delay: 0.5 }); return false;\">More...</a>";
+        echo " <a id=\"".$packageInfo['package']."_hide\" href=\"#nogo\" onclick=\"Effect.toggle('".$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3, delay: 0.5 }); return false;\" style=\"display: none;\">Hide</a>\n";
+        echo "\t\t\t\t\t\t</p>\n";
+        echo "\t\t\t\t\t\t<div style=\"display: none;\" id=\"".$packageInfo['package']."_detail\">\n";
+        echo "\t\t\t\t\t\t<table>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Package</td><td>".$packageInfo["package"]."</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Version</td><td>".$packageInfo["version"]."</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Display Name</td><td>".$packageInfo["displayname"]."</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Maintainer</td><td>".$packageInfo["maintainer"]."</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Arch</td><td>".$packageInfo["arch"]."</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Firmware</td><td>".$packageInfo["firmware"]."</td></tr>\n";
+        echo "\t\t\t\t\t\t</table>\n";
+        echo "\t\t\t\t\t\t</div>\n";*/
+        echo "\t\t\t\t\t</div>\n";
+        echo "\t\t\t\t</li>\n";
     }
 }
 
@@ -218,7 +216,7 @@ function DisplayAllPackages() {
         global $host;
         $packagesList = GetDirectoryList($spkDir, ".*\.spk");
         foreach($packagesList as $spkFile){
-                echo "\t\t\t<li><a href=\"http://".$host.$spkDir.$spkFile."\">".$spkFile."</a></li>\n";
+                echo "\t\t\t\t<li><a href=\"http://".$host.$spkDir.$spkFile."\">".$spkFile."</a></li>\n";
         }
 }
 
@@ -234,10 +232,10 @@ function DisplaySynoModels($synologyModelsFile) {
         fclose($fileHandle);
         ksort($synologyModels);
         foreach ($synologyModels as $synoName => $synoArch){
-            echo "\t\t\t<li class=\"syno-model\"><a href=\"?arch=".$synoArch."\">".$synoName."</a></li>\n";
+            echo "\t\t\t\t<li class=\"syno-model\"><a href=\"?arch=".$synoArch."\">".$synoName."</a></li>\n";
         }
     } else  {
-        echo "\t\t\t<li>Couldn't find Synology models</li>";
+        echo "\t\t\t\t<li>Couldn't find Synology models</li>";
     }
 }
 

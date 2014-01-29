@@ -23,6 +23,7 @@ $host = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVE
 $siteName = "Simple SPK Server";
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
     $language = trim($_POST['language']);
     $timezone = trim($_POST['timezone']);
     $arch = trim($_POST['arch']);
@@ -30,9 +31,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $minor = trim($_POST['minor']);
     $build = trim($_POST['build']);
     $channel = trim($_POST['package_update_channel']);
+    $unique = trim($_POST['unique']);
 
-    if (!$language || !$timezone || !$arch || !$major || !$minor || !$build || !$channel
-         || $_SERVER['HTTP_USER_AGENT'] != "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\"" ){
+    if (is_null($language) || is_null($timezone) || is_null($arch) || is_null($major) || is_null($minor) || is_null($build)
+       || !$channel || !$unique || $_SERVER['HTTP_USER_AGENT'] != "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\"" ){
         header('Content-type: text/html');
         header('HTTP/1.1 404 Not Found');
         header('Status: 404 Not Found');

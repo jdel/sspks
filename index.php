@@ -39,6 +39,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         header('HTTP/1.1 404 Not Found');
         header('Status: 404 Not Found');
     } else {
+        if($arch == "88f6282"){
+            $arch = "88f6281";
+        }
         echo stripslashes(json_encode(DisplayPackagesJSON(GetPackageList($arch, $channel, $major.".".$minor.".".$build))));
     }
 }

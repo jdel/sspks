@@ -76,7 +76,7 @@ elseif($_SERVER['REQUEST_METHOD'] == 'GET')
     echo "\t\t\t</ul>\n";
     echo "\t\t</div>\n";
     echo "\t\t<div id=\"source-info\">\n";
-    echo "\t\t\t</p>Add <span>http://".$host."</span> to your Synology NAS Package Center sources !</p>\n";
+    echo "\t\t\t<p>Add <span>http://".$host."</span> to your Synology NAS Package Center sources !</p>\n";
     echo "\t\t</div>\n";
     echo "\t\t<div id=\"content\">\n";
     echo "\t\t\t<ul>\n";

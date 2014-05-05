@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $unique = trim($_POST['unique']);
 
     if (is_null($language) || is_null($timezone) || is_null($arch) || is_null($major) || is_null($minor) || is_null($build)
-       || !$channel || !$unique || ( $_SERVER['HTTP_USER_AGENT'] != "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\"" 
+       || !$channel || !$unique || ( $_SERVER['HTTP_USER_AGENT'] != "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\""
          && $_SERVER['HTTP_USER_AGENT'] != "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP) Synology\"" ) ){
         header('Content-type: text/html');
         header('HTTP/1.1 404 Not Found');

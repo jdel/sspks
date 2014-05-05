@@ -73,9 +73,9 @@ a img {
     background: -moz-linear-gradient(top,  #eee,  #fff);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#ffffff');
 
-    border-radius: 7px; 
-    -moz-border-radius: 7px; 
-    -webkit-border-radius: 7px; 
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
     border: 1px solid #ddd;
 
     width: 500px;
@@ -149,6 +149,6 @@ hr {
   font-family: 'Alice';
   font-style: normal;
   font-weight: normal;
-  src: url('/data/css/alice-webfont.eot');
-  src: url('/data/css/alice.woff') format('woff');
+  src: url('alice-webfont.eot');
+  src: url('alice.woff') format('woff');
 }

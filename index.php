@@ -33,9 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $channel = trim($_POST['package_update_channel']);
     $unique = trim($_POST['unique']);
 
-    if (is_null($language) || is_null($timezone) || is_null($arch) || is_null($major) || is_null($minor) || is_null($build)
-       || !$channel || !$unique || ( $_SERVER['HTTP_USER_AGENT'] != "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\"" 
-         && $_SERVER['HTTP_USER_AGENT'] != "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP) Synology\"" ) ){
+    if (!$language || !$timezone || !$arch || !$major || is_null($minor) || !$build || !$channel || !$unique || !preg_match("/^$unique/", $_SERVER['HTTP_USER_AGENT'])){
         header('Content-type: text/html');
         header('HTTP/1.1 404 Not Found');
         header('Status: 404 Not Found');

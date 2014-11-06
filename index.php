@@ -49,7 +49,6 @@ elseif($_SERVER['REQUEST_METHOD'] == 'GET')
     $fullList = trim($_GET['fulllist']);
     $packagesAvailable = array();
 
-    header('Content-type: text/html');
     echo "<!DOCTYPE html>\n";
     echo "<html>\n";
     echo "\t<head>\n";

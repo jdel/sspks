@@ -206,7 +206,7 @@ function DisplayPackagesJSON($packagesAvailable){
         "price" => 0,                                                                                       // New property
         //"recent_download_count" => 1222,                                                                  // Not sure what this does
         "type" => 0,                                                                                        // New property introduced, no effect on othersources packages
-        "snapshot" => $packageInfo['snapshot']                                                              // Adds multiple screenshots to package view
+        "snapshot" => !empty($packageInfo['snapshot'])?$packageInfo['snapshot']:false                             // Adds multiple screenshots to package view
         );
         $packagesJSON[] = $packageJSON;
     }

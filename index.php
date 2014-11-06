@@ -32,17 +32,15 @@ if(isset($_REQUEST['ds_sn'])){
     $build = trim($_REQUEST['build']);
     $channel = trim($_REQUEST['package_update_channel']);
     $unique = trim($_REQUEST['unique']);
-
-    if (!$language || !$timezone || !$arch || !$major || is_null($minor) || !$build || !$channel || !$unique || !(preg_match("/^$unique/", $_SERVER['HTTP_USER_AGENT']) || $_SERVER['HTTP_USER_AGENT'] == "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP) Synology\"" || $_SERVER['HTTP_USER_AGENT'] == "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\"" )){
-        header('Content-type: text/html');
-        header('HTTP/1.1 404 Not Found');
-        header('Status: 404 Not Found');
-    } else {
+/*
+* Do we mind bother with filteringe request ?
+* maybe Synoly wants to protect against having ajson listing of package 
+* (and this way is weak) but why we ?
+*/
         if($arch == "88f6282"){
             $arch = "88f6281";
         }
         echo stripslashes(json_encode(DisplayPackagesJSON(GetPackageList($arch, $channel, $major.".".$minor.".".$build))));
-    }
 }
 elseif($_SERVER['REQUEST_METHOD'] == 'GET')
 {

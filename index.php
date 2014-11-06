@@ -136,7 +136,7 @@ function GetPackageList($arch="noarch", $beta=false, $version="") {
                 if (    (empty($packagesAvailable[$packageInfo['package']])
                     || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], ">"))
                     && ($packageInfo['arch'] == $arch || $packageInfo['arch'] == "noarch")
-                    && (($beta == "beta" && $packageInfo['beta'] == true) || empty($packageInfo['beta']))
+                    && (($beta == "beta" && isset($packageInfo['beta']) && $packageInfo['beta'] == true) || empty($packageInfo['beta']))
                     && ((version_compare($version, $packageInfo['firmware'], ">=")) || $version == "skip")
                     ) {
                     $packagesAvailable[$packageInfo['package']] = $packageInfo;

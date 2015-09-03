@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $channel = trim($_POST['package_update_channel']);
     $unique = trim($_POST['unique']);
 
-    if (!$language || !$timezone || !$arch || !$major || is_null($minor) || !$build || !$channel || !$unique || !$serial || !(preg_match("/^$unique/", $_SERVER['HTTP_USER_AGENT']) || $_SERVER['HTTP_USER_AGENT'] == "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP) Synology\"" || $_SERVER['HTTP_USER_AGENT'] == "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\"" )){
+    if (!$language || !$timezone || !$arch || !$major || is_null($minor) || !$build || !$channel || !$unique || !(preg_match("/^$unique/", $_SERVER['HTTP_USER_AGENT']) || $_SERVER['HTTP_USER_AGENT'] == "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP) Synology\"" || $_SERVER['HTTP_USER_AGENT'] == "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\"" )){
         header('Content-type: text/html');
         header('HTTP/1.1 404 Not Found');
         header('Status: 404 Not Found');
@@ -41,6 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if($arch == "88f6282"){
             $arch = "88f6281";
         }
+        header('Content-type: application/json');	// Make sure, that the "client" knows that output is sent in JSON format
         echo stripslashes(json_encode(DisplayPackagesJSON(GetPackageList($arch, $channel, $major.".".$minor.".".$build))));
     }
 }
@@ -135,9 +136,10 @@ function GetPackageList($arch="noarch", $beta=false, $version="") {
                 foreach(GetDirectoryList($spkDir, basename($nfoFile, ".nfo").".*_screen_.*\.png") as $snapshot){
                     $packageInfo['snapshot'][] = "http://".$host.$spkDir.$snapshot;
                 }
+		$packageInfo['arch']=explode(" ",$packageInfo['arch']);					// Convert to array, as multiple architectures can be specified
                 if (    (empty($packagesAvailable[$packageInfo['package']])
                     || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], ">"))
-                    && ($packageInfo['arch'] == $arch || $packageInfo['arch'] == "noarch")
+                    && (in_array($arch,$packageInfo['arch']) || in_array("noarch",$packageInfo['arch']))
                     && (($beta == "beta" && $packageInfo['beta'] == true) || empty($packageInfo['beta']))
                     && ((version_compare($version, $packageInfo['firmware'], ">=")) || $version == "skip")
                     ) {
@@ -190,27 +192,45 @@ function DisplayPackagesJSON($packagesAvailable){
         "desc" => $packageInfo["description"],
         "link" => "http://".$host.$packageInfo['spk'],
         "md5" => md5_file($packageInfo['spk']),
+        "thumbnail" => $packageInfo['thumbnail'],                                                           // New property for newer synos, need to check if it works with old synos
+        "snapshot" => !empty($packageInfo['snapshot'])?$packageInfo['snapshot']:NULL,                       // Adds multiple screenshots to package view
         "size" => filesize($packageInfo['spk']),
         "qinst" => !empty($packageInfo['qinst'])?$packageInfo['qinst']:false,                               // quick install
         "qstart" => !empty($packageInfo['start'])?$packageInfo['start']:false,                              // quick start
-        "depsers" => !empty($packageInfo['start_dep_services'])?$packageInfo['start_dep_services']:"",      // required started packages
-        "deppkgs" => !empty($packageInfo['install_dep_services'])?trim(str_replace($excludedSynoServices, "", $packageInfo['install_dep_services'])):"",
-                                                                                                            // required installed packages, skips the known syno services
-        "maintainer" => $packageInfo["maintainer"],
+        "depsers" => !empty($packageInfo['start_dep_services'])?$packageInfo['start_dep_services']:NULL,      // required started packages
+        "deppkgs" => !empty($packageInfo['install_dep_services'])?trim(str_replace($excludedSynoServices, "", $packageInfo['install_dep_services'])):NULL,
+    	                                                                                                     // required installed packages, skips the known syno services
+        "conflictpkgs" => NULL,
+        "start" =>true,
+        //"maintainer" => $packageInfo["maintainer"],
+        //"maintainer_url" => "http://dummy.org/",
+        //"distributor" => $packageInfo["maintainer"],
+        //"distributor_url" => "http://dummy.org/",
         "changelog" => !empty($packageInfo["changelog"])?$packageInfo["changelog"]:"",
+	"developer" => NULL,
+	//"support_url" => "http://dummy.org/",
         "beta" => !empty($packageInfo['beta'])?$packageInfo['beta']:false,                                  // beta channel
-        "thumbnail" => $packageInfo['thumbnail'],                                                           // New property for newer synos, need to check if it works with old synos
-        "icon" => $packageInfo['thumbnail'][0],                                                             // Old icon property for pre 4.2 compatibility
+        "thirdparty" => true,
+        "model" => NULL,
+        //"icon" => $packageInfo['thumbnail'][0],                                                             // Old icon property for pre 4.2 compatibility
         //"icon" => $packageInfo['package_icon'],                                                           // Get icon from INFO file
 
         //"category" => 2,                                                                                  // New property introduced, no effect on othersources packages
-        //"download_count" => 6000,                                                                         // Will only display values over 1000
-        "price" => 0,                                                                                       // New property
-        //"recent_download_count" => 1222,                                                                  // Not sure what this does
-        "type" => 0,                                                                                        // New property introduced, no effect on othersources packages
-        "snapshot" => $packageInfo['snapshot']                                                              // Adds multiple screenshots to package view
+        "download_count" => 6000,                                                                         // Will only display values over 1000
+        //"price" => 0,                                                                                       // New property
+        "recent_download_count" => 1222,                                                                  // Not sure what this does
+        //"type" => 0                                                                                        // New property introduced, no effect on othersources packages
         );
         $packagesJSON[] = $packageJSON;
+    }
+    
+    
+    if(file_exists('./gpgkey.asc'))									    // Add GPG key, if it exists
+    {
+	$mygpgkey=file_get_contents('./gpgkey.asc');
+	$mygpgkey=str_replace("\n","\\n",$mygpgkey);
+	$keyring=array(0=>$mygpgkey);
+        $packagesJSON=array('keyrings'=>$keyring,'packages'=>$packagesJSON);				    // Add GPG key in [keyrings], and packages as [packages]
     }
     return $packagesJSON;
 }

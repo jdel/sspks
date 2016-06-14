@@ -9,6 +9,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./</directory>
             <exclude>
+                <directory suffix=".php">./vendor</directory>
             </exclude>
         </whitelist>
     </filter>
@@ -20,6 +21,7 @@
     <testsuites>
         <testsuite name="Scrutinizer">
             <directory>./</directory>
+            <exclude>./vendor</exclude>
         </testsuite>
     </testsuites>
 

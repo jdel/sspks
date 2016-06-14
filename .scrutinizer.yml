@@ -132,3 +132,10 @@ build:
     dependencies:
         before:
             - composer global require "fxp/composer-asset-plugin:~1.1"
+    tests:
+        override:
+            -
+                command: "vendor/bin/phpunit"
+                coverage:
+                    file: "clover.xml"
+                    format: "clover"

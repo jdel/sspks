@@ -108,12 +108,22 @@ coding_style:
                 true_false_null: lower
 
 tools:
+    php_analyzer: true
     php_code_sniffer:
         config:
             standard: "PSR2"
     php_cs_fixer:
         enabled: true
         config: { level: psr2 }
+    php_mess_detector: true
+    php_loc:
+        enabled: true
+        excluded_dirs: [vendor]
+    php_cpd:
+        enabled: true
+        excluded_dirs: [vendor]
+    php_code_coverage:
+        test_command: vendor/bin/phpunit
 
 build:
     environment:

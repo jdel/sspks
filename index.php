@@ -18,32 +18,30 @@ $synologyModels = 'conf/synology_models.conf';  // File where Syno models are
                                                 // stored in "DS412+=cedarview"
                                                 // type format
 $excludedSynoServices = array('apache-sys', 'apache-web', 'mdns', 'samba', 'db', 'applenetwork', 'cron', 'nfs', 'firewall');
-$host = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')).'/';
+$host = $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')) . '/';
 
 $siteName = 'Simple SPK Server';
 
 if (isset($_REQUEST['ds_sn'])) {
     $language = trim($_REQUEST['language']);
     $timezone = trim($_REQUEST['timezone']);
-    $arch = trim($_REQUEST['arch']);
-    $major = trim($_REQUEST['major']);
-    $minor = trim($_REQUEST['minor']);
-    $build = trim($_REQUEST['build']);
-    $channel = trim($_REQUEST['package_update_channel']);
-    $unique = trim($_REQUEST['unique']);
-/*
-* Do we mind bother with filteringe request ?
-* maybe Synoly wants to protect against having ajson listing of package 
-* (and this way is weak) but why we ?
-*/
+    $arch     = trim($_REQUEST['arch']);
+    $major    = trim($_REQUEST['major']);
+    $minor    = trim($_REQUEST['minor']);
+    $build    = trim($_REQUEST['build']);
+    $channel  = trim($_REQUEST['package_update_channel']);
+    $unique   = trim($_REQUEST['unique']);
+
     if ($arch == '88f6282') {
         $arch = '88f6281';
     }
-    header('Content-type: application/json');	// Make sure, that the "client" knows that output is sent in JSON format
+
+    // Make sure, that the "client" knows that output is sent in JSON format
+    header('Content-type: application/json');
     echo stripslashes(json_encode(DisplayPackagesJSON(GetPackageList($arch, $channel, $major.'.'.$minor.'.'.$build))));
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $arch = trim($_GET['arch']);
-    $channel = trim($_GET['channel']);
+    $arch     = trim($_GET['arch']);
+    $channel  = trim($_GET['channel']);
     $fullList = trim($_GET['fulllist']);
     $packagesAvailable = array();
 
@@ -103,9 +101,9 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
     if (!empty($packagesList)) {
         foreach ($packagesList as $nfoFile) {
             $packageInfo = array();
-            $spkFile = basename($nfoFile, '.nfo').'.spk';
-            $thumb_72 = basename($nfoFile, '.nfo').'_thumb_72.png';
-            $thumb_120 = basename($nfoFile, '.nfo').'_thumb_120.png';
+            $spkFile     = basename($nfoFile, '.nfo').'.spk';
+            $thumb_72    = basename($nfoFile, '.nfo').'_thumb_72.png';
+            $thumb_120   = basename($nfoFile, '.nfo').'_thumb_120.png';
             if (file_exists($spkDir.$nfoFile) && file_exists($spkDir.$spkFile)) {
                 $fileHandle = fopen($spkDir.$nfoFile, 'r');
                 while (!feof($fileHandle)) {
@@ -117,20 +115,28 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
                 fclose($fileHandle);
                 $packageInfo['nfo'] = $spkDir.$nfoFile;
                 $packageInfo['spk'] = $spkDir.$spkFile;
+
+                // Use 72px thumbnail, if available
                 if (file_exists($spkDir.$thumb_72)) {
                     $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_72;
                 } else {
                     $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_72.png';
                 }
+
+                // Use 120px thumbnail (instead of 72px), if available
                 if (file_exists($spkDir.$thumb_120)) {
                     $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_120;
                 } else {
                     $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_120.png';
                 }
+
+                // Add screenshots, if available
                 foreach (GetDirectoryList($spkDir, basename($nfoFile, '.nfo').'.*_screen_.*\.png') as $snapshot) {
                     $packageInfo['snapshot'][] = 'http://'.$host.$spkDir.$snapshot;
                 }
-                $packageInfo['arch']=explode(' ', $packageInfo['arch']);  // Convert to array, as multiple architectures can be specified
+
+                // Convert architecture(s) to array, as multiple architectures can be specified
+                $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
                 if ((empty($packagesAvailable[$packageInfo['package']])
                     || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], '>'))
                     && (in_array($arch, $packageInfo['arch']) || in_array('noarch', $packageInfo['arch']))
@@ -177,54 +183,52 @@ function DisplayPackagesHTML($packagesAvailable)
 
 function DisplayPackagesJSON($packagesAvailable)
 {
-    $packagesJSON = array();
     global $host;
     global $excludedSynoServices;
+    $packagesJSON = array();
     foreach ($packagesAvailable as $packageInfo) {
         $packageJSON = array(
-        'package' => $packageInfo['package'],
-        'version' => $packageInfo['version'],
-        'dname' => $packageInfo['displayname'],
-        'desc' => $packageInfo['description'],
-        'link' => 'http://'.$host.$packageInfo['spk'],
-        'md5' => md5_file($packageInfo['spk']),
-        'thumbnail' => $packageInfo['thumbnail'],                                                           // New property for newer synos, need to check if it works with old synos
-        'snapshot' => !empty($packageInfo['snapshot'])?$packageInfo['snapshot']:null,                       // Adds multiple screenshots to package view
-        'size' => filesize($packageInfo['spk']),
-        'qinst' => !empty($packageInfo['qinst'])?$packageInfo['qinst']:false,                               // quick install
-        'qstart' => !empty($packageInfo['start'])?$packageInfo['start']:false,                              // quick start
-        'depsers' => !empty($packageInfo['start_dep_services'])?$packageInfo['start_dep_services']:null,    // required started packages
-        'deppkgs' => !empty($packageInfo['install_dep_services'])?trim(str_replace($excludedSynoServices, '', $packageInfo['install_dep_services'])):null,
-
-        'conflictpkgs' => null,
-        'start' =>true,
-        //'maintainer' => $packageInfo['maintainer'],
-        //'maintainer_url' => 'http://dummy.org/',
-        //'distributor' => $packageInfo['maintainer'],
-        //'distributor_url' => 'http://dummy.org/',
-        'changelog' => !empty($packageInfo['changelog'])?$packageInfo['changelog']:'',
-        'developer' => null,
-        //'support_url' => 'http://dummy.org/',
-        'beta' => !empty($packageInfo['beta'])?$packageInfo['beta']:false,                                  // beta channel
-        'thirdparty' => true,
-        'model' => null,
-        //'icon' => $packageInfo['thumbnail'][0],                                                             // Old icon property for pre 4.2 compatibility
-        //'icon' => $packageInfo['package_icon'],                                                             // Get icon from INFO file
-        //'category' => 2,                                                                                    // New property introduced, no effect on othersources packages
-        'download_count' => 6000,                                                                           // Will only display values over 1000
-        //'price' => 0,                                                                                       // New property
-        'recent_download_count' => 1222,                                                                    // Not sure what this does
-        //'type' => 0                                                                                         // New property introduced, no effect on othersources packages
+            'package'   => $packageInfo['package'],
+            'version'   => $packageInfo['version'],
+            'dname'     => $packageInfo['displayname'],
+            'desc'      => $packageInfo['description'],
+            'link'      => 'http://'.$host.$packageInfo['spk'],
+            'md5'       => md5_file($packageInfo['spk']),
+            'thumbnail' => $packageInfo['thumbnail'],                                                           // New property for newer synos, need to check if it works with old synos
+            'snapshot'  => !empty($packageInfo['snapshot'])?$packageInfo['snapshot']:null,                      // Adds multiple screenshots to package view
+            'size'      => filesize($packageInfo['spk']),
+            'qinst'     => !empty($packageInfo['qinst'])?$packageInfo['qinst']:false,                           // quick install
+            'qstart'    => !empty($packageInfo['start'])?$packageInfo['start']:false,                           // quick start
+            'depsers'   => !empty($packageInfo['start_dep_services'])?$packageInfo['start_dep_services']:null,  // required started packages
+            'deppkgs'   => !empty($packageInfo['install_dep_services'])?trim(str_replace($excludedSynoServices, '', $packageInfo['install_dep_services'])):null,
+            'conflictpkgs' => null,
+            'start'     => true,
+            //'maintainer'      => $packageInfo['maintainer'],
+            //'maintainer_url'  => 'http://dummy.org/',
+            //'distributor'     => $packageInfo['maintainer'],
+            //'distributor_url' => 'http://dummy.org/',
+            'changelog' => !empty($packageInfo['changelog'])?$packageInfo['changelog']:'',
+            'developer' => null,
+            //'support_url' => 'http://dummy.org/',
+            'beta'      => !empty($packageInfo['beta'])?$packageInfo['beta']:false,                             // beta channel
+            'thirdparty' => true,
+            'model'     => null,
+            //'icon'      => $packageInfo['thumbnail'][0],                                                        // Old icon property for pre 4.2 compatibility
+            //'icon'      => $packageInfo['package_icon'],                                                        // Get icon from INFO file
+            //'category'  => 2,                                                                                   // New property introduced, no effect on othersources packages
+            'download_count' => 6000,                                                                           // Will only display values over 1000
+            //'price'     => 0,                                                                                   // New property
+            'recent_download_count' => 1222,                                                                    // Not sure what this does
+            //'type'      => 0                                                                                    // New property introduced, no effect on othersources packages
         );
         $packagesJSON[] = $packageJSON;
     }
 
-
-    if (file_exists('./gpgkey.asc')) {    // Add GPG key, if it exists
-        $mygpgkey=file_get_contents('./gpgkey.asc');
-        $mygpgkey=str_replace("\n", "\\n", $mygpgkey);
-        $keyring=array(0=>$mygpgkey);
-        $packagesJSON=array('keyrings'=>$keyring, 'packages'=>$packagesJSON);    // Add GPG key in [keyrings], and packages as [packages]
+    if (file_exists('./gpgkey.asc')) {  // Add GPG key, if it exists
+        $mygpgkey     = file_get_contents('./gpgkey.asc');
+        $mygpgkey     = str_replace("\n", "\\n", $mygpgkey);
+        $keyring      = array(0 => $mygpgkey);
+        $packagesJSON = array('keyrings' => $keyring, 'packages' => $packagesJSON);  // Add GPG key in [keyrings], and packages as [packages]
     }
     return $packagesJSON;
 }
@@ -243,7 +247,7 @@ function DisplaySynoModels($synologyModelsFile)
 {
     if (file_exists($synologyModelsFile)) {
         $synologyModels = array();
-        $fileHandle = fopen($synologyModelsFile, 'r');
+        $fileHandle     = fopen($synologyModelsFile, 'r');
         while (!feof($fileHandle)) {
             $line = explode('=', chop(str_replace('"', '', fgets($fileHandle))));
             if ($line[0]) {
@@ -260,7 +264,7 @@ function DisplaySynoModels($synologyModelsFile)
     }
 }
 
-function GetDirectoryList ($directory, $filter)
+function GetDirectoryList($directory, $filter)
 {
     $results = array();
     $handler = opendir($directory);

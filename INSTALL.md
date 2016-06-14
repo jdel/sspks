@@ -3,13 +3,38 @@ Installation instructions
 
 Clone the repository wherever you want
 
-> cd /home/git/
-> git clone https://github.com/mbirth/sspks.git
+```sh
+$ cd /home/git/
+$ git clone https://github.com/mbirth/sspks.git
+```
 
-Just symlink the sspks directory into 
+Get Composer to install dependencies ([Details](https://getcomposer.org/download/))
+
+```sh
+$ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+$ php -r "if (hash_file('SHA384', 'composer-setup.php') === '070854512ef404f16bac87071a6db9fd9721da1684cd4589b1196c3faf71b9a2682e2311b36a5079825e155ac7ce150d') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+$ php composer-setup.php
+$ php -r "unlink('composer-setup.php');"
+```
+
+Add the [Asset plugin](https://github.com/francoispluchino/composer-asset-plugin) to Composer
+
+```sh
+$ ./composer.phar global require "fxp/composer-asset-plugin:~1.1"
+```
+
+Install all dependencies
+
+```sh
+$ ./composer.phar install
+```
+
+Now, just symlink the sspks directory into
 any place already served by apache, for example:
 
-> ln -s /home/git/sspks/share/sspks/ /var/www/sspks
+```sh
+$ ln -s /home/git/sspks/share/sspks/ /var/www/sspks
+```
 
 
 How to work it ?

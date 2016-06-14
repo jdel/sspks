@@ -50,8 +50,8 @@ if (isset($_REQUEST['ds_sn'])) {
     echo "\t<head>\n";
     echo "\t\t<title>".$siteName."</title>\n";
     echo "\t\t<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n";
-    echo "\t\t<script src=\"data/js/lib/prototype.js\" type=\"text/javascript\"></script>\n";
-    echo "\t\t<script src=\"data/js/src/scriptaculous.js\" type=\"text/javascript\"></script>\n";
+    echo "\t\t<script src=\"vendor/bower-asset/prototypejs-bower/prototype.js\" type=\"text/javascript\"></script>\n";
+    echo "\t\t<script src=\"vendor/bower-asset/scriptaculous-bower/scriptaculous.js\" type=\"text/javascript\"></script>\n";
     echo "\t\t<link rel=\"stylesheet\" href=\"data/css/style.css\" type=\"text/css\" />\n";
     echo "\t\t<link rel=\"stylesheet\" href=\"data/css/style_mobile.css\" type=\"text/css\" media=\"handheld\"/>\n";
     echo "\t</head>\n";

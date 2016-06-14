@@ -1,0 +1,13 @@
+{
+    "name": "SSpkS",
+    "description": "Simple SPK Server",
+    "require": {
+        "php": ">=5.3.0",
+        "bower-asset/scriptaculous-bower": "dev-master"
+    },
+    "autoload": {
+        "psr-4": { "": "lib/" },
+        "classmap": []
+    },
+    "repositories": []
+}

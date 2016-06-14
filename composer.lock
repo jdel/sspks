@@ -1,0 +1,69 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "fa391c6fc9f0f233d277269e5beb81b6",
+    "content-hash": "944fb6f985ae73f412cade4bd5bd1839",
+    "packages": [
+        {
+            "name": "bower-asset/prototypejs-bower",
+            "version": "1.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/plynchnlm/prototypejs-bower.git",
+                "reference": "5da3d86b77b94ec7eb5b92b8b5e0a7a241adae43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/plynchnlm/prototypejs-bower/zipball/5da3d86b77b94ec7eb5b92b8b5e0a7a241adae43",
+                "reference": "5da3d86b77b94ec7eb5b92b8b5e0a7a241adae43",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "prototype.js"
+            }
+        },
+        {
+            "name": "bower-asset/scriptaculous-bower",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/plynchnlm/scriptaculous-bower.git",
+                "reference": "881e5499c2ffc187beb3348965903062a6cf85f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/plynchnlm/scriptaculous-bower/zipball/881e5499c2ffc187beb3348965903062a6cf85f6",
+                "reference": "881e5499c2ffc187beb3348965903062a6cf85f6",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/prototypejs-bower": ">=1.7.0,<2.0.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "scriptaculous.js",
+                "bower-asset-ignore": [],
+                "branch-alias": {
+                    "dev-master": "1.9.0-dev"
+                }
+            },
+            "time": "2014-11-05 21:20:46"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "bower-asset/scriptaculous-bower": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.3.0"
+    },
+    "platform-dev": []
+}

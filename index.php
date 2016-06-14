@@ -22,28 +22,26 @@ $host = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVE
 
 $siteName = "Simple SPK Server";
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
+if(isset($_REQUEST['ds_sn'])){
 
-    $language = trim($_POST['language']);
-    $timezone = trim($_POST['timezone']);
-    $arch = trim($_POST['arch']);
-    $major = trim($_POST['major']);
-    $minor = trim($_POST['minor']);
-    $build = trim($_POST['build']);
-    $channel = trim($_POST['package_update_channel']);
-    $unique = trim($_POST['unique']);
-
-    if (!$language || !$timezone || !$arch || !$major || is_null($minor) || !$build || !$channel || !$unique || !(preg_match("/^$unique/", $_SERVER['HTTP_USER_AGENT']) || $_SERVER['HTTP_USER_AGENT'] == "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP) Synology\"" || $_SERVER['HTTP_USER_AGENT'] == "\"Mozilla/4.0 (compatible; MSIE 6.1; Windows XP)\"" )){
-        header('Content-type: text/html');
-        header('HTTP/1.1 404 Not Found');
-        header('Status: 404 Not Found');
-    } else {
+    $language = trim($_REQUEST['language']);
+    $timezone = trim($_REQUEST['timezone']);
+    $arch = trim($_REQUEST['arch']);
+    $major = trim($_REQUEST['major']);
+    $minor = trim($_REQUEST['minor']);
+    $build = trim($_REQUEST['build']);
+    $channel = trim($_REQUEST['package_update_channel']);
+    $unique = trim($_REQUEST['unique']);
+/*
+* Do we mind bother with filteringe request ?
+* maybe Synoly wants to protect against having ajson listing of package 
+* (and this way is weak) but why we ?
+*/
         if($arch == "88f6282"){
             $arch = "88f6281";
         }
         header('Content-type: application/json');	// Make sure, that the "client" knows that output is sent in JSON format
         echo stripslashes(json_encode(DisplayPackagesJSON(GetPackageList($arch, $channel, $major.".".$minor.".".$build))));
-    }
 }
 elseif($_SERVER['REQUEST_METHOD'] == 'GET')
 {
@@ -52,7 +50,6 @@ elseif($_SERVER['REQUEST_METHOD'] == 'GET')
     $fullList = trim($_GET['fulllist']);
     $packagesAvailable = array();
 
-    header('Content-type: text/html');
     echo "<!DOCTYPE html>\n";
     echo "<html>\n";
     echo "\t<head>\n";
@@ -136,7 +133,7 @@ function GetPackageList($arch="noarch", $beta=false, $version="") {
                 foreach(GetDirectoryList($spkDir, basename($nfoFile, ".nfo").".*_screen_.*\.png") as $snapshot){
                     $packageInfo['snapshot'][] = "http://".$host.$spkDir.$snapshot;
                 }
-		$packageInfo['arch']=explode(" ",$packageInfo['arch']);					// Convert to array, as multiple architectures can be specified
+                $packageInfo['arch']=explode(" ",$packageInfo['arch']);					// Convert to array, as multiple architectures can be specified
                 if (    (empty($packagesAvailable[$packageInfo['package']])
                     || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], ">"))
                     && (in_array($arch,$packageInfo['arch']) || in_array("noarch",$packageInfo['arch']))

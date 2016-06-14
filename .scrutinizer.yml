@@ -119,6 +119,9 @@ build:
     environment:
         timezone: "Europe/Berlin"
         php: "5.5.25"
+        mysql: false
+        postgresql: false
+        redis: false
     dependencies:
         before:
             - composer global require "fxp/composer-asset-plugin:~1.1"

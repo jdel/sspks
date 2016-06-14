@@ -119,9 +119,6 @@ tools:
     php_loc:
         enabled: true
         excluded_dirs: [vendor]
-    php_cpd:
-        enabled: true
-        excluded_dirs: [vendor]
     php_code_coverage:
         test_command: vendor/bin/phpunit
 

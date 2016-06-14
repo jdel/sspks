@@ -224,7 +224,8 @@ function DisplayPackagesJSON($packagesAvailable)
         $packagesJSON[] = $packageJSON;
     }
 
-    if (file_exists('./gpgkey.asc')) {  // Add GPG key, if it exists
+    // Add GPG key, if it exists
+    if (file_exists('./gpgkey.asc')) {
         $mygpgkey     = file_get_contents('./gpgkey.asc');
         $mygpgkey     = str_replace("\n", "\\n", $mygpgkey);
         $keyring      = array(0 => $mygpgkey);

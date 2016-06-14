@@ -60,9 +60,9 @@ if (isset($_REQUEST['ds_sn'])) {
     echo "\t\t<div id=\"menu\">\n";
     echo "\t\t\t<ul>\n";
     echo "\t\t\t\t<li><a href=\".\">Synology Models</a></li>\n";
-    echo ($arch && !$channel)?"\t\t\t\t<li><a href=\"".$_SERVER['REQUEST_URI']."&channel=beta\">Show Beta Packages</a></li>\n":"";
-    echo $channel?"\t\t\t\t<li><a href=\"./?arch=".$arch."\">Hide Beta Packages</a></li>\n":"";
-    echo !$fullList?"\t\t\t\t<li><a href=\"./?fulllist=true\">Full Packages List</a></li>\n":"";
+    echo ($arch && !$channel)?"\t\t\t\t<li><a href=\"".$_SERVER['REQUEST_URI']."&channel=beta\">Show Beta Packages</a></li>\n":'';
+    echo $channel?"\t\t\t\t<li><a href=\"./?arch=".$arch."\">Hide Beta Packages</a></li>\n":'';
+    echo !$fullList?"\t\t\t\t<li><a href=\"./?fulllist=true\">Full Packages List</a></li>\n":'';
     echo "\t\t\t\t<li class=\"last\"><a href=\"http://github.com/mbirth/sspks\">Host your own packages</a></li>\n";
     echo "\t\t\t</ul>\n";
     echo "\t\t</div>\n";
@@ -157,7 +157,7 @@ function DisplayPackagesHTML($packagesAvailable)
     foreach ($packagesAvailable as $packageInfo) {
         echo "\t\t\t\t<li class=\"package\">\n";
         echo "\t\t\t\t\t<div class=\"spk-icon\">\n";
-        echo "\t\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk']."\"><img src=\"".$packageInfo['thumbnail'][0]."\" alt=\"".$packageInfo["displayname"]."\" />".($packageInfo['beta']?"<ins></ins>":"")."</a>\n";
+        echo "\t\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk']."\"><img src=\"".$packageInfo['thumbnail'][0]."\" alt=\"".$packageInfo["displayname"]."\" />".($packageInfo['beta']?"<ins></ins>":'')."</a>\n";
         echo "\t\t\t\t\t</div>\n";
         echo "\t\t\t\t\t<div class=\"spk-desc\">\n";
         echo "\t\t\t\t\t\t<span class=\"spk-title\">".$packageInfo["displayname"]." v".$packageInfo["version"]."</span><br />\n";

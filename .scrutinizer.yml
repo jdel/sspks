@@ -118,7 +118,7 @@ tools:
 build:
     environment:
         timezone: "Europe/Berlin"
-        php: "5.4.41"
+        php: "5.5.25"
     dependencies:
         before:
             - composer global require "fxp/composer-asset-plugin:~1.1"

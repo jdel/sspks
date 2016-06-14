@@ -163,7 +163,7 @@ function DisplayPackagesHTML($packagesAvailable)
         echo "\t\t\t\t\t\t<span class=\"spk-title\">".$packageInfo["displayname"]." v".$packageInfo["version"]."</span><br />\n";
         echo "\t\t\t\t\t\t<p class=\"dsm-version\">Minimum DSM verison: ".$packageInfo["firmware"]."</p>\n";
         echo "\t\t\t\t\t\t<p>".$packageInfo["description"]."</p>\n";
-/*        echo " <a id=\"".$packageInfo['package']."_show\" href=\"#nogo\" onclick=\"Effect.toggle('".$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3, delay: 0.5 }); return false;\">More...</a>";
+        echo " <a id=\"".$packageInfo['package']."_show\" href=\"#nogo\" onclick=\"Effect.toggle('".$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3, delay: 0.5 }); return false;\">More...</a>";
         echo " <a id=\"".$packageInfo['package']."_hide\" href=\"#nogo\" onclick=\"Effect.toggle('".$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3, delay: 0.5 }); return false;\" style=\"display: none;\">Hide</a>\n";
         echo "\t\t\t\t\t\t</p>\n";
         echo "\t\t\t\t\t\t<div style=\"display: none;\" id=\"".$packageInfo['package']."_detail\">\n";
@@ -175,7 +175,7 @@ function DisplayPackagesHTML($packagesAvailable)
         echo "\t\t\t\t\t\t\t<tr><td>Arch</td><td>".$packageInfo["arch"]."</td></tr>\n";
         echo "\t\t\t\t\t\t\t<tr><td>Firmware</td><td>".$packageInfo["firmware"]."</td></tr>\n";
         echo "\t\t\t\t\t\t</table>\n";
-        echo "\t\t\t\t\t\t</div>\n";*/
+        echo "\t\t\t\t\t\t</div>\n";
         echo "\t\t\t\t\t</div>\n";
         echo "\t\t\t\t</li>\n";
     }

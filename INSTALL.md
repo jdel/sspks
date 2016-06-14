@@ -1,18 +1,19 @@
 Installation instructions
-=====
+=========================
 
 Clone the repository wherever you want
 
 > cd /home/git/
-> git clone https://github.com/jdel/sspks.git
+> git clone https://github.com/mbirth/sspks.git
 
 Just symlink the sspks directory into 
 any place already served by apache, for example:
 
 > ln -s /home/git/sspks/share/sspks/ /var/www/sspks
 
+
 How to work it ?
-=====
+================
 
 sspks comes with dummy packages for the same of having something
 that works out of the box. They WILL NOT WORK in your Synology !
@@ -24,7 +25,7 @@ developping your own SPKs, you already have all you need:
 1. Copy the SPK (let's call it transmission_cedarview_2.77-5.spk)
    in the /var/www/sspks/packages/
 
-2. Extract from that SPK the file called INFO copy it in 
+2. Extract from that SPK (.tar.gz) the file called INFO copy it in
    the same directory and rename it to transmission_cedarview_2.77-5.nfo
 
 3. Pick the icon, convert it to 72x72 (using convert -thumbnail for example),
@@ -39,17 +40,9 @@ appear in the detailed package view in the Package Center.
 Now browse to http://yourserver/sspks/ or stick this address in your 
 Synology package center and enjoy !
 
-Few more things
-=====
-
-You might want to prevent from browsing directly the share/sspks/packages
-in your Apache configuration. I will be adding that config files soon
-in the /etc directory.
-
-A Synology package is available on http://packages.jdel.org/
 
 Integration with spksrc
-=====
+=======================
 
 If you have cloned https://github.com/SynoComunity/spksrc.git, you
 can delete the packages directory from sspks and symlink spksrc's 

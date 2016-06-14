@@ -108,7 +108,7 @@ a img {
 }
 
 .spk-icon a ins {
-    background: url('/data/images/beta_badge.png') no-repeat 0 0;
+    background: url('../images/beta_badge.png') no-repeat 0 0;
     position: absolute;
     left: 42px;
     top: -7px;
@@ -149,6 +149,6 @@ hr {
   font-family: 'Alice';
   font-style: normal;
   font-weight: normal;
-  src: url('/data/css/alice-webfont.eot');
-  src: url('/data/css/alice.woff') format('woff');
+  src: url('alice-webfont.eot');
+  src: url('alice.woff') format('woff');
 }

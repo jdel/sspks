@@ -245,6 +245,7 @@ function DisplaySynoModels($synologyModelsFile)
 {
     if (file_exists($synologyModelsFile)) {
         try {
+            /** @var array $archlist */
             $archlist = Yaml::parse(file_get_contents('conf/synology_models.yaml'));
         } catch (ParseException $e) {
             echo "\t\t\t\t<li>Error parsing model list: ".$e->getMessage().'</li>';

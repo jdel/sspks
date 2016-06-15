@@ -114,44 +114,44 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
     $packagesAvailable = array();
     if (!empty($packagesList)) {
         foreach ($packagesList as $nfoFile) {
-            $packageInfo = array();
             $spkFile     = basename($nfoFile, '.nfo').'.spk';
             $thumb_72    = basename($nfoFile, '.nfo').'_thumb_72.png';
             $thumb_120   = basename($nfoFile, '.nfo').'_thumb_120.png';
-            if (file_exists($spkDir.$nfoFile) && file_exists($spkDir.$spkFile)) {
-                $packageInfo = parse_ini_file($spkDir.$nfoFile);
-                $packageInfo['nfo'] = $spkDir.$nfoFile;
-                $packageInfo['spk'] = $spkDir.$spkFile;
+            if (!file_exists($spkDir.$nfoFile) || !file_exists($spkDir.$spkFile)) {
+                continue;
+            }
+            $packageInfo = parse_ini_file($spkDir.$nfoFile);
+            $packageInfo['nfo'] = $spkDir.$nfoFile;
+            $packageInfo['spk'] = $spkDir.$spkFile;
 
-                // Use 72px thumbnail, if available
-                if (file_exists($spkDir.$thumb_72)) {
-                    $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_72;
-                } else {
-                    $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_72.png';
-                }
+            // Use 72px thumbnail, if available
+            if (file_exists($spkDir.$thumb_72)) {
+                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_72;
+            } else {
+                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_72.png';
+            }
 
-                // Use 120px thumbnail (instead of 72px), if available
-                if (file_exists($spkDir.$thumb_120)) {
-                    $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_120;
-                } else {
-                    $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_120.png';
-                }
+            // Use 120px thumbnail (instead of 72px), if available
+            if (file_exists($spkDir.$thumb_120)) {
+                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_120;
+            } else {
+                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_120.png';
+            }
 
-                // Add screenshots, if available
-                foreach (GetDirectoryList($spkDir, basename($nfoFile, '.nfo').'.*_screen_.*\.png') as $snapshot) {
-                    $packageInfo['snapshot'][] = 'http://'.$host.$spkDir.$snapshot;
-                }
+            // Add screenshots, if available
+            foreach (GetDirectoryList($spkDir, basename($nfoFile, '.nfo').'.*_screen_.*\.png') as $snapshot) {
+                $packageInfo['snapshot'][] = 'http://'.$host.$spkDir.$snapshot;
+            }
 
-                // Convert architecture(s) to array, as multiple architectures can be specified
-                $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
-                if ((empty($packagesAvailable[$packageInfo['package']])
-                    || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], '>'))
-                    && (in_array($arch, $packageInfo['arch']) || in_array('noarch', $packageInfo['arch']))
-                    && (($beta == 'beta' && $packageInfo['beta'] == true) || empty($packageInfo['beta']))
-                    && ((version_compare($version, $packageInfo['firmware'], '>=')) || $version == 'skip')
-                    ) {
-                    $packagesAvailable[$packageInfo['package']] = $packageInfo;
-                }
+            // Convert architecture(s) to array, as multiple architectures can be specified
+            $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
+            if ((empty($packagesAvailable[$packageInfo['package']])
+                || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], '>'))
+                && (in_array($arch, $packageInfo['arch']) || in_array('noarch', $packageInfo['arch']))
+                && (($beta == 'beta' && $packageInfo['beta'] == true) || empty($packageInfo['beta']))
+                && ((version_compare($version, $packageInfo['firmware'], '>=')) || $version == 'skip')
+                ) {
+                $packagesAvailable[$packageInfo['package']] = $packageInfo;
             }
         }
     }

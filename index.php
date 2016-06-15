@@ -112,42 +112,41 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
     global $spkDir;
     $packagesList = GetDirectoryList($spkDir, '*.nfo');
     $packagesAvailable = array();
-    if (!empty($packagesList)) {
-        foreach ($packagesList as $nfoFile) {
-            $nfoFile     = basename($nfoFile);
-            $spkFile     = basename($nfoFile, '.nfo').'.spk';
-            if (!file_exists($spkDir.$nfoFile) || !file_exists($spkDir.$spkFile)) {
-                continue;
-            }
-            $packageInfo = parse_ini_file($spkDir.$nfoFile);
-            $packageInfo['nfo'] = $spkDir.$nfoFile;
-            $packageInfo['spk'] = $spkDir.$spkFile;
+    foreach ($packagesList as $nfoFile) {
+        $nfoFile     = basename($nfoFile);
+        $baseFile    = basename($nfoFile, '.nfo');
+        $spkFile     = $baseFile.'.spk';
+        if (!file_exists($spkDir.$spkFile)) {
+            continue;
+        }
+        $packageInfo = parse_ini_file($spkDir.$nfoFile);
+        $packageInfo['nfo'] = $spkDir.$nfoFile;
+        $packageInfo['spk'] = $spkDir.$spkFile;
 
-            foreach (array('72', '120') as $size) {
-                $thumb_name = basename($nfoFile, '.nfo').'_thumb_'.$size.'.png';
-                // Use $size px thumbnail, if available
-                if (file_exists($spkDir.$thumb_name)) {
-                    $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_name;
-                } else {
-                    $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_'.$size.'.png';
-                }
+        foreach (array('72', '120') as $size) {
+            $thumb_name = $baseFile.'_thumb_'.$size.'.png';
+            // Use $size px thumbnail, if available
+            if (file_exists($spkDir.$thumb_name)) {
+                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_name;
+            } else {
+                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_'.$size.'.png';
             }
+        }
 
-            // Add screenshots, if available
-            foreach (GetDirectoryList($spkDir, basename($nfoFile, '.nfo').'*_screen_*.png') as $snapshot) {
-                $packageInfo['snapshot'][] = 'http://'.$host.$snapshot;
-            }
+        // Add screenshots, if available
+        foreach (GetDirectoryList($spkDir, $baseFile.'*_screen_*.png') as $snapshot) {
+            $packageInfo['snapshot'][] = 'http://'.$host.$snapshot;
+        }
 
-            // Convert architecture(s) to array, as multiple architectures can be specified
-            $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
-            if ((empty($packagesAvailable[$packageInfo['package']])
-                || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], '>'))
-                && (in_array($arch, $packageInfo['arch']) || in_array('noarch', $packageInfo['arch']))
-                && (($beta == 'beta' && $packageInfo['beta'] == true) || empty($packageInfo['beta']))
-                && ((version_compare($version, $packageInfo['firmware'], '>=')) || $version == 'skip')
-                ) {
-                $packagesAvailable[$packageInfo['package']] = $packageInfo;
-            }
+        // Convert architecture(s) to array, as multiple architectures can be specified
+        $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
+        if ((empty($packagesAvailable[$packageInfo['package']])
+            || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], '>'))
+            && (in_array($arch, $packageInfo['arch']) || in_array('noarch', $packageInfo['arch']))
+            && (($beta == 'beta' && $packageInfo['beta'] == true) || empty($packageInfo['beta']))
+            && ((version_compare($version, $packageInfo['firmware'], '>=')) || $version == 'skip')
+            ) {
+            $packagesAvailable[$packageInfo['package']] = $packageInfo;
         }
     }
     return $packagesAvailable;

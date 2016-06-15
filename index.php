@@ -44,7 +44,8 @@ if (isset($_REQUEST['ds_sn'])) {
 
     // Make sure, that the "client" knows that output is sent in JSON format
     header('Content-type: application/json');
-    echo stripslashes(json_encode(DisplayPackagesJSON(GetPackageList($arch, $channel, $major.'.'.$minor.'.'.$build))));
+    $packageList = DisplayPackagesJSON(GetPackageList($host, $spkDir, $arch, $channel, $major.'.'.$minor.'.'.$build));
+    echo stripslashes(json_encode($packageList));
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $arch     = trim($_GET['arch']);
     $channel  = trim($_GET['channel']);
@@ -78,9 +79,9 @@ if (isset($_REQUEST['ds_sn'])) {
     echo "\t\t<div id=\"content\">\n";
     echo "\t\t\t<ul>\n";
     if ($arch) {
-        DisplayPackagesHTML(GetPackageList($arch, $channel, 'skip'));
+        DisplayPackagesHTML(GetPackageList($host, $spkDir, $arch, $channel, 'skip'));
     } elseif ($fullList) {
-        DisplayAllPackages($spkDir);
+        DisplayAllPackages($spkDir, $host);
     } else {
         DisplaySynoModels($synologyModels);
     }
@@ -106,10 +107,8 @@ if (isset($_REQUEST['ds_sn'])) {
  * @param string $version Firmware version to support
  * @return array
  */
-function GetPackageList($arch = 'noarch', $beta = false, $version = '')
+function GetPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $version = '')
 {
-    global $host;
-    global $spkDir;
     $packagesList = GetDirectoryList($spkDir, '*.nfo');
     $packagesAvailable = array();
     foreach ($packagesList as $nfoFile) {
@@ -122,6 +121,7 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
         $packageInfo = parse_ini_file($spkDir.$nfoFile);
         $packageInfo['nfo'] = $spkDir.$nfoFile;
         $packageInfo['spk'] = $spkDir.$spkFile;
+        $packageInfo['spk_url'] = 'http://'.$host.$spkDir.$spkFile;
 
         foreach (array('72', '120') as $size) {
             $thumb_name = $baseFile.'_thumb_'.$size.'.png';
@@ -154,11 +154,10 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
 
 function DisplayPackagesHTML($packagesAvailable)
 {
-    global $host;
     foreach ($packagesAvailable as $packageInfo) {
         echo "\t\t\t\t<li class=\"package\">\n";
         echo "\t\t\t\t\t<div class=\"spk-icon\">\n";
-        echo "\t\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk'].'"><img src="'.$packageInfo['thumbnail'][0].'" alt="'.$packageInfo['displayname'].'" />'.($packageInfo['beta']?'<ins></ins>':'')."</a>\n";
+        echo "\t\t\t\t\t\t<a href=\"".$packageInfo['spk_url'].'"><img src="'.$packageInfo['thumbnail'][0].'" alt="'.$packageInfo['displayname'].'" />'.($packageInfo['beta']?'<ins></ins>':'')."</a>\n";
         echo "\t\t\t\t\t</div>\n";
         echo "\t\t\t\t\t<div class=\"spk-desc\">\n";
         echo "\t\t\t\t\t\t<span class=\"spk-title\">".$packageInfo['displayname'].' v'.$packageInfo['version']."</span><br />\n";
@@ -184,7 +183,6 @@ function DisplayPackagesHTML($packagesAvailable)
 
 function DisplayPackagesJSON($packagesAvailable)
 {
-    global $host;
     global $excludedSynoServices;
     $packagesJSON = array();
     foreach ($packagesAvailable as $packageInfo) {
@@ -193,7 +191,7 @@ function DisplayPackagesJSON($packagesAvailable)
             'version'   => $packageInfo['version'],
             'dname'     => $packageInfo['displayname'],
             'desc'      => $packageInfo['description'],
-            'link'      => 'http://'.$host.$packageInfo['spk'],
+            'link'      => $packageInfo['spk_url'],
             'md5'       => md5_file($packageInfo['spk']),
             'thumbnail' => $packageInfo['thumbnail'],                                                           // New property for newer synos, need to check if it works with old synos
             'snapshot'  => !empty($packageInfo['snapshot'])?$packageInfo['snapshot']:null,                      // Adds multiple screenshots to package view
@@ -235,9 +233,8 @@ function DisplayPackagesJSON($packagesAvailable)
     return $packagesJSON;
 }
 
-function DisplayAllPackages($spkDir)
+function DisplayAllPackages($spkDir, $host)
 {
-    global $host;
     $packagesList = GetDirectoryList($spkDir, '*.spk');
     foreach ($packagesList as $spkFile) {
         echo "\t\t\t\t<li><a href=\"http://".$host.$spkFile.'">'.basename($spkFile)."</a></li>\n";

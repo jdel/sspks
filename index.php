@@ -45,7 +45,7 @@ if (isset($_REQUEST['ds_sn'])) {
     // Make sure, that the "client" knows that output is sent in JSON format
     header('Content-type: application/json');
     $fw_version = $major . '.' . $minor . '.' . $build;
-    $packageList = DisplayPackagesJSON(GetPackageList($host, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
+    $packageList = DisplayPackagesJSON(getPackageList($host, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
     echo stripslashes(json_encode($packageList));
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $arch     = trim($_GET['arch']);
@@ -80,7 +80,7 @@ if (isset($_REQUEST['ds_sn'])) {
     echo "\t\t<div id=\"content\">\n";
     echo "\t\t\t<ul>\n";
     if ($arch) {
-        DisplayPackagesHTML(GetPackageList($host, $spkDir, $arch, $channel, 'skip'));
+        DisplayPackagesHTML(getPackageList($host, $spkDir, $arch, $channel, 'skip'));
     } elseif ($fullList) {
         DisplayAllPackages($spkDir, $host);
     } else {
@@ -101,6 +101,47 @@ if (isset($_REQUEST['ds_sn'])) {
 }
 
 /**
+ * Returns a list of thumbnails for the specified package.
+ *
+ * @param string $spkDir Package directory
+ * @param string $baseFile Package file name without extension
+ * @param string $host Hostname
+ * @return array List of thumbnails
+ */
+function getThumbnails($spkDir, $baseFile, $host)
+{
+    $thumbnails = array();
+    foreach (array('72', '120') as $size) {
+        $thumb_name = $baseFile . '_thumb_' . $size . '.png';
+        // Use $size px thumbnail, if available
+        if (file_exists($spkDir . $thumb_name)) {
+            $thumbnails[] = 'http://' . $host . $spkDir . $thumb_name;
+        } else {
+            $thumbnails[] = 'http://' . $host . $spkDir . 'default_package_icon_' . $size . '.png';
+        }
+    }
+    return $thumbnails;
+}
+
+/**
+ * Returns a list of screenshots for the specified package.
+ *
+ * @param string $spkDir Package directory
+ * @param string $baseFile Package file name without extension
+ * @param string $host Hostname
+ * @return array List of screenshots
+ */
+function getSnapshots($spkDir, $baseFile, $host)
+{
+    $snapshots = array();
+    // Add screenshots, if available
+    foreach (GetDirectoryList($spkDir, $baseFile.'*_screen_*.png') as $snapshot) {
+        $snapshots[] = 'http://' . $host . $snapshot;
+    }
+    return $snapshots;
+}
+
+/**
  * Returns the list of available packages incl. metadata.
  *
  * @param string $arch Requested architecture
@@ -108,7 +149,7 @@ if (isset($_REQUEST['ds_sn'])) {
  * @param string $version Firmware version to support
  * @return array
  */
-function GetPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $version = '')
+function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $version = '')
 {
     $packagesList = GetDirectoryList($spkDir, '*.nfo');
     $packagesAvailable = array();
@@ -123,21 +164,8 @@ function GetPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $versio
         $packageInfo['nfo'] = $spkDir . $nfoFile;
         $packageInfo['spk'] = $spkDir . $spkFile;
         $packageInfo['spk_url'] = 'http://' . $host . $spkDir . $spkFile;
-
-        foreach (array('72', '120') as $size) {
-            $thumb_name = $baseFile . '_thumb_' . $size . '.png';
-            // Use $size px thumbnail, if available
-            if (file_exists($spkDir . $thumb_name)) {
-                $packageInfo['thumbnail'][] = 'http://' . $host . $spkDir . $thumb_name;
-            } else {
-                $packageInfo['thumbnail'][] = 'http://' . $host . $spkDir . 'default_package_icon_' . $size . '.png';
-            }
-        }
-
-        // Add screenshots, if available
-        foreach (GetDirectoryList($spkDir, $baseFile.'*_screen_*.png') as $snapshot) {
-            $packageInfo['snapshot'][] = 'http://' . $host . $snapshot;
-        }
+        $packageInfo['thumbnail'] = getThumbnails($spkDir, $baseFile, $host);
+        $packageInfo['snapshot'] = getSnapshots($spkDir, $baseFile, $host);
 
         // Convert architecture(s) to array, as multiple architectures can be specified
         $packageInfo['arch'] = explode(' ', $packageInfo['arch']);

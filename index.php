@@ -113,14 +113,7 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
             $thumb_72    = basename($nfoFile, '.nfo').'_thumb_72.png';
             $thumb_120   = basename($nfoFile, '.nfo').'_thumb_120.png';
             if (file_exists($spkDir.$nfoFile) && file_exists($spkDir.$spkFile)) {
-                $fileHandle = fopen($spkDir.$nfoFile, 'r');
-                while (!feof($fileHandle)) {
-                    $line = explode('=', chop(str_replace('"', '', fgets($fileHandle))));
-                    if (trim($line[0])) {
-                        $packageInfo[$line[0]] = $line[1];
-                    }
-                }
-                fclose($fileHandle);
+                $packageInfo = parse_ini_file($spkDir.$nfoFile);
                 $packageInfo['nfo'] = $spkDir.$nfoFile;
                 $packageInfo['spk'] = $spkDir.$spkFile;
 

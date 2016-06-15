@@ -45,7 +45,7 @@ if (isset($_REQUEST['ds_sn'])) {
     // Make sure, that the "client" knows that output is sent in JSON format
     header('Content-type: application/json');
     $fw_version = $major . '.' . $minor . '.' . $build;
-    $packageList = DisplayPackagesJSON(getPackageList($host, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
+    $packageList = displayPackagesJSON(getPackageList($host, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
     echo stripslashes(json_encode($packageList));
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $arch     = trim($_GET['arch']);
@@ -80,11 +80,11 @@ if (isset($_REQUEST['ds_sn'])) {
     echo "\t\t<div id=\"content\">\n";
     echo "\t\t\t<ul>\n";
     if ($arch) {
-        DisplayPackagesHTML(getPackageList($host, $spkDir, $arch, $channel, 'skip'));
+        displayPackagesHTML(getPackageList($host, $spkDir, $arch, $channel, 'skip'));
     } elseif ($fullList) {
-        DisplayAllPackages($spkDir, $host);
+        displayAllPackages($spkDir, $host);
     } else {
-        DisplaySynoModels($synologyModels);
+        displaySynoModels($synologyModels);
     }
     echo "\t\t\t</ul>\n";
     echo "\t\t</div>\n";
@@ -135,7 +135,7 @@ function getSnapshots($spkDir, $baseFile, $host)
 {
     $snapshots = array();
     // Add screenshots, if available
-    foreach (GetDirectoryList($spkDir, $baseFile.'*_screen_*.png') as $snapshot) {
+    foreach (getDirectoryList($spkDir, $baseFile . '*_screen_*.png') as $snapshot) {
         $snapshots[] = 'http://' . $host . $snapshot;
     }
     return $snapshots;
@@ -187,7 +187,7 @@ function isPackageEligible($packageInfo, $allPackages, $arch, $fw_version, $beta
  */
 function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $version = '')
 {
-    $packagesList = GetDirectoryList($spkDir, '*.nfo');
+    $packagesList = getDirectoryList($spkDir, '*.nfo');
     $packagesAvailable = array();
     foreach ($packagesList as $nfoFile) {
         $nfoFile     = basename($nfoFile);
@@ -212,7 +212,7 @@ function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $versio
     return $packagesAvailable;
 }
 
-function DisplayPackagesHTML($packagesAvailable)
+function displayPackagesHTML($packagesAvailable)
 {
     foreach ($packagesAvailable as $packageInfo) {
         echo "\t\t\t\t<li class=\"package\">\n";
@@ -257,7 +257,7 @@ function ifempty($array, $key, $alternative = null)
     return $alternative;
 }
 
-function DisplayPackagesJSON($packagesAvailable, $excludedSynoServices = array())
+function displayPackagesJSON($packagesAvailable, $excludedSynoServices = array())
 {
     $packagesJSON = array();
     foreach ($packagesAvailable as $packageInfo) {
@@ -284,16 +284,16 @@ function DisplayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
             'changelog' => ifempty($packageInfo, 'changelog', ''),
             'developer' => null,
             //'support_url' => 'http://dummy.org/',
-            'beta'      => ifempty($packageInfo, 'beta', false),                             // beta channel
+            'beta'      => ifempty($packageInfo, 'beta', false),         // beta channel
             'thirdparty' => true,
             'model'     => null,
-            //'icon'      => $packageInfo['thumbnail'][0],                                                        // Old icon property for pre 4.2 compatibility
-            //'icon'      => $packageInfo['package_icon'],                                                        // Get icon from INFO file
-            //'category'  => 2,                                                                                   // New property introduced, no effect on othersources packages
-            'download_count' => 6000,                                                                           // Will only display values over 1000
-            //'price'     => 0,                                                                                   // New property
-            'recent_download_count' => 1222,                                                                    // Not sure what this does
-            //'type'      => 0                                                                                    // New property introduced, no effect on othersources packages
+            //'icon'      => $packageInfo['thumbnail'][0],               // Old icon property for pre 4.2 compatibility
+            //'icon'      => $packageInfo['package_icon'],               // Get icon from INFO file
+            //'category'  => 2,                                          // New property introduced, no effect on othersources packages
+            'download_count' => 6000,                                    // Will only display values over 1000
+            //'price'     => 0,                                          // New property
+            'recent_download_count' => 1222,                             // Not sure what this does
+            //'type'      => 0                                           // New property introduced, no effect on othersources packages
         );
         $packagesJSON[] = $packageJSON;
     }
@@ -308,15 +308,15 @@ function DisplayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
     return $packagesJSON;
 }
 
-function DisplayAllPackages($spkDir, $host)
+function displayAllPackages($spkDir, $host)
 {
-    $packagesList = GetDirectoryList($spkDir, '*.spk');
+    $packagesList = getDirectoryList($spkDir, '*.spk');
     foreach ($packagesList as $spkFile) {
         echo "\t\t\t\t<li><a href=\"http://" . $host . $spkFile . '">' . basename($spkFile) . "</a></li>\n";
     }
 }
 
-function DisplaySynoModels($synologyModelsFile)
+function displaySynoModels($synologyModelsFile)
 {
     if (file_exists($synologyModelsFile)) {
         try {
@@ -341,8 +341,8 @@ function DisplaySynoModels($synologyModelsFile)
     }
 }
 
-function GetDirectoryList($directory, $filter)
+function getDirectoryList($directory, $filter)
 {
-    $filelist = glob($directory.$filter);
+    $filelist = glob($directory . $filter);
     return $filelist;
 }

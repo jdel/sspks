@@ -182,6 +182,14 @@ function DisplayPackagesHTML($packagesAvailable)
     }
 }
 
+function ifempty($array, $key, $alternative = null)
+{
+    if (!empty($array[$key])) {
+        return $array[$key];
+    }
+    return $alternative;
+}
+
 function DisplayPackagesJSON($packagesAvailable, $excludedSynoServices = array())
 {
     $packagesJSON = array();
@@ -193,12 +201,12 @@ function DisplayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
             'desc'      => $packageInfo['description'],
             'link'      => $packageInfo['spk_url'],
             'md5'       => md5_file($packageInfo['spk']),
-            'thumbnail' => $packageInfo['thumbnail'],                                                           // New property for newer synos, need to check if it works with old synos
-            'snapshot'  => !empty($packageInfo['snapshot'])?$packageInfo['snapshot']:null,                      // Adds multiple screenshots to package view
+            'thumbnail' => $packageInfo['thumbnail'],                    // New property for newer synos, need to check if it works with old synos
+            'snapshot'  => ifempty($packageInfo, 'snapshot'),            // Adds multiple screenshots to package view
             'size'      => filesize($packageInfo['spk']),
-            'qinst'     => !empty($packageInfo['qinst'])?$packageInfo['qinst']:false,                           // quick install
-            'qstart'    => !empty($packageInfo['start'])?$packageInfo['start']:false,                           // quick start
-            'depsers'   => !empty($packageInfo['start_dep_services'])?$packageInfo['start_dep_services']:null,  // required started packages
+            'qinst'     => ifempty($packageInfo, 'qinst', false),        // quick install
+            'qstart'    => ifempty($packageInfo, 'start', false),        // quick start
+            'depsers'   => ifempty($packageInfo, 'start_dep_services'),  // required started packages
             'deppkgs'   => !empty($packageInfo['install_dep_services'])?trim(str_replace($excludedSynoServices, '', $packageInfo['install_dep_services'])):null,
             'conflictpkgs' => null,
             'start'     => true,
@@ -206,10 +214,10 @@ function DisplayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
             //'maintainer_url'  => 'http://dummy.org/',
             //'distributor'     => $packageInfo['maintainer'],
             //'distributor_url' => 'http://dummy.org/',
-            'changelog' => !empty($packageInfo['changelog'])?$packageInfo['changelog']:'',
+            'changelog' => ifempty($packageInfo, 'changelog', ''),
             'developer' => null,
             //'support_url' => 'http://dummy.org/',
-            'beta'      => !empty($packageInfo['beta'])?$packageInfo['beta']:false,                             // beta channel
+            'beta'      => ifempty($packageInfo, 'beta', false),                             // beta channel
             'thirdparty' => true,
             'model'     => null,
             //'icon'      => $packageInfo['thumbnail'][0],                                                        // Old icon property for pre 4.2 compatibility

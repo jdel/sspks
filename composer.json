@@ -3,6 +3,7 @@
     "description": "Simple SPK Server",
     "require": {
         "php": ">=5.3.0",
+        "symfony/yaml": "*",
         "bower-asset/scriptaculous-bower": "dev-master"
     },
     "require-dev": {

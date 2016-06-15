@@ -1,4 +1,9 @@
 <?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use \Symfony\Component\Yaml\Yaml;
+
 /*
 example data passed by a syno
 
@@ -12,11 +17,11 @@ build = 2636
 package_update_channel = stable
 */
 
-$spkDir = 'packages/';  // This has to be a directory relative to
-                        // where this  script is and served by Apache
-$synologyModels = 'conf/synology_models.conf';  // File where Syno models are
-                                                // stored in "DS412+=cedarview"
-                                                // type format
+// This has to be a directory relative to where this script is and served by Apache
+$spkDir = 'packages/';
+
+// File where Syno models are stored in Yaml format
+$synologyModels = 'conf/synology_models.yaml';
 $excludedSynoServices = array('apache-sys', 'apache-web', 'mdns', 'samba', 'db', 'applenetwork', 'cron', 'nfs', 'firewall');
 $host = $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')) . '/';
 
@@ -247,15 +252,13 @@ function DisplayAllPackages($spkDir)
 function DisplaySynoModels($synologyModelsFile)
 {
     if (file_exists($synologyModelsFile)) {
+        $archlist = Yaml::parse(file_get_contents('conf/synology_models.yaml'));
         $synologyModels = array();
-        $fileHandle     = fopen($synologyModelsFile, 'r');
-        while (!feof($fileHandle)) {
-            $line = explode('=', chop(str_replace('"', '', fgets($fileHandle))));
-            if ($line[0]) {
-                $synologyModels[$line[0]] = $line[1];
+        foreach ($archlist as $arch => $archmodels) {
+            foreach ($archmodels as $model) {
+                $synologyModels[$model] = $arch;
             }
         }
-        fclose($fileHandle);
         ksort($synologyModels);
         foreach ($synologyModels as $synoName => $synoArch) {
             echo "\t\t\t\t<li class=\"syno-model\"><a href=\"?arch=".$synoArch.'">'.$synoName."</a></li>\n";

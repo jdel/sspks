@@ -1,0 +1,150 @@
+88f6281:
+    - DS109
+    - DS110j
+    - DS111
+    - DS112+
+    - DS112
+    - DS112j
+    - DS209
+    - DS210j
+    - DS211+
+    - DS211
+    - DS211j
+    - DS212+
+    - DS212
+    - DS212j
+    - DS213
+    - DS213air
+    - DS409
+    - DS409slim
+    - DS410j
+    - DS411
+    - DS411j
+    - DS411slim
+    - DS413j
+    - RS212
+    - RS409
+    - RS411
+    - RS812
+
+88f6282:
+    - DS213
+    - DS213air
+    - DS413j
+
+alpine:
+    - DS2015xs
+
+avoton:
+    - DS1515+
+    - DS1815+
+    - DS415+
+
+armada370:
+    - DS114
+    - DS115j
+    - DS213j
+    - DS214se
+    - DS414slim
+
+armada375:
+    - DS215j
+
+armadaxp:
+    - DS214+
+    - DS214
+    - DS414
+    - RS214
+    - RS814
+
+bromolow:
+    - DS3611xs
+    - DS3612xs
+    - RS10613xs+
+    - RS3411xs/RS3411RPxs
+    - RS3412xs/RS3412RPxs
+    - RS3413xs+
+
+cedarview:
+    - DS1512+
+    - DS1513+
+    - DS1812+
+    - DS1813+
+    - DS2413+
+    - RS2414(RP)+
+    - DS412+
+    - DS713+
+    - RS2212+/RS2212
+    - RS2414/RS2414RP
+    - RS2414+/RS2414RP+
+    - RS812+/RS812RP+
+    - RS814+/RS814RP+
+
+comcerto2k:
+    - DS214air
+    - DS414j
+
+evansport:
+    - DS214play
+    - DS414play
+    - DS415play
+
+ppc824x:
+    - CS406
+    - CS407e
+    - DS101g+
+    - DS106
+    - DS106e
+    - DS106j
+    - DS106x
+    - DS107
+    - DS107e
+    - DS108j
+    - DS109j
+    - DS207.128
+    - DS207
+    - DS209j
+    - DS406
+    - DS406e
+    - DS407e
+    - RS406
+
+ppc853x:
+    - DS109+
+    - DS110+
+    - DS209+
+    - DS209+II
+    - DS210+
+    - DS408
+    - DS409+
+    - DS410
+    - DS508
+    - DS509+
+    - RS408/RS408RP
+    - RS409+RS409RP+
+    - RS409+/RS409RP+
+
+ppc854x:
+    - DS408
+    - DS508
+    - RS408/RS408RP+
+
+qoriq:
+    - DS213+
+    - DS413
+
+x86:
+    - DS1010+
+    - DS1511+
+    - DS2411+
+    - DS3615xs
+    - DS411+
+    - DS411+II
+    - DS710+
+    - DS712+
+    - RS2211+
+    - RS2211+RS2211RP+
+    - RS2211+/RS2211RP+
+    - RS810+RS810RP+
+    - RS810+/RS810RP+
+

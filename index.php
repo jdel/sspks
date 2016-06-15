@@ -92,6 +92,14 @@ if (isset($_REQUEST['ds_sn'])) {
     header('Status: 404 Not Found');
 }
 
+/**
+ * Returns the list of available packages incl. metadata.
+ *
+ * @param string $arch Requested architecture
+ * @param mixed $beta Either 'beta' to also get beta packages, or false
+ * @param string $version Firmware version to support
+ * @return array
+ */
 function GetPackageList($arch = 'noarch', $beta = false, $version = '')
 {
     global $host;
@@ -157,7 +165,7 @@ function DisplayPackagesHTML($packagesAvailable)
     foreach ($packagesAvailable as $packageInfo) {
         echo "\t\t\t\t<li class=\"package\">\n";
         echo "\t\t\t\t\t<div class=\"spk-icon\">\n";
-        echo "\t\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk'].'"><img src="'.$packageInfo['thumbnail'][0].'" alt="'.$packageInfo["displayname"].'" />'.($packageInfo['beta']?'<ins></ins>':'')."</a>\n";
+        echo "\t\t\t\t\t\t<a href=\"http://".$host.$packageInfo['spk'].'"><img src="'.$packageInfo['thumbnail'][0].'" alt="'.$packageInfo['displayname'].'" />'.($packageInfo['beta']?'<ins></ins>':'')."</a>\n";
         echo "\t\t\t\t\t</div>\n";
         echo "\t\t\t\t\t<div class=\"spk-desc\">\n";
         echo "\t\t\t\t\t\t<span class=\"spk-title\">".$packageInfo['displayname'].' v'.$packageInfo['version']."</span><br />\n";
@@ -234,9 +242,8 @@ function DisplayPackagesJSON($packagesAvailable)
     return $packagesJSON;
 }
 
-function DisplayAllPackages()
+function DisplayAllPackages($spkDir)
 {
-    global $spkDir;
     global $host;
     $packagesList = GetDirectoryList($spkDir, '.*\.spk');
     foreach ($packagesList as $spkFile) {

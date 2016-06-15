@@ -3,6 +3,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use \Symfony\Component\Yaml\Yaml;
+use \Symfony\Component\Yaml\Exception\ParseException;
 
 /*
 example data passed by a syno
@@ -252,7 +253,12 @@ function DisplayAllPackages($spkDir)
 function DisplaySynoModels($synologyModelsFile)
 {
     if (file_exists($synologyModelsFile)) {
-        $archlist = Yaml::parse(file_get_contents('conf/synology_models.yaml'));
+        try {
+            $archlist = Yaml::parse(file_get_contents('conf/synology_models.yaml'));
+        } catch (ParseException $e) {
+            echo "\t\t\t\t<li>Error parsing model list: ".$e->getMessage().'</li>';
+            return;
+        }
         $synologyModels = array();
         foreach ($archlist as $arch => $archmodels) {
             foreach ($archmodels as $model) {

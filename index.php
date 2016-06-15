@@ -44,7 +44,8 @@ if (isset($_REQUEST['ds_sn'])) {
 
     // Make sure, that the "client" knows that output is sent in JSON format
     header('Content-type: application/json');
-    $packageList = DisplayPackagesJSON(GetPackageList($host, $spkDir, $arch, $channel, $major.'.'.$minor.'.'.$build));
+    $fw_version = $major.'.'.$minor.'.'.$build;
+    $packageList = DisplayPackagesJSON(GetPackageList($host, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
     echo stripslashes(json_encode($packageList));
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $arch     = trim($_GET['arch']);
@@ -181,9 +182,8 @@ function DisplayPackagesHTML($packagesAvailable)
     }
 }
 
-function DisplayPackagesJSON($packagesAvailable)
+function DisplayPackagesJSON($packagesAvailable, $excludedSynoServices = array())
 {
-    global $excludedSynoServices;
     $packagesJSON = array();
     foreach ($packagesAvailable as $packageInfo) {
         $packageJSON = array(

@@ -44,7 +44,7 @@ if (isset($_REQUEST['ds_sn'])) {
 
     // Make sure, that the "client" knows that output is sent in JSON format
     header('Content-type: application/json');
-    $fw_version = $major.'.'.$minor.'.'.$build;
+    $fw_version = $major . '.' . $minor . '.' . $build;
     $packageList = DisplayPackagesJSON(GetPackageList($host, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
     echo stripslashes(json_encode($packageList));
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -56,7 +56,7 @@ if (isset($_REQUEST['ds_sn'])) {
     echo "<!DOCTYPE html>\n";
     echo "<html>\n";
     echo "\t<head>\n";
-    echo "\t\t<title>".$siteName."</title>\n";
+    echo "\t\t<title>" . $siteName . "</title>\n";
     echo "\t\t<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n";
     echo "\t\t<script src=\"vendor/bower-asset/prototypejs-bower/prototype.js\" type=\"text/javascript\"></script>\n";
     echo "\t\t<script src=\"vendor/bower-asset/scriptaculous-bower/scriptaculous.js\" type=\"text/javascript\"></script>\n";
@@ -64,18 +64,18 @@ if (isset($_REQUEST['ds_sn'])) {
     echo "\t\t<link rel=\"stylesheet\" href=\"data/css/style_mobile.css\" type=\"text/css\" media=\"handheld\"/>\n";
     echo "\t</head>\n";
     echo "\t<body>\n";
-    echo "\t\t<h1>".$siteName."</h1>\n";
+    echo "\t\t<h1>" . $siteName . "</h1>\n";
     echo "\t\t<div id=\"menu\">\n";
     echo "\t\t\t<ul>\n";
     echo "\t\t\t\t<li><a href=\".\">Synology Models</a></li>\n";
-    echo ($arch && !$channel)?"\t\t\t\t<li><a href=\"".$_SERVER['REQUEST_URI']."&channel=beta\">Show Beta Packages</a></li>\n":'';
-    echo $channel?"\t\t\t\t<li><a href=\"./?arch=".$arch."\">Hide Beta Packages</a></li>\n":'';
+    echo ($arch && !$channel)?"\t\t\t\t<li><a href=\"" . $_SERVER['REQUEST_URI'] . "&channel=beta\">Show Beta Packages</a></li>\n":'';
+    echo $channel?"\t\t\t\t<li><a href=\"./?arch=" . $arch . "\">Hide Beta Packages</a></li>\n":'';
     echo !$fullList?"\t\t\t\t<li><a href=\"./?fulllist=true\">Full Packages List</a></li>\n":'';
     echo "\t\t\t\t<li class=\"last\"><a href=\"http://github.com/mbirth/sspks\">Host your own packages</a></li>\n";
     echo "\t\t\t</ul>\n";
     echo "\t\t</div>\n";
     echo "\t\t<div id=\"source-info\">\n";
-    echo "\t\t\t<p>Add <span>http://".$host."</span> to your Synology NAS Package Center sources !</p>\n";
+    echo "\t\t\t<p>Add <span>http://" . $host . "</span> to your Synology NAS Package Center sources !</p>\n";
     echo "\t\t</div>\n";
     echo "\t\t<div id=\"content\">\n";
     echo "\t\t\t<ul>\n";
@@ -115,28 +115,28 @@ function GetPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $versio
     foreach ($packagesList as $nfoFile) {
         $nfoFile     = basename($nfoFile);
         $baseFile    = basename($nfoFile, '.nfo');
-        $spkFile     = $baseFile.'.spk';
-        if (!file_exists($spkDir.$spkFile)) {
+        $spkFile     = $baseFile . '.spk';
+        if (!file_exists($spkDir . $spkFile)) {
             continue;
         }
-        $packageInfo = parse_ini_file($spkDir.$nfoFile);
-        $packageInfo['nfo'] = $spkDir.$nfoFile;
-        $packageInfo['spk'] = $spkDir.$spkFile;
-        $packageInfo['spk_url'] = 'http://'.$host.$spkDir.$spkFile;
+        $packageInfo = parse_ini_file($spkDir . $nfoFile);
+        $packageInfo['nfo'] = $spkDir . $nfoFile;
+        $packageInfo['spk'] = $spkDir . $spkFile;
+        $packageInfo['spk_url'] = 'http://' . $host . $spkDir . $spkFile;
 
         foreach (array('72', '120') as $size) {
-            $thumb_name = $baseFile.'_thumb_'.$size.'.png';
+            $thumb_name = $baseFile . '_thumb_' . $size . '.png';
             // Use $size px thumbnail, if available
-            if (file_exists($spkDir.$thumb_name)) {
-                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_name;
+            if (file_exists($spkDir . $thumb_name)) {
+                $packageInfo['thumbnail'][] = 'http://' . $host . $spkDir . $thumb_name;
             } else {
-                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_'.$size.'.png';
+                $packageInfo['thumbnail'][] = 'http://' . $host . $spkDir . 'default_package_icon_' . $size . '.png';
             }
         }
 
         // Add screenshots, if available
         foreach (GetDirectoryList($spkDir, $baseFile.'*_screen_*.png') as $snapshot) {
-            $packageInfo['snapshot'][] = 'http://'.$host.$snapshot;
+            $packageInfo['snapshot'][] = 'http://' . $host . $snapshot;
         }
 
         // Convert architecture(s) to array, as multiple architectures can be specified
@@ -158,23 +158,23 @@ function DisplayPackagesHTML($packagesAvailable)
     foreach ($packagesAvailable as $packageInfo) {
         echo "\t\t\t\t<li class=\"package\">\n";
         echo "\t\t\t\t\t<div class=\"spk-icon\">\n";
-        echo "\t\t\t\t\t\t<a href=\"".$packageInfo['spk_url'].'"><img src="'.$packageInfo['thumbnail'][0].'" alt="'.$packageInfo['displayname'].'" />'.($packageInfo['beta']?'<ins></ins>':'')."</a>\n";
+        echo "\t\t\t\t\t\t<a href=\"" . $packageInfo['spk_url'] . '"><img src="' . $packageInfo['thumbnail'][0] . '" alt="' . $packageInfo['displayname'] . '" />' . ($packageInfo['beta']?'<ins></ins>':'') . "</a>\n";
         echo "\t\t\t\t\t</div>\n";
         echo "\t\t\t\t\t<div class=\"spk-desc\">\n";
-        echo "\t\t\t\t\t\t<span class=\"spk-title\">".$packageInfo['displayname'].' v'.$packageInfo['version']."</span><br />\n";
-        echo "\t\t\t\t\t\t<p class=\"dsm-version\">Minimum DSM verison: ".$packageInfo['firmware']."</p>\n";
-        echo "\t\t\t\t\t\t<p>".$packageInfo['description']."</p>\n";
-        echo ' <a id="'.$packageInfo['package'].'_show" href="#nogo" onclick="Effect.toggle(\''.$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3, delay: 0.5 }); return false;\">More...</a>";
-        echo ' <a id="'.$packageInfo['package'].'_hide" href="#nogo" onclick="Effect.toggle(\''.$packageInfo['package']."_detail', 'blind', { duration: 0.5 }); Effect.toggle('".$packageInfo['package']."_hide', 'appear', { duration: 0.3 }); Effect.toggle('".$packageInfo['package']."_show', 'appear', { duration: 0.3, delay: 0.5 }); return false;\" style=\"display: none;\">Hide</a>\n";
+        echo "\t\t\t\t\t\t<span class=\"spk-title\">" . $packageInfo['displayname'] . ' v' . $packageInfo['version'] . "</span><br />\n";
+        echo "\t\t\t\t\t\t<p class=\"dsm-version\">Minimum DSM verison: " . $packageInfo['firmware'] . "</p>\n";
+        echo "\t\t\t\t\t\t<p>" . $packageInfo['description'] . "</p>\n";
+        echo ' <a id="' . $packageInfo['package'] . '_show" href="#nogo" onclick="Effect.toggle(\'' . $packageInfo['package'] . "_detail', 'blind', { duration: 0.5 }); Effect.toggle('" . $packageInfo['package'] . "_show', 'appear', { duration: 0.3 }); Effect.toggle('" . $packageInfo['package'] . "_hide', 'appear', { duration: 0.3, delay: 0.5 }); return false;\">More...</a>";
+        echo ' <a id="' . $packageInfo['package'] . '_hide" href="#nogo" onclick="Effect.toggle(\'' . $packageInfo['package'] . "_detail', 'blind', { duration: 0.5 }); Effect.toggle('" . $packageInfo['package'] . "_hide', 'appear', { duration: 0.3 }); Effect.toggle('" . $packageInfo['package'] . "_show', 'appear', { duration: 0.3, delay: 0.5 }); return false;\" style=\"display: none;\">Hide</a>\n";
         echo "\t\t\t\t\t\t</p>\n";
-        echo "\t\t\t\t\t\t<div style=\"display: none;\" id=\"".$packageInfo['package']."_detail\">\n";
+        echo "\t\t\t\t\t\t<div style=\"display: none;\" id=\"" . $packageInfo['package'] . "_detail\">\n";
         echo "\t\t\t\t\t\t<table>\n";
-        echo "\t\t\t\t\t\t\t<tr><td>Package</td><td>".$packageInfo['package']."</td></tr>\n";
-        echo "\t\t\t\t\t\t\t<tr><td>Version</td><td>".$packageInfo['version']."</td></tr>\n";
-        echo "\t\t\t\t\t\t\t<tr><td>Display Name</td><td>".$packageInfo['displayname']."</td></tr>\n";
-        echo "\t\t\t\t\t\t\t<tr><td>Maintainer</td><td>".$packageInfo['maintainer']."</td></tr>\n";
-        echo "\t\t\t\t\t\t\t<tr><td>Arch</td><td>".implode(', ', $packageInfo['arch'])."</td></tr>\n";
-        echo "\t\t\t\t\t\t\t<tr><td>Firmware</td><td>".$packageInfo['firmware']."</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Package</td><td>" . $packageInfo['package'] . "</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Version</td><td>" . $packageInfo['version'] . "</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Display Name</td><td>" . $packageInfo['displayname'] . "</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Maintainer</td><td>" . $packageInfo['maintainer'] . "</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Arch</td><td>" . implode(', ', $packageInfo['arch']) . "</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Firmware</td><td>" . $packageInfo['firmware'] . "</td></tr>\n";
         echo "\t\t\t\t\t\t</table>\n";
         echo "\t\t\t\t\t\t</div>\n";
         echo "\t\t\t\t\t</div>\n";
@@ -182,6 +182,14 @@ function DisplayPackagesHTML($packagesAvailable)
     }
 }
 
+/**
+ * Checks if $array contains $key and if not, returns $alternative.
+ *
+ * @param array $array Array to check
+ * @param string $key Key to check for
+ * @param mixed $alternative Alternative to return if key not found
+ * @return mixed Value from $array[$key] or $alternative
+ */
 function ifempty($array, $key, $alternative = null)
 {
     if (!empty($array[$key])) {
@@ -245,7 +253,7 @@ function DisplayAllPackages($spkDir, $host)
 {
     $packagesList = GetDirectoryList($spkDir, '*.spk');
     foreach ($packagesList as $spkFile) {
-        echo "\t\t\t\t<li><a href=\"http://".$host.$spkFile.'">'.basename($spkFile)."</a></li>\n";
+        echo "\t\t\t\t<li><a href=\"http://" . $host . $spkFile . '">' . basename($spkFile) . "</a></li>\n";
     }
 }
 
@@ -256,7 +264,7 @@ function DisplaySynoModels($synologyModelsFile)
             /** @var array $archlist */
             $archlist = Yaml::parse(file_get_contents('conf/synology_models.yaml'));
         } catch (ParseException $e) {
-            echo "\t\t\t\t<li>Error parsing model list: ".$e->getMessage().'</li>';
+            echo "\t\t\t\t<li>Error parsing model list: " . $e->getMessage() . '</li>';
             return;
         }
         $synologyModels = array();
@@ -267,7 +275,7 @@ function DisplaySynoModels($synologyModelsFile)
         }
         ksort($synologyModels);
         foreach ($synologyModels as $synoName => $synoArch) {
-            echo "\t\t\t\t<li class=\"syno-model\"><a href=\"?arch=".$synoArch.'">'.$synoName."</a></li>\n";
+            echo "\t\t\t\t<li class=\"syno-model\"><a href=\"?arch=" . $synoArch . '">' . $synoName . "</a></li>\n";
         }
     } else {
         echo "\t\t\t\t<li>Couldn't find Synology models</li>";

@@ -76,7 +76,7 @@ coding_style:
     php:
         spaces:
             around_operators:
-                concatenation: false
+                concatenation: true
             ternary_operator:
                 before_condition: false
                 after_condition: false

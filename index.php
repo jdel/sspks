@@ -116,8 +116,6 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
         foreach ($packagesList as $nfoFile) {
             $nfoFile     = basename($nfoFile);
             $spkFile     = basename($nfoFile, '.nfo').'.spk';
-            $thumb_72    = basename($nfoFile, '.nfo').'_thumb_72.png';
-            $thumb_120   = basename($nfoFile, '.nfo').'_thumb_120.png';
             if (!file_exists($spkDir.$nfoFile) || !file_exists($spkDir.$spkFile)) {
                 continue;
             }
@@ -125,18 +123,14 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
             $packageInfo['nfo'] = $spkDir.$nfoFile;
             $packageInfo['spk'] = $spkDir.$spkFile;
 
-            // Use 72px thumbnail, if available
-            if (file_exists($spkDir.$thumb_72)) {
-                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_72;
-            } else {
-                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_72.png';
-            }
-
-            // Use 120px thumbnail (instead of 72px), if available
-            if (file_exists($spkDir.$thumb_120)) {
-                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_120;
-            } else {
-                $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_120.png';
+            foreach (array('72', '120') as $size) {
+                $thumb_name = basename($nfoFile, '.nfo').'_thumb_'.$size.'.png';
+                // Use $size px thumbnail, if available
+                if (file_exists($spkDir.$thumb_name)) {
+                    $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.$thumb_name;
+                } else {
+                    $packageInfo['thumbnail'][] = 'http://'.$host.$spkDir.'default_package_icon_'.$size.'.png';
+                }
             }
 
             // Add screenshots, if available

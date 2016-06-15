@@ -110,10 +110,11 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
 {
     global $host;
     global $spkDir;
-    $packagesList = GetDirectoryList($spkDir, '.*\.nfo');
+    $packagesList = GetDirectoryList($spkDir, '*.nfo');
     $packagesAvailable = array();
     if (!empty($packagesList)) {
         foreach ($packagesList as $nfoFile) {
+            $nfoFile     = basename($nfoFile);
             $spkFile     = basename($nfoFile, '.nfo').'.spk';
             $thumb_72    = basename($nfoFile, '.nfo').'_thumb_72.png';
             $thumb_120   = basename($nfoFile, '.nfo').'_thumb_120.png';
@@ -139,8 +140,8 @@ function GetPackageList($arch = 'noarch', $beta = false, $version = '')
             }
 
             // Add screenshots, if available
-            foreach (GetDirectoryList($spkDir, basename($nfoFile, '.nfo').'.*_screen_.*\.png') as $snapshot) {
-                $packageInfo['snapshot'][] = 'http://'.$host.$spkDir.$snapshot;
+            foreach (GetDirectoryList($spkDir, basename($nfoFile, '.nfo').'*_screen_*.png') as $snapshot) {
+                $packageInfo['snapshot'][] = 'http://'.$host.$snapshot;
             }
 
             // Convert architecture(s) to array, as multiple architectures can be specified
@@ -179,7 +180,7 @@ function DisplayPackagesHTML($packagesAvailable)
         echo "\t\t\t\t\t\t\t<tr><td>Version</td><td>".$packageInfo['version']."</td></tr>\n";
         echo "\t\t\t\t\t\t\t<tr><td>Display Name</td><td>".$packageInfo['displayname']."</td></tr>\n";
         echo "\t\t\t\t\t\t\t<tr><td>Maintainer</td><td>".$packageInfo['maintainer']."</td></tr>\n";
-        echo "\t\t\t\t\t\t\t<tr><td>Arch</td><td>".$packageInfo['arch']."</td></tr>\n";
+        echo "\t\t\t\t\t\t\t<tr><td>Arch</td><td>".implode(', ', $packageInfo['arch'])."</td></tr>\n";
         echo "\t\t\t\t\t\t\t<tr><td>Firmware</td><td>".$packageInfo['firmware']."</td></tr>\n";
         echo "\t\t\t\t\t\t</table>\n";
         echo "\t\t\t\t\t\t</div>\n";
@@ -244,9 +245,9 @@ function DisplayPackagesJSON($packagesAvailable)
 function DisplayAllPackages($spkDir)
 {
     global $host;
-    $packagesList = GetDirectoryList($spkDir, '.*\.spk');
+    $packagesList = GetDirectoryList($spkDir, '*.spk');
     foreach ($packagesList as $spkFile) {
-        echo "\t\t\t\t<li><a href=\"http://".$host.$spkDir.$spkFile.'">'.$spkFile."</a></li>\n";
+        echo "\t\t\t\t<li><a href=\"http://".$host.$spkFile.'">'.basename($spkFile)."</a></li>\n";
     }
 }
 
@@ -276,14 +277,6 @@ function DisplaySynoModels($synologyModelsFile)
 
 function GetDirectoryList($directory, $filter)
 {
-    $results = array();
-    $handler = opendir($directory);
-    while ($file = readdir($handler)) {
-        if ($file != '.' && $file != '..' && preg_match('/'.$filter.'/', $file)) {
-            $results[] = $file;
-        }
-    }
-    closedir($handler);
-    sort($results);
-    return $results;
+    $filelist = glob($directory.$filter);
+    return $filelist;
 }

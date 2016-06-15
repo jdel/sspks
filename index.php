@@ -142,6 +142,42 @@ function getSnapshots($spkDir, $baseFile, $host)
 }
 
 /**
+ * Returns if the given package is eligible for the specified target.
+ *
+ * @param array $packageInfo Package information
+ * @param array $allPackages All previously discovered packages
+ * @param string $arch Architecture (or 'noarch')
+ * @param string $fw_version Target firmware version (or 'skip')
+ * @param string $beta Beta version requested ('beta') or not ('')
+ * @return bool
+ */
+function isPackageEligible($packageInfo, $allPackages, $arch, $fw_version, $beta)
+{
+    $pkgName    = $packageInfo['package'];
+    $pkgVersion = $packageInfo['version'];
+    $pkgArch    = $packageInfo['arch'];
+
+    if (isset($allPackages[$pkgName]) && version_compare($allPackages[$pkgName]['version'], $pkgVersion, '>=')) {
+        // Package already found and newer or same than this one
+        return false;
+    }
+    if (!in_array($arch, $pkgArch) && !in_array('noarch', $pkgArch)) {
+        // Package isn't for this architecture (and not generic)
+        return false;
+    }
+    if (isset($packageInfo['beta']) && ($packageInfo['beta'] == true) && ($beta != 'beta')) {
+        // Package is beta version, but beta not requested
+        return false;
+    }
+    if (version_compare($packageInfo['firmware'], $fw_version, '>') && ($fw_version != 'skip')) {
+        // Package needs later firmware and check isn't skipped
+        return false;
+    }
+    // All checks passed.
+    return true;
+}
+
+/**
  * Returns the list of available packages incl. metadata.
  *
  * @param string $arch Requested architecture
@@ -169,12 +205,7 @@ function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $versio
 
         // Convert architecture(s) to array, as multiple architectures can be specified
         $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
-        if ((empty($packagesAvailable[$packageInfo['package']])
-            || version_compare($packageInfo['version'], $packagesAvailable[$packageInfo['package']]['version'], '>'))
-            && (in_array($arch, $packageInfo['arch']) || in_array('noarch', $packageInfo['arch']))
-            && (($beta == 'beta' && $packageInfo['beta'] == true) || empty($packageInfo['beta']))
-            && ((version_compare($version, $packageInfo['firmware'], '>=')) || $version == 'skip')
-            ) {
+        if (isPackageEligible($packageInfo, $packagesAvailable, $arch, $version, $beta)) {
             $packagesAvailable[$packageInfo['package']] = $packageInfo;
         }
     }

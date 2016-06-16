@@ -4,6 +4,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use \Symfony\Component\Yaml\Yaml;
 use \Symfony\Component\Yaml\Exception\ParseException;
+use \SSpkS\Package\Package;
 
 /*
 example data passed by a syno
@@ -188,13 +189,14 @@ function isPackageEligible($packageInfo, $allPackages, $arch, $fw_version, $beta
  */
 function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $version = '')
 {
-    $packagesList = glob($spkDir . '*.nfo');
+    $packagesList = glob($spkDir . '*.spk');
     $packagesAvailable = array();
-    foreach ($packagesList as $nfoFile) {
-        $nfoFile     = basename($nfoFile);
-        $baseFile    = basename($nfoFile, '.nfo');
-        $spkFile     = $baseFile . '.spk';
-        if (!file_exists($spkDir . $spkFile)) {
+    foreach ($packagesList as $spkFile) {
+        $pkg = new Package($spkFile);
+        $spkFile     = basename($spkFile);
+        $baseFile    = basename($spkFile, '.spk');
+        $nfoFile     = $baseFile . '.nfo';
+        if (!file_exists($spkDir . $nfoFile)) {
             continue;
         }
         $packageInfo = parse_ini_file($spkDir . $nfoFile);
@@ -304,6 +306,7 @@ function getSynoModels($synologyModelsFile)
             return $e;
         }
         $idx = 0;
+        $sortkey = array();
         foreach ($archlist as $arch => $archmodels) {
             foreach ($archmodels as $model) {
                 $models[$idx] = array(

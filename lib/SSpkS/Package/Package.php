@@ -25,6 +25,7 @@ class Package
         $this->filename      = basename($filename);
         $this->filenameNoExt = basename($filename, '.spk');
         $this->checkMetafiles();
+        $this->checkIcon();
     }
 
     public function checkMetafiles()
@@ -38,6 +39,20 @@ class Package
         copy('phar://' . $this->filepath . '/INFO', $nfoFile);
         if (!file_exists($nfoFile)) {
             throw new \Exception('Could not extract INFO from ' . $this->filepath . '!');
+        }
+    }
+
+    public function checkIcon()
+    {
+        $iconFile = $this->filepathNoExt . '_thumb_72.png';
+        if (file_exists($iconFile)) {
+            // Everything in working order
+            return true;
+        }
+        // Try to extract icon
+        copy('phar://' . $this->filepath . '/PACKAGE_ICON.PNG', $iconFile);
+        if (!file_exists($iconFile)) {
+            throw new \Exception('Could not extract PACKAGE_ICON.PNG from ' . $this->filepath . '!');
         }
     }
 }

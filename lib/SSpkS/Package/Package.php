@@ -5,9 +5,9 @@ namespace SSpkS\Package;
 class Package
 {
     private $filepath;
-    private $filepath_noext;
+    private $filepathNoExt;
     private $filename;
-    private $filename_noext;
+    private $filenameNoExt;
 
     /**
      * @param string $filename Filename of SPK file
@@ -20,16 +20,16 @@ class Package
         if (!file_exists($filename)) {
             throw new \Exception('File ' . $filename . ' not found!');
         }
-        $this->filepath       = $filename;
-        $this->filepath_noext = substr($filename, 0, -4);
-        $this->filename       = basename($filename);
-        $this->filename_noext = basename($filename, '.spk');
+        $this->filepath      = $filename;
+        $this->filepathNoExt = substr($filename, 0, -4);
+        $this->filename      = basename($filename);
+        $this->filenameNoExt = basename($filename, '.spk');
         $this->checkMetafiles();
     }
 
     public function checkMetafiles()
     {
-        $nfoFile = $this->filepath_noext . '.nfo';
+        $nfoFile = $this->filepathNoExt . '.nfo';
         if (file_exists($nfoFile)) {
             // Everything in working order
             return true;

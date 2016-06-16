@@ -1,8 +1,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mbirth/sspks/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mbirth/sspks/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/mbirth/sspks/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mbirth/sspks/build-status/master)
 
-sspks 0.1
-=========
+Simple SPK Server
+=================
 
 A very simple Synology Package Server, reverse engineered from
 the official Synology package repository and SynoCommunity.

@@ -135,7 +135,7 @@ function getSnapshots($spkDir, $baseFile, $host)
 {
     $snapshots = array();
     // Add screenshots, if available
-    foreach (getDirectoryList($spkDir, $baseFile . '*_screen_*.png') as $snapshot) {
+    foreach (glob($spkDir . $baseFile . '*_screen_*.png') as $snapshot) {
         $snapshots[] = 'http://' . $host . $snapshot;
     }
     return $snapshots;
@@ -187,7 +187,7 @@ function isPackageEligible($packageInfo, $allPackages, $arch, $fw_version, $beta
  */
 function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $version = '')
 {
-    $packagesList = getDirectoryList($spkDir, '*.nfo');
+    $packagesList = glob($spkDir . '*.nfo');
     $packagesAvailable = array();
     foreach ($packagesList as $nfoFile) {
         $nfoFile     = basename($nfoFile);
@@ -310,7 +310,7 @@ function displayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
 
 function displayAllPackages($spkDir, $host)
 {
-    $packagesList = getDirectoryList($spkDir, '*.spk');
+    $packagesList = glob($spkDir . '*.spk');
     foreach ($packagesList as $spkFile) {
         echo "\t\t\t\t<li><a href=\"http://" . $host . $spkFile . '">' . basename($spkFile) . "</a></li>\n";
     }
@@ -341,8 +341,3 @@ function displaySynoModels($synologyModelsFile)
     }
 }
 
-function getDirectoryList($directory, $filter)
-{
-    $filelist = glob($directory . $filter);
-    return $filelist;
-}

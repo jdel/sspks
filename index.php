@@ -200,6 +200,9 @@ function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $versio
             continue;
         }
         $packageInfo = parse_ini_file($spkDir . $nfoFile);
+        if (!isset($packageInfo['displayname'])) {
+            $packageInfo['displayname'] = $packageInfo['package'];
+        }
         $packageInfo['nfo'] = $spkDir . $nfoFile;
         $packageInfo['spk'] = $spkDir . $spkFile;
         $packageInfo['spk_url'] = 'http://' . $host . $spkDir . $spkFile;

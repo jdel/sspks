@@ -24,8 +24,8 @@ class Package
         $this->filepathNoExt = substr($filename, 0, -4);
         $this->filename      = basename($filename);
         $this->filenameNoExt = basename($filename, '.spk');
-        $this->extractIfMissing('INFO', $this->filenameNoExt . '.nfo');
-        $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filenameNoExt . '_thumb_72.png');
+        $this->extractIfMissing('INFO', $this->filepathNoExt . '.nfo');
+        $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filepathNoExt . '_thumb_72.png');
     }
 
     public function extractIfMissing($inPkgName, $targetFile)

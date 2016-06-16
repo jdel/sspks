@@ -24,35 +24,20 @@ class Package
         $this->filepathNoExt = substr($filename, 0, -4);
         $this->filename      = basename($filename);
         $this->filenameNoExt = basename($filename, '.spk');
-        $this->checkMetafiles();
-        $this->checkIcon();
+        $this->extractIfMissing('INFO', $this->filenameNoExt . '.nfo');
+        $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filenameNoExt . '_thumb_72.png');
     }
 
-    public function checkMetafiles()
+    public function extractIfMissing($inPkgName, $targetFile)
     {
-        $nfoFile = $this->filepathNoExt . '.nfo';
-        if (file_exists($nfoFile)) {
+        if (file_exists($targetFile)) {
             // Everything in working order
             return true;
         }
         // Try to extract .nfo file
-        copy('phar://' . $this->filepath . '/INFO', $nfoFile);
-        if (!file_exists($nfoFile)) {
-            throw new \Exception('Could not extract INFO from ' . $this->filepath . '!');
-        }
-    }
-
-    public function checkIcon()
-    {
-        $iconFile = $this->filepathNoExt . '_thumb_72.png';
-        if (file_exists($iconFile)) {
-            // Everything in working order
-            return true;
-        }
-        // Try to extract icon
-        copy('phar://' . $this->filepath . '/PACKAGE_ICON.PNG', $iconFile);
-        if (!file_exists($iconFile)) {
-            throw new \Exception('Could not extract PACKAGE_ICON.PNG from ' . $this->filepath . '!');
+        copy('phar://' . $this->filepath . '/' . $inPkgName, $targetFile);
+        if (!file_exists($targetFile)) {
+            throw new \Exception('Could not extract ' . $inPkgName . ' from ' . $this->filepath . '!');
         }
     }
 }

@@ -4,6 +4,7 @@
     "require": {
         "php": ">=5.3.0",
         "symfony/yaml": "*",
+        "mustache/mustache": "~2.10",
         "bower-asset/scriptaculous-bower": "dev-master"
     },
     "require-dev": {

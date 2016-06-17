@@ -4,6 +4,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use \Symfony\Component\Yaml\Yaml;
 use \Symfony\Component\Yaml\Exception\ParseException;
+use \SSpkS\Device\DeviceList;
 use \SSpkS\Package\Package;
 
 /*
@@ -84,15 +85,18 @@ if (isset($_REQUEST['ds_sn'])) {
         $tpl = $mustache->loadTemplate('html_packagelist_all');
     } else {
         // Nothing requested --> show models overview
-        $models = getSynoModels($synologyModels);
-        if (is_subclass_of($models, 'RuntimeException')) {
-            $tpl_vars['errorMessage'] = $models->getMessage();
+        try {
+            $deviceList = new DeviceList($synologyModels);
+            $models = $deviceList->getDevices();
+            if (count($models) == 0) {
+                $tpl = $mustache->loadTemplate('html_modellist_none');
+            } else {
+                $tpl_vars['modellist'] = $models;
+                $tpl = $mustache->loadTemplate('html_modellist');
+            }
+        } catch (\Exception $e) {
+            $tpl_vars['errorMessage'] = $e->getMessage();
             $tpl = $mustache->loadTemplate('html_modellist_error');
-        } elseif (count($models) == 0) {
-            $tpl = $mustache->loadTemplate('html_modellist_none');
-        } else {
-            $tpl_vars['modellist'] = $models;
-            $tpl = $mustache->loadTemplate('html_modellist');
         }
     }
     echo $tpl->render($tpl_vars);
@@ -252,29 +256,3 @@ function getAllPackages($spkDir, $baseUrl)
     return $packages;
 }
 
-function getSynoModels($synologyModelsFile)
-{
-    $models = array();
-    if (file_exists($synologyModelsFile)) {
-        try {
-            /** @var array $archlist */
-            $archlist = Yaml::parse(file_get_contents('conf/synology_models.yaml'));
-        } catch (ParseException $e) {
-            return $e;
-        }
-        $idx = 0;
-        $sortkey = array();
-        foreach ($archlist as $arch => $archmodels) {
-            foreach ($archmodels as $model) {
-                $models[$idx] = array(
-                    'arch' => $arch,
-                    'name' => $model,
-                );
-                $sortkey[$idx] = $model;
-                $idx++;
-            }
-        }
-        array_multisort($sortkey, SORT_NATURAL, $models);
-    }
-    return $models;
-}

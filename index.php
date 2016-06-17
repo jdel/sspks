@@ -157,16 +157,20 @@ function getPackageList($baseUrl, $spkDir, $arch = 'noarch', $beta = false, $ver
     foreach ($packagesList as $spkFile) {
         $pkg = new Package($spkFile);
         $pkg->spk_url = $baseUrl . $pkg->spk;
-        $packageInfo = $pkg->getMetadata();
 
         // Make absolute URLs from relative ones
-        foreach ($packageInfo['thumbnail'] as $i => $t) {
-            $packageInfo['thumbnail'][$i] = $baseUrl . $t;
+        $thumbnail_url = array();
+        foreach ($pkg->thumbnail as $i => $t) {
+            $thumbnail_url[$i] = $baseUrl . $t;
         }
-        foreach ($packageInfo['snapshot'] as $i => $s) {
-            $packageInfo['snapshot'][$i] = $baseUrl . $s;
+        $pkg->thumbnail_url = $thumbnail_url;
+        $snapshot_url = array();
+        foreach ($pkg->snapshot as $i => $s) {
+            $snapshot_url[$i] = $baseUrl . $s;
         }
+        $pkg->snapshot_url = $snapshot_url;
 
+        $packageInfo = $pkg->getMetadata();
         if (isPackageEligible($packageInfo, $packagesAvailable, $arch, $version, $beta)) {
             $packagesAvailable[$packageInfo['package']] = $packageInfo;
         }
@@ -201,8 +205,8 @@ function displayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
             'desc'      => $packageInfo['description'],
             'link'      => $packageInfo['spk_url'],
             'md5'       => md5_file($packageInfo['spk']),
-            'thumbnail' => $packageInfo['thumbnail'],                    // New property for newer synos, need to check if it works with old synos
-            'snapshot'  => ifempty($packageInfo, 'snapshot'),            // Adds multiple screenshots to package view
+            'thumbnail' => $packageInfo['thumbnail_url'],                // New property for newer synos, need to check if it works with old synos
+            'snapshot'  => ifempty($packageInfo, 'snapshot_url'),        // Adds multiple screenshots to package view
             'size'      => filesize($packageInfo['spk']),
             'qinst'     => ifempty($packageInfo, 'qinst', false),        // quick install
             'qstart'    => ifempty($packageInfo, 'start', false),        // quick start

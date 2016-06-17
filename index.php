@@ -25,7 +25,7 @@ $spkDir = 'packages/';
 // File where Syno models are stored in Yaml format
 $synologyModels = 'conf/synology_models.yaml';
 $excludedSynoServices = array('apache-sys', 'apache-web', 'mdns', 'samba', 'db', 'applenetwork', 'cron', 'nfs', 'firewall');
-$host = $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')) . '/';
+$baseUrl = 'http' . ($_SERVER['HTTPS']?'s':'') . '://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')) . '/';
 
 $siteName = 'Simple SPK Server';
 
@@ -47,7 +47,7 @@ if (isset($_REQUEST['ds_sn'])) {
     // Make sure, that the "client" knows that output is sent in JSON format
     header('Content-type: application/json');
     $fw_version = $major . '.' . $minor . '.' . $build;
-    $packageList = displayPackagesJSON(getPackageList($host, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
+    $packageList = displayPackagesJSON(getPackageList($baseUrl, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
     echo stripslashes(json_encode($packageList));
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // GET-request, probably browser --> show HTML
@@ -68,18 +68,18 @@ if (isset($_REQUEST['ds_sn'])) {
         'arch'       => $arch,
         'channel'    => $channel,
         'requestUri' => $_SERVER['REQUEST_URI'],
-        'host'       => $host,
+        'baseUrl'    => $baseUrl,
         'fullList'   => $fullList,
     );
 
     if ($arch) {
         // Architecture is set --> show packages for that arch
-        $packages = getPackageList($host, $spkDir, $arch, $channel, 'skip');
+        $packages = getPackageList($baseUrl, $spkDir, $arch, $channel, 'skip');
         $tpl_vars['packagelist'] = array_values($packages);
         $tpl = $mustache->loadTemplate('html_packagelist');
     } elseif ($fullList) {
         // No architecture, but full list of packages requested --> show simple list
-        $packages = getAllPackages($spkDir, $host);
+        $packages = getAllPackages($spkDir, $baseUrl);
         $tpl_vars['packagelist'] = $packages;
         $tpl = $mustache->loadTemplate('html_packagelist_all');
     } else {
@@ -141,26 +141,28 @@ function isPackageEligible($packageInfo, $allPackages, $arch, $fw_version, $beta
 /**
  * Returns the list of available packages incl. metadata.
  *
+ * @param string $baseUrl Base URL to installation
+ * @param string $spkDir Directory containing packages
  * @param string $arch Requested architecture
  * @param mixed $beta Either 'beta' to also get beta packages, or false
  * @param string $version Firmware version to support
  * @return array
  */
-function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $version = '')
+function getPackageList($baseUrl, $spkDir, $arch = 'noarch', $beta = false, $version = '')
 {
     $packagesList = glob($spkDir . '*.spk');
     $packagesAvailable = array();
     foreach ($packagesList as $spkFile) {
         $pkg = new Package($spkFile);
         $packageInfo = $pkg->getMetadata();
-        $packageInfo['spk_url'] = 'http://' . $host . $packageInfo['spk'];
+        $packageInfo['spk_url'] = $baseUrl . $packageInfo['spk'];
 
         // Make absolute URLs from relative ones
         foreach ($packageInfo['thumbnail'] as $i=>$t) {
-            $packageInfo['thumbnail'][$i] = 'http://' . $host . $t;
+            $packageInfo['thumbnail'][$i] = $baseUrl . $t;
         }
         foreach ($packageInfo['snapshot'] as $i=>$s) {
-            $packageInfo['snapshot'][$i] = 'http://' . $host . $s;
+            $packageInfo['snapshot'][$i] = $baseUrl . $s;
         }
 
         if (isPackageEligible($packageInfo, $packagesAvailable, $arch, $version, $beta)) {
@@ -237,13 +239,13 @@ function displayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
     return $packagesJSON;
 }
 
-function getAllPackages($spkDir, $host)
+function getAllPackages($spkDir, $baseUrl)
 {
     $packages = array();
     $packagesList = glob($spkDir . '*.spk');
     foreach ($packagesList as $spkFile) {
         $packages[] = array(
-            'url'      => 'http://' . $host . $spkFile,
+            'url'      => $baseUrl . $spkFile,
             'filename' => basename($spkFile),
         );
     }

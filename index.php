@@ -152,24 +152,17 @@ function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $versio
     $packagesAvailable = array();
     foreach ($packagesList as $spkFile) {
         $pkg = new Package($spkFile);
-        $spkFile     = basename($spkFile);
-        $baseFile    = basename($spkFile, '.spk');
-        $nfoFile     = $baseFile . '.nfo';
-        if (!file_exists($spkDir . $nfoFile)) {
-            continue;
-        }
-        $packageInfo = parse_ini_file($spkDir . $nfoFile);
-        if (!isset($packageInfo['displayname'])) {
-            $packageInfo['displayname'] = $packageInfo['package'];
-        }
-        $packageInfo['nfo'] = $spkDir . $nfoFile;
-        $packageInfo['spk'] = $spkDir . $spkFile;
-        $packageInfo['spk_url'] = 'http://' . $host . $spkDir . $spkFile;
-        $packageInfo['thumbnail'] = $pkg->getThumbnails('http://' . $host);
-        $packageInfo['snapshot']  = $pkg->getSnapshots('http://' . $host);
+        $packageInfo = $pkg->getMetadata();
+        $packageInfo['spk_url'] = 'http://' . $host . $packageInfo['spk'];
 
-        // Convert architecture(s) to array, as multiple architectures can be specified
-        $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
+        // Make absolute URLs from relative ones
+        foreach ($packageInfo['thumbnail'] as $i=>$t) {
+            $packageInfo['thumbnail'][$i] = 'http://' . $host . $t;
+        }
+        foreach ($packageInfo['snapshot'] as $i=>$s) {
+            $packageInfo['snapshot'][$i] = 'http://' . $host . $s;
+        }
+
         if (isPackageEligible($packageInfo, $packagesAvailable, $arch, $version, $beta)) {
             $packagesAvailable[$packageInfo['package']] = $packageInfo;
         }

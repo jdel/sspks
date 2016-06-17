@@ -29,6 +29,27 @@ class Package
     }
 
     /**
+     * Returns metadata for this package.
+     *
+     * @return array Metadata.
+     */
+    public function getMetadata()
+    {
+        $packageInfo = parse_ini_file($this->filepathNoExt . '.nfo');
+        if (!isset($packageInfo['displayname'])) {
+            $packageInfo['displayname'] = $packageInfo['package'];
+        }
+        $packageInfo['nfo']       = $this->filepathNoExt . '.nfo';
+        $packageInfo['spk']       = $this->filepath;
+        $packageInfo['thumbnail'] = $this->getThumbnails();
+        $packageInfo['snapshot']  = $this->getSnapshots();
+
+        // Convert architecture(s) to array, as multiple architectures can be specified
+        $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
+        return $packageInfo;
+    }
+ 
+    /**
      * Extracts $inPkgName from package to $targetFile, if it doesn't
      * already exist. Needs the phar.so extension and allow_url_fopen.
      *
@@ -54,19 +75,19 @@ class Package
     /**
      * Returns a list of thumbnails for the specified package.
      *
-     * @param string $baseUrl Base URL to the thumbnails
+     * @param string $pathPrefix Prefix to put before file path
      * @return array List of thumbnail urls
      */
-    public function getThumbnails($baseUrl = '')
+    public function getThumbnails($pathPrefix = '')
     {
         $thumbnails = array();
         foreach (array('72', '120') as $size) {
             $thumb_name = $this->filepathNoExt . '_thumb_' . $size . '.png';
             // Use $size px thumbnail, if available
             if (file_exists($thumb_name)) {
-                $thumbnails[] = $baseUrl . $thumb_name;
+                $thumbnails[] = $pathPrefix . $thumb_name;
             } else {
-                $thumbnails[] = $baseUrl . dirname($thumb_name) . '/default_package_icon_' . $size . '.png';
+                $thumbnails[] = $pathPrefix . dirname($thumb_name) . '/default_package_icon_' . $size . '.png';
             }
         }
         return $thumbnails;
@@ -75,15 +96,15 @@ class Package
     /**
      * Returns a list of screenshots for the specified package.
      *
-     * @param string $baseUrl Base URL to the screenshots
+     * @param string $pathPrefix Prefix to put before file path
      * @return array List of screenshots
      */
-    public function getSnapshots($baseUrl = '')
+    public function getSnapshots($pathPrefix = '')
     {
         $snapshots = array();
         // Add screenshots, if available
         foreach (glob($this->filepathNoExt . '*_screen_*.png') as $snapshot) {
-            $snapshots[] = $baseUrl . $snapshot;
+            $snapshots[] = $pathPrefix . $snapshot;
         }
         return $snapshots;
     }

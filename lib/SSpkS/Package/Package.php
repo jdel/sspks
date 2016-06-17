@@ -2,6 +2,21 @@
 
 namespace SSpkS\Package;
 
+/**
+ * SPK Package class
+ *
+ * @property string $spk Path to SPK file
+ * @property string $spk_url URL to SPK file
+ * @property string $displayname Pretty printed name of package (falls back to $package if not present)
+ * @property string $package Package name
+ * @property array $arch List of supported architectures, or 'noarch'
+ * @property array $thumbnail List of thumbnail files
+ * @property array $thumbnail_url List of thumbnail URLs
+ * @property array $snapshot List of screenshot files
+ * @property array $snapshot_url List of screenshot URLs
+ * @property string $beta Contains 'true' if this is a beta package.
+ * @property string $firmware Minimum firmware needed on device.
+ */
 class Package
 {
     private $filepath;

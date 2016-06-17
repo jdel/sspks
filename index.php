@@ -2,8 +2,6 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use \Symfony\Component\Yaml\Yaml;
-use \Symfony\Component\Yaml\Exception\ParseException;
 use \SSpkS\Device\DeviceList;
 use \SSpkS\Package\Package;
 
@@ -158,14 +156,14 @@ function getPackageList($baseUrl, $spkDir, $arch = 'noarch', $beta = false, $ver
     $packagesAvailable = array();
     foreach ($packagesList as $spkFile) {
         $pkg = new Package($spkFile);
+        $pkg->spk_url = $baseUrl . $pkg->spk;
         $packageInfo = $pkg->getMetadata();
-        $packageInfo['spk_url'] = $baseUrl . $packageInfo['spk'];
 
         // Make absolute URLs from relative ones
-        foreach ($packageInfo['thumbnail'] as $i=>$t) {
+        foreach ($packageInfo['thumbnail'] as $i => $t) {
             $packageInfo['thumbnail'][$i] = $baseUrl . $t;
         }
-        foreach ($packageInfo['snapshot'] as $i=>$s) {
+        foreach ($packageInfo['snapshot'] as $i => $s) {
             $packageInfo['snapshot'][$i] = $baseUrl . $s;
         }
 
@@ -255,4 +253,3 @@ function getAllPackages($spkDir, $baseUrl)
     }
     return $packages;
 }
-

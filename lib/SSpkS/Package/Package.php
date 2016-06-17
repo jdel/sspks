@@ -30,6 +30,53 @@ class Package
     }
 
     /**
+     * Getter magic method.
+     *
+     * @param string $name Name of requested value.
+     * @return mixed Requested value.
+     */
+    public function __get($name)
+    {
+        $this->collectMetadata();
+        return $this->metadata[$name];
+    }
+
+    /**
+     * Setter magic method.
+     *
+     * @param string $name Name of variable to set.
+     * @param mixed $value Value to set.
+     */
+    public function __set($name, $value)
+    {
+        $this->collectMetadata();
+        $this->metadata[$name] = $value;
+    }
+
+    /**
+     * Isset feature magic method.
+     *
+     * @param string $name Name of requested value.
+     * @return bool TRUE if value exists, FALSE otherwise.
+     */
+    public function __isset($name)
+    {
+        $this->collectMetadata();
+        return isset($this->metadata[$name]);
+    }
+
+    /**
+     * Unset feature magic method.
+     *
+     * @param string $name Name of value to unset.
+     */
+    public function __unset($name)
+    {
+        $this->collectMetadata();
+        unset($this->metadata[$name]);
+    }
+
+    /**
      * Gathers metadata from package. Extracts INFO file if neccessary.
      */
     private function collectMetadata()
@@ -78,6 +125,7 @@ class Package
             // Everything in working order
             return true;
         }
+        // TODO: Extract using PharData object, to not depend on allow_url_fopen and for better error handling
         // Try to extract file
         @copy('phar://' . $this->filepath . '/' . $inPkgName, $targetFile);
         if (!file_exists($targetFile)) {
@@ -143,5 +191,28 @@ class Package
         // Make sure we have metadata available
         $this->collectMetadata();
         return (in_array($arch, $this->metadata['arch']) || in_array('noarch', $this->metadata['arch']));
+    }
+
+    /**
+     * Checks compatibility to the given firmware $version.
+     *
+     * @param string $version Target firmware version.
+     * @return bool TRUE if compatible, otherwise FALSE.
+     */
+    public function isCompatibleToFirmware($version)
+    {
+        $this->collectMetadata();
+        return version_compare($this->metadata['firmware'], $version, '<=');
+    }
+
+    /**
+     * Checks if this package is a beta version or not.
+     *
+     * @return bool TRUE if this is a beta version, FALSE otherwise.
+     */
+    public function isBeta()
+    {
+        $this->collectMetadata();
+        return (isset($this->metadata['beta']) && $this->metadata['beta'] == true);
     }
 }

@@ -103,47 +103,6 @@ if (isset($_REQUEST['ds_sn'])) {
 }
 
 /**
- * Returns a list of thumbnails for the specified package.
- *
- * @param string $spkDir Package directory
- * @param string $baseFile Package file name without extension
- * @param string $host Hostname
- * @return array List of thumbnails
- */
-function getThumbnails($spkDir, $baseFile, $host)
-{
-    $thumbnails = array();
-    foreach (array('72', '120') as $size) {
-        $thumb_name = $baseFile . '_thumb_' . $size . '.png';
-        // Use $size px thumbnail, if available
-        if (file_exists($spkDir . $thumb_name)) {
-            $thumbnails[] = 'http://' . $host . $spkDir . $thumb_name;
-        } else {
-            $thumbnails[] = 'http://' . $host . $spkDir . 'default_package_icon_' . $size . '.png';
-        }
-    }
-    return $thumbnails;
-}
-
-/**
- * Returns a list of screenshots for the specified package.
- *
- * @param string $spkDir Package directory
- * @param string $baseFile Package file name without extension
- * @param string $host Hostname
- * @return array List of screenshots
- */
-function getSnapshots($spkDir, $baseFile, $host)
-{
-    $snapshots = array();
-    // Add screenshots, if available
-    foreach (glob($spkDir . $baseFile . '*_screen_*.png') as $snapshot) {
-        $snapshots[] = 'http://' . $host . $snapshot;
-    }
-    return $snapshots;
-}
-
-/**
  * Returns if the given package is eligible for the specified target.
  *
  * @param array $packageInfo Package information
@@ -206,8 +165,8 @@ function getPackageList($host, $spkDir, $arch = 'noarch', $beta = false, $versio
         $packageInfo['nfo'] = $spkDir . $nfoFile;
         $packageInfo['spk'] = $spkDir . $spkFile;
         $packageInfo['spk_url'] = 'http://' . $host . $spkDir . $spkFile;
-        $packageInfo['thumbnail'] = getThumbnails($spkDir, $baseFile, $host);
-        $packageInfo['snapshot'] = getSnapshots($spkDir, $baseFile, $host);
+        $packageInfo['thumbnail'] = $pkg->getThumbnails('http://' . $host);
+        $packageInfo['snapshot']  = $pkg->getSnapshots('http://' . $host);
 
         // Convert architecture(s) to array, as multiple architectures can be specified
         $packageInfo['arch'] = explode(' ', $packageInfo['arch']);

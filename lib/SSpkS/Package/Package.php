@@ -40,4 +40,41 @@ class Package
             throw new \Exception('Could not extract ' . $inPkgName . ' from ' . $this->filepath . '!');
         }
     }
+
+    /**
+     * Returns a list of thumbnails for the specified package.
+     *
+     * @param string $baseUrl Base URL to the thumbnails
+     * @return array List of thumbnail urls
+     */
+    public function getThumbnails($baseUrl = '')
+    {
+        $thumbnails = array();
+        foreach (array('72', '120') as $size) {
+            $thumb_name = $this->filepathNoExt . '_thumb_' . $size . '.png';
+            // Use $size px thumbnail, if available
+            if (file_exists($thumb_name)) {
+                $thumbnails[] = $baseUrl . $thumb_name;
+            } else {
+                $thumbnails[] = $baseUrl . dirname($thumb_name) . '/default_package_icon_' . $size . '.png';
+            }
+        }
+        return $thumbnails;
+    }
+
+    /**
+     * Returns a list of screenshots for the specified package.
+     *
+     * @param string $baseUrl Base URL to the screenshots
+     * @return array List of screenshots
+     */
+    function getSnapshots($baseUrl = '')
+    {
+        $snapshots = array();
+        // Add screenshots, if available
+        foreach (glob($this->filepathNoExt . '*_screen_*.png') as $snapshot) {
+            $snapshots[] = $baseUrl . $snapshot;
+        }
+        return $snapshots;
+    }
 }

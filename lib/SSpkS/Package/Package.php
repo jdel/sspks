@@ -8,6 +8,7 @@ class Package
     private $filepathNoExt;
     private $filename;
     private $filenameNoExt;
+    private $metadata;
 
     /**
      * @param string $filename Filename of SPK file
@@ -24,17 +25,18 @@ class Package
         $this->filepathNoExt = substr($filename, 0, -4);
         $this->filename      = basename($filename);
         $this->filenameNoExt = basename($filename, '.spk');
-        $this->extractIfMissing('INFO', $this->filepathNoExt . '.nfo');
-        $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filepathNoExt . '_thumb_72.png');
     }
 
     /**
-     * Returns metadata for this package.
-     *
-     * @return array Metadata.
+     * Gathers metadata from package. Extracts INFO file if neccessary.
      */
-    public function getMetadata()
+    private function collectMetadata()
     {
+        if (!is_null($this->metadata)) {
+            // metadata already collected
+            return;
+        }
+        $this->extractIfMissing('INFO', $this->filepathNoExt . '.nfo');
         $packageInfo = parse_ini_file($this->filepathNoExt . '.nfo');
         if (!isset($packageInfo['displayname'])) {
             $packageInfo['displayname'] = $packageInfo['package'];
@@ -46,7 +48,19 @@ class Package
 
         // Convert architecture(s) to array, as multiple architectures can be specified
         $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
-        return $packageInfo;
+
+        $this->metadata = $packageInfo;
+    }
+
+    /**
+     * Returns metadata for this package.
+     *
+     * @return array Metadata.
+     */
+    public function getMetadata()
+    {
+        $this->collectMetadata();
+        return $this->metadata;
     }
  
     /**
@@ -80,6 +94,7 @@ class Package
      */
     public function getThumbnails($pathPrefix = '')
     {
+        $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filepathNoExt . '_thumb_72.png');
         $thumbnails = array();
         foreach (array('72', '120') as $size) {
             $thumb_name = $this->filepathNoExt . '_thumb_' . $size . '.png';
@@ -107,5 +122,18 @@ class Package
             $snapshots[] = $pathPrefix . $snapshot;
         }
         return $snapshots;
+    }
+
+    /**
+     * Checks compatibility to the given $arch-itecture.
+     *
+     * @param string $arch Architecture to check against (or "noarch")
+     * @return bool TRUE if compatible, otherwise FALSE.
+     */
+    public function isCompatibleToArch($arch)
+    {
+        // Make sure we have metadata available
+        $this->collectMetadata();
+        return (in_array($arch, $this->metadata['arch']) || in_array('noarch', $this->metadata['arch']));
     }
 }

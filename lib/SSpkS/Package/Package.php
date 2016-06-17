@@ -8,6 +8,7 @@ class Package
     private $filepathNoExt;
     private $filename;
     private $filenameNoExt;
+    private $metafile;
     private $metadata;
 
     /**
@@ -25,6 +26,7 @@ class Package
         $this->filepathNoExt = substr($filename, 0, -4);
         $this->filename      = basename($filename);
         $this->filenameNoExt = basename($filename, '.spk');
+        $this->metafile      = $this->filepathNoExt . '.nfo';
     }
 
     /**
@@ -36,20 +38,18 @@ class Package
             // metadata already collected
             return;
         }
-        $this->extractIfMissing('INFO', $this->filepathNoExt . '.nfo');
-        $packageInfo = parse_ini_file($this->filepathNoExt . '.nfo');
-        if (!isset($packageInfo['displayname'])) {
-            $packageInfo['displayname'] = $packageInfo['package'];
+        $this->extractIfMissing('INFO', $this->metafile);
+        $this->metadata = parse_ini_file($this->metafile);
+        if (!isset($this->metadata['displayname'])) {
+            $this->metadata['displayname'] = $this->metadata['package'];
         }
-        $packageInfo['nfo']       = $this->filepathNoExt . '.nfo';
-        $packageInfo['spk']       = $this->filepath;
-        $packageInfo['thumbnail'] = $this->getThumbnails();
-        $packageInfo['snapshot']  = $this->getSnapshots();
+        $this->metadata['spk']       = $this->filepath;
 
         // Convert architecture(s) to array, as multiple architectures can be specified
-        $packageInfo['arch'] = explode(' ', $packageInfo['arch']);
+        $this->metadata['arch'] = explode(' ', $this->metadata['arch']);
 
-        $this->metadata = $packageInfo;
+        $this->metadata['thumbnail'] = $this->getThumbnails();
+        $this->metadata['snapshot']  = $this->getSnapshots();
     }
 
     /**
@@ -78,8 +78,8 @@ class Package
             // Everything in working order
             return true;
         }
-        // Try to extract .nfo file
-        copy('phar://' . $this->filepath . '/' . $inPkgName, $targetFile);
+        // Try to extract file
+        @copy('phar://' . $this->filepath . '/' . $inPkgName, $targetFile);
         if (!file_exists($targetFile)) {
             throw new \Exception('Could not extract ' . $inPkgName . ' from ' . $this->filepath . '!');
         }
@@ -94,7 +94,15 @@ class Package
      */
     public function getThumbnails($pathPrefix = '')
     {
-        $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filepathNoExt . '_thumb_72.png');
+        try {
+            $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filepathNoExt . '_thumb_72.png');
+        } catch (\Exception $e) {
+            // Check if icon is in metadata
+            $this->collectMetadata();
+            if (isset($this->metadata['package_icon'])) {
+                file_put_contents($this->filepathNoExt . '_thumb_72.png', base64_decode($this->metadata['package_icon']));
+            }
+        }
         $thumbnails = array();
         foreach (array('72', '120') as $size) {
             $thumb_name = $this->filepathNoExt . '_thumb_' . $size . '.png';

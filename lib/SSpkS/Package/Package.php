@@ -28,6 +28,15 @@ class Package
         $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filepathNoExt . '_thumb_72.png');
     }
 
+    /**
+     * Extracts $inPkgName from package to $targetFile, if it doesn't
+     * already exist. Needs the phar.so extension and allow_url_fopen.
+     *
+     * @param string $inPkgName Filename in package
+     * @param string $targetFile Path to destination
+     * @throws \Exception if the file couldn't get extracted.
+     * @return bool TRUE if successful or no action needed.
+     */
     public function extractIfMissing($inPkgName, $targetFile)
     {
         if (file_exists($targetFile)) {
@@ -39,6 +48,7 @@ class Package
         if (!file_exists($targetFile)) {
             throw new \Exception('Could not extract ' . $inPkgName . ' from ' . $this->filepath . '!');
         }
+        return true;
     }
 
     /**
@@ -68,7 +78,7 @@ class Package
      * @param string $baseUrl Base URL to the screenshots
      * @return array List of screenshots
      */
-    function getSnapshots($baseUrl = '')
+    public function getSnapshots($baseUrl = '')
     {
         $snapshots = array();
         // Add screenshots, if available

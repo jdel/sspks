@@ -4,6 +4,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use \SSpkS\Device\DeviceList;
 use \SSpkS\Package\Package;
+use \SSpkS\Package\PackageFinder;
 
 /*
 example data passed by a syno
@@ -73,12 +74,21 @@ if (isset($_REQUEST['ds_sn'])) {
 
     if ($arch) {
         // Architecture is set --> show packages for that arch
+        $pkgs = new PackageFinder($spkDir);
         $packages = getPackageList($baseUrl, $spkDir, $arch, $channel, 'skip');
         $tpl_vars['packagelist'] = array_values($packages);
         $tpl = $mustache->loadTemplate('html_packagelist');
     } elseif ($fullList) {
         // No architecture, but full list of packages requested --> show simple list
-        $packages = getAllPackages($spkDir, $baseUrl);
+        $pkgs = new PackageFinder($spkDir);
+        $packagesList = $pkgs->getAllPackageFiles();
+        $packages = array();
+        foreach ($packagesList as $spkFile) {
+            $packages[] = array(
+                'url'      => $baseUrl . $spkFile,
+                'filename' => basename($spkFile),
+            );
+        }
         $tpl_vars['packagelist'] = $packages;
         $tpl = $mustache->loadTemplate('html_packagelist_all');
     } else {
@@ -243,17 +253,4 @@ function displayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
         $packagesJSON = array('keyrings' => $keyring, 'packages' => $packagesJSON);  // Add GPG key in [keyrings], and packages as [packages]
     }
     return $packagesJSON;
-}
-
-function getAllPackages($spkDir, $baseUrl)
-{
-    $packages = array();
-    $packagesList = glob($spkDir . '*.spk');
-    foreach ($packagesList as $spkFile) {
-        $packages[] = array(
-            'url'      => $baseUrl . $spkFile,
-            'filename' => basename($spkFile),
-        );
-    }
-    return $packages;
 }

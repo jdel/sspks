@@ -17,6 +17,15 @@ major = 4
 minor = 1
 build = 2636
 package_update_channel = stable
+
+    [package_update_channel] => beta
+    [unique] => synology_avoton_415+
+    [build] => 7393
+    [language] => enu
+    [major] => 6
+    [arch] => avoton
+    [minor] => 0
+    [timezone] => Amsterdam
 */
 
 // This has to be a directory relative to where this script is and served by Apache
@@ -29,7 +38,7 @@ $baseUrl = 'http' . ($_SERVER['HTTPS']?'s':'') . '://' . $_SERVER['HTTP_HOST'] .
 
 $siteName = 'Simple SPK Server';
 
-if (isset($_REQUEST['ds_sn'])) {
+if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology') {
     // Synology request --> show JSON
     $language = trim($_REQUEST['language']);
     $timezone = trim($_REQUEST['timezone']);
@@ -48,7 +57,8 @@ if (isset($_REQUEST['ds_sn'])) {
     header('Content-type: application/json');
     $fw_version = $major . '.' . $minor . '.' . $build;
     $packageList = displayPackagesJSON(getPackageList($baseUrl, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
-    echo stripslashes(json_encode($packageList));
+    $result = stripslashes(json_encode($packageList));
+    echo $result;
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // GET-request, probably browser --> show HTML
     $arch     = trim($_GET['arch']);

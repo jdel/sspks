@@ -3,8 +3,10 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use \SSpkS\Device\DeviceList;
+use \SSpkS\Output\UrlFixer;
 use \SSpkS\Package\Package;
 use \SSpkS\Package\PackageFinder;
+use \SSpkS\Package\PackageFilter;
 
 /*
 example data passed by a syno
@@ -56,7 +58,23 @@ if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology
     // Make sure, that the "client" knows that output is sent in JSON format
     header('Content-type: application/json');
     $fw_version = $major . '.' . $minor . '.' . $build;
-    $packageList = displayPackagesJSON(getPackageList($baseUrl, $spkDir, $arch, $channel, $fw_version), $excludedSynoServices);
+    $pkgs = new PackageFinder($spkDir);
+    $pkgf = new PackageFilter($pkgs->getAllPackages());
+    $pkgf->setArchitectureFilter($arch);
+    $pkgf->setChannelFilter($channel);
+    $pkgf->setFirmwareVersionFilter($fw_version);
+    $pkgf->setOldVersionFilter(true);
+    $filteredPkgList = $pkgf->getFilteredPackageList();
+
+    $uf = new UrlFixer($baseUrl);
+    $uf->fixPackageList($filteredPkgList);
+
+    $packages = array();
+    foreach ($filteredPkgList as $pkg) {
+        $packages[] = $pkg->getMetadata();
+    }
+
+    $packageList = displayPackagesJSON($packages, $excludedSynoServices);
     $result = stripslashes(json_encode($packageList));
     echo $result;
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -88,7 +106,21 @@ if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology
     if ($arch) {
         // Architecture is set --> show packages for that arch
         $pkgs = new PackageFinder($spkDir);
-        $packages = getPackageList($baseUrl, $spkDir, $arch, $channel, 'skip');
+        $pkgf = new PackageFilter($pkgs->getAllPackages());
+        $pkgf->setArchitectureFilter($arch);
+        $pkgf->setChannelFilter($channel);
+        $pkgf->setFirmwareVersionFilter(false);
+        $pkgf->setOldVersionFilter(true);
+        $filteredPkgList = $pkgf->getFilteredPackageList();
+
+        $uf = new UrlFixer($baseUrl);
+        $uf->fixPackageList($filteredPkgList);
+
+        $packages = array();
+        foreach ($filteredPkgList as $pkg) {
+            $packages[] = $pkg->getMetadata();
+        }
+
         $tpl_vars['packagelist'] = array_values($packages);
         $tpl = $mustache->loadTemplate('html_packagelist');
     } elseif ($fullList) {
@@ -127,80 +159,6 @@ if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology
     header('Content-type: text/html');
     header('HTTP/1.1 404 Not Found');
     header('Status: 404 Not Found');
-}
-
-/**
- * Returns if the given package is eligible for the specified target.
- *
- * @param array $packageInfo Package information
- * @param array $allPackages All previously discovered packages
- * @param string $arch Architecture (or 'noarch')
- * @param string $fw_version Target firmware version (or 'skip')
- * @param string $beta Beta version requested ('beta') or not ('')
- * @return bool
- */
-function isPackageEligible($packageInfo, $allPackages, $arch, $fw_version, $beta)
-{
-    $pkgName    = $packageInfo['package'];
-    $pkgVersion = $packageInfo['version'];
-    $pkgArch    = $packageInfo['arch'];
-
-    if (isset($allPackages[$pkgName]) && version_compare($allPackages[$pkgName]['version'], $pkgVersion, '>=')) {
-        // Package already found and newer or same than this one
-        return false;
-    }
-    if (!in_array($arch, $pkgArch) && !in_array('noarch', $pkgArch)) {
-        // Package isn't for this architecture (and not generic)
-        return false;
-    }
-    if (isset($packageInfo['beta']) && ($packageInfo['beta'] == true) && ($beta != 'beta')) {
-        // Package is beta version, but beta not requested
-        return false;
-    }
-    if (version_compare($packageInfo['firmware'], $fw_version, '>') && ($fw_version != 'skip')) {
-        // Package needs later firmware and check isn't skipped
-        return false;
-    }
-    // All checks passed.
-    return true;
-}
-
-/**
- * Returns the list of available packages incl. metadata.
- *
- * @param string $baseUrl Base URL to installation
- * @param string $spkDir Directory containing packages
- * @param string $arch Requested architecture
- * @param mixed $beta Either 'beta' to also get beta packages, or false
- * @param string $version Firmware version to support
- * @return array
- */
-function getPackageList($baseUrl, $spkDir, $arch = 'noarch', $beta = false, $version = '')
-{
-    $packagesList = glob($spkDir . '*.spk');
-    $packagesAvailable = array();
-    foreach ($packagesList as $spkFile) {
-        $pkg = new Package($spkFile);
-        $pkg->spk_url = $baseUrl . $pkg->spk;
-
-        // Make absolute URLs from relative ones
-        $thumbnail_url = array();
-        foreach ($pkg->thumbnail as $i => $t) {
-            $thumbnail_url[$i] = $baseUrl . $t;
-        }
-        $pkg->thumbnail_url = $thumbnail_url;
-        $snapshot_url = array();
-        foreach ($pkg->snapshot as $i => $s) {
-            $snapshot_url[$i] = $baseUrl . $s;
-        }
-        $pkg->snapshot_url = $snapshot_url;
-
-        $packageInfo = $pkg->getMetadata();
-        if (isPackageEligible($packageInfo, $packagesAvailable, $arch, $version, $beta)) {
-            $packagesAvailable[$packageInfo['package']] = $packageInfo;
-        }
-    }
-    return $packagesAvailable;
 }
 
 /**

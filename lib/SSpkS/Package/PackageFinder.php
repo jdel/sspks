@@ -2,7 +2,7 @@
 
 namespace SSpkS\Package;
 
-use Package;
+use \SSpkS\Package\Package;
 
 /**
  * SPK PackageFinder class
@@ -49,4 +49,17 @@ class PackageFinder
         return $this->fileList;
     }
 
+    /**
+     * Returns all found packages as objects.
+     *
+     * @return \SSpkS\Package\Package[] List of packages as objects.
+     */
+    public function getAllPackages()
+    {
+        $packages = array();
+        foreach ($this->fileList as $file) {
+            $packages[] = new Package($file);
+        }
+        return $packages;
+    }
 }

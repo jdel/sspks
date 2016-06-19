@@ -9,12 +9,13 @@ namespace SSpkS\Package;
  * @property string $spk_url URL to SPK file
  * @property string $displayname Pretty printed name of package (falls back to $package if not present)
  * @property string $package Package name
+ * @property string $version Package version
  * @property array $arch List of supported architectures, or 'noarch'
  * @property array $thumbnail List of thumbnail files
  * @property array $thumbnail_url List of thumbnail URLs
  * @property array $snapshot List of screenshot files
  * @property array $snapshot_url List of screenshot URLs
- * @property string $beta Contains 'true' if this is a beta package.
+ * @property bool $beta TRUE if this is a beta package.
  * @property string $firmware Minimum firmware needed on device.
  */
 class Package
@@ -109,6 +110,13 @@ class Package
 
         // Convert architecture(s) to array, as multiple architectures can be specified
         $this->metadata['arch'] = explode(' ', $this->metadata['arch']);
+
+        $beta = $this->metadata['beta'];
+        if ($beta == 'true' || $beta == '1' || $beta == 'beta') {
+            $this->metadata['beta'] = true;
+        } else {
+            $this->metadata['beta'] = false;
+        }
 
         $this->metadata['thumbnail'] = $this->getThumbnails();
         $this->metadata['snapshot']  = $this->getSnapshots();

@@ -10,9 +10,13 @@ use \SSpkS\Package\Package;
 class PackageFilter
 {
     private $pkgList;
+    /** @var bool|string[] $filterArch Array of allowed architectures, or FALSE to ignore. */
     private $filterArch = false;
+    /** @var bool|string $filterFwVersion Target firmware version, or FALSE to ignore. */
     private $filterFwVersion = false;
+    /** @var bool|string $filterChannel Channel 'stable' or 'beta', or FALSE to ignore. */
     private $filterChannel = false;
+    /** @var bool $filterOldVersions TRUE to return unique packages with latest version only. */
     private $filterOldVersions = false;
 
     /**

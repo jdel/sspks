@@ -111,8 +111,7 @@ class Package
         // Convert architecture(s) to array, as multiple architectures can be specified
         $this->metadata['arch'] = explode(' ', $this->metadata['arch']);
 
-        $beta = $this->metadata['beta'];
-        if ($beta == 'true' || $beta == '1' || $beta == 'beta') {
+        if (in_array($this->metadata['beta'], array('true', '1', 'beta'))) {
             $this->metadata['beta'] = true;
         } else {
             $this->metadata['beta'] = false;

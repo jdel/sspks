@@ -63,6 +63,9 @@ if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology
     // GET-request, probably browser --> show HTML
     $arch     = trim($_GET['arch']);
     $channel  = trim($_GET['channel']);
+    if ($channel != 'beta') {
+        $channel = 'stable';
+    }
     $fullList = trim($_GET['fulllist']);
     $packagesAvailable = array();
 
@@ -76,7 +79,7 @@ if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology
     $tpl_vars = array(
         'siteName'   => $siteName,
         'arch'       => $arch,
-        'channel'    => $channel,
+        'channel'    => ($channel == 'beta'),
         'requestUri' => $_SERVER['REQUEST_URI'],
         'baseUrl'    => $baseUrl,
         'fullList'   => $fullList,
@@ -92,6 +95,8 @@ if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology
         // No architecture, but full list of packages requested --> show simple list
         $pkgs = new PackageFinder($spkDir);
         $packagesList = $pkgs->getAllPackageFiles();
+
+        // Prepare data for template
         $packages = array();
         foreach ($packagesList as $spkFile) {
             $packages[] = array(
@@ -216,7 +221,8 @@ function ifempty($array, $key, $alternative = null)
 
 function displayPackagesJSON($packagesAvailable, $excludedSynoServices = array())
 {
-    $packagesJSON = array();
+    // Format: https://github.com/piwi82/Synology/wiki/Package-catalog
+    $packagesJSON = array('packages' => array());
     foreach ($packagesAvailable as $packageInfo) {
         $packageJSON = array(
             'package'   => $packageInfo['package'],
@@ -230,29 +236,30 @@ function displayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
             'size'      => filesize($packageInfo['spk']),
             'qinst'     => ifempty($packageInfo, 'qinst', false),        // quick install
             'qstart'    => ifempty($packageInfo, 'start', false),        // quick start
+            'qupgrade'  => ifempty($packageInfo, 'qupgrade', false),     // quick upgrade
             'depsers'   => ifempty($packageInfo, 'start_dep_services'),  // required started packages
             'deppkgs'   => !empty($packageInfo['install_dep_services'])?trim(str_replace($excludedSynoServices, '', $packageInfo['install_dep_services'])):null,
             'conflictpkgs' => null,
-            'start'     => true,
-            //'maintainer'      => $packageInfo['maintainer'],
-            //'maintainer_url'  => 'http://dummy.org/',
-            //'distributor'     => $packageInfo['maintainer'],
-            //'distributor_url' => 'http://dummy.org/',
-            'changelog' => ifempty($packageInfo, 'changelog', ''),
-            'developer' => null,
+            'start'      => true,
+            'maintainer'      => ifempty($packageInfo, 'maintainer', 'SSpkS'),
+            'maintainer_url'  => ifempty($packageInfo, 'maintainer_url', 'http://dummy.org/'),
+            'distributor'     => ifempty($packageInfo, 'distributor', 'SSpkS'),
+            'distributor_url' => ifempty($packageInfo, 'distributor_url', 'http://dummy.org/'),
+            'changelog'  => ifempty($packageInfo, 'changelog', ''),
+            'developer'  => null,
             //'support_url' => 'http://dummy.org/',
-            'beta'      => ifempty($packageInfo, 'beta', false),         // beta channel
+            'beta'       => ($packageInfo['beta'] == 'beta'),         // beta channel
             'thirdparty' => true,
-            'model'     => null,
-            //'icon'      => $packageInfo['thumbnail'][0],               // Old icon property for pre 4.2 compatibility
-            //'icon'      => $packageInfo['package_icon'],               // Get icon from INFO file
-            //'category'  => 2,                                          // New property introduced, no effect on othersources packages
+            'model'      => null,
+            //'icon'       => $packageInfo['thumbnail'][0],               // Old icon property for pre 4.2 compatibility
+            //'icon'       => $packageInfo['package_icon'],               // Get icon from INFO file
+            //'category'   => 2,                                          // New property introduced, no effect on othersources packages
             'download_count' => 6000,                                    // Will only display values over 1000
-            //'price'     => 0,                                          // New property
+            //'price'      => 0,                                          // New property
             'recent_download_count' => 1222,                             // Not sure what this does
-            //'type'      => 0                                           // New property introduced, no effect on othersources packages
+            //'type'       => 0                                           // New property introduced, no effect on othersources packages
         );
-        $packagesJSON[] = $packageJSON;
+        $packagesJSON['packages'][] = $packageJSON;
     }
 
     // Add GPG key, if it exists
@@ -260,7 +267,7 @@ function displayPackagesJSON($packagesAvailable, $excludedSynoServices = array()
         $mygpgkey     = file_get_contents('./gpgkey.asc');
         $mygpgkey     = str_replace("\n", "\\n", $mygpgkey);
         $keyring      = array(0 => $mygpgkey);
-        $packagesJSON = array('keyrings' => $keyring, 'packages' => $packagesJSON);  // Add GPG key in [keyrings], and packages as [packages]
+        $packagesJSON['keyrings'] = $keyring;  // Add GPG key in [keyrings], and packages as [packages]
     }
     return $packagesJSON;
 }

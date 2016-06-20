@@ -10,6 +10,7 @@ namespace SSpkS\Package;
  * @property string $displayname Pretty printed name of package (falls back to $package if not present)
  * @property string $package Package name
  * @property string $version Package version
+ * @property string $description Package description
  * @property array $arch List of supported architectures, or 'noarch'
  * @property array $thumbnail List of thumbnail files
  * @property array $thumbnail_url List of thumbnail URLs
@@ -17,6 +18,7 @@ namespace SSpkS\Package;
  * @property array $snapshot_url List of screenshot URLs
  * @property bool $beta TRUE if this is a beta package.
  * @property string $firmware Minimum firmware needed on device.
+ * @property string $install_dep_services Dependencies required by this package.
  */
 class Package
 {

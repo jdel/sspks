@@ -2,6 +2,10 @@
 
 namespace SSpkS\Output;
 
+/**
+ * Outputs Packages in JSON format according to
+ * https://github.com/piwi82/Synology/wiki/Package-catalog
+ */
 class JsonOutput
 {
     private $excludedServices = array();

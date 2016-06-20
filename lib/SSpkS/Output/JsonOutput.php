@@ -110,7 +110,7 @@ auto_upgrade_from - version number (optional)
             'qstart'    => $this->ifEmpty($pkg, 'start', false),        // quick start
             'qupgrade'  => $this->ifEmpty($pkg, 'qupgrade', false),     // quick upgrade
             'depsers'   => $this->ifEmpty($pkg, 'start_dep_services'),  // required started packages
-            'deppkgs'   => $depkkgs,
+            'deppkgs'   => $deppkgs,
             'conflictpkgs' => null,
             'start'     => true,
             'maintainer'      => $this->ifEmpty($pkg, 'maintainer', 'SSpkS'),

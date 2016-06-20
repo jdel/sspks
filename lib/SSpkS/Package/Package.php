@@ -19,6 +19,9 @@ namespace SSpkS\Package;
  * @property bool $beta TRUE if this is a beta package.
  * @property string $firmware Minimum firmware needed on device.
  * @property string $install_dep_services Dependencies required by this package.
+ * @property bool $silent_install Allow silent install
+ * @property bool $silent_uninstall Allow silent uninstall
+ * @property bool $silent_upgrade Allow silent upgrade
  */
 class Package
 {
@@ -95,6 +98,31 @@ class Package
     }
 
     /**
+     * Parses boolean value ('yes', '1', 'true') into
+     * boolean type.
+     *
+     * @param mixed $value Input value
+     * @return bool Boolean interpretation of $value.
+     */
+    public function parseBool($value)
+    {
+        return in_array($value, array('true', 'yes', '1', 1));
+    }
+
+    /**
+     * Checks if given property $prop exists and converts it
+     * into a boolean value.
+     *
+     * @param string $prop Property to convert
+     */
+    private function fixBoolIfExist($prop)
+    {
+        if (isset($this->metadata[$prop])) {
+            $this->metadata[$prop] = $this->parseBool($this->metadata[$prop]);
+        }
+    }
+
+    /**
      * Gathers metadata from package. Extracts INFO file if neccessary.
      */
     private function collectMetadata()
@@ -112,6 +140,10 @@ class Package
 
         // Convert architecture(s) to array, as multiple architectures can be specified
         $this->metadata['arch'] = explode(' ', $this->metadata['arch']);
+
+        $this->fixBoolIfExist('silent_install');
+        $this->fixBoolIfExist('silent_uninstall');
+        $this->fixBoolIfExist('silent_upgrade');
 
         if (in_array($this->metadata['beta'], array('true', '1', 'beta'))) {
             $this->metadata['beta'] = true;

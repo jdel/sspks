@@ -48,40 +48,84 @@ class JsonOutput
      */
     private function packageToJson($pkg)
     {
+/*
+package
+version
+dname - displayed name
+desc
+price - 0
+download_count - overall DL count
+recent_download_count - DL count of last month?
+link - URL
+size
+md5
+thumbnail - array[URL]
+thumbnail_retina - array[URL] (optional)
+snapshot - array[URL] (optional)
+qinst - true/false (optional)
+qstart - true/false (optional)
+qupgrade - true/false (optional)
+depsers - "pgsql" (optional)
+deppkgs - Pkg1>Version:Pkg2:Pkg3 (optional)
+conflictpkgs - Pkg1<Version:Pkg2:Pkg3<Version (optional)
+start - true/false (optional)
+maintainer - name
+maintainer_url - URL (optional)
+distributor - name (optional)
+distributor_url - URL (optional)
+changelog - HTML
+support_url - URL (optional)
+thirdparty - true/false (optional)
+category - 0-128 (bits, for multiple categories?)
+subcategory - 0
+type - 0 = normal, 1 = driver?, 2 = service?
+silent_install - true/false (optional)
+silent_uninstall - true/false (optional)
+silent_upgrade - true/false (optional)
+conf_deppkgs - array[Package[dsm_max_ver, pkg_min_ver]] (optional)
+support_conf_folder - true/false (optional)
+auto_upgrade_from - version number (optional)
+*/
+
+        if (!empty($pkg->install_dep_services)) {
+            $deppkgs = trim(str_replace($this->excludedServices, '', $pkg->install_dep_services));
+        } else {
+            $deppkgs = null;
+        }
+
         $packageJSON = array(
             'package'   => $pkg->package,
             'version'   => $pkg->version,
             'dname'     => $pkg->displayname,
             'desc'      => $pkg->description,
+            'price'     => 0,
+            'download_count'        => 6000,   // Will only display values over 1000
+            'recent_download_count' => 1222,
             'link'      => $pkg->spk_url,
-            'md5'       => md5_file($pkg->spk),
-            'thumbnail' => $pkg->thumbnail_url,       // New property for newer synos, need to check if it works with old synos
-            'snapshot'  => $pkg->snapshot_url,        // Adds multiple screenshots to package view
             'size'      => filesize($pkg->spk),
+            'md5'       => md5_file($pkg->spk),
+            'thumbnail' => $pkg->thumbnail_url,
+            'snapshot'  => $pkg->snapshot_url,
             'qinst'     => $this->ifEmpty($pkg, 'qinst', false),        // quick install
             'qstart'    => $this->ifEmpty($pkg, 'start', false),        // quick start
             'qupgrade'  => $this->ifEmpty($pkg, 'qupgrade', false),     // quick upgrade
             'depsers'   => $this->ifEmpty($pkg, 'start_dep_services'),  // required started packages
-            'deppkgs'   => !empty($pkg->install_dep_services)?trim(str_replace($this->excludedServices, '', $pkg->install_dep_services)):null,
+            'deppkgs'   => $depkkgs,
             'conflictpkgs' => null,
-            'start'      => true,
+            'start'     => true,
             'maintainer'      => $this->ifEmpty($pkg, 'maintainer', 'SSpkS'),
             'maintainer_url'  => $this->ifEmpty($pkg, 'maintainer_url', 'http://dummy.org/'),
             'distributor'     => $this->ifEmpty($pkg, 'distributor', 'SSpkS'),
             'distributor_url' => $this->ifEmpty($pkg, 'distributor_url', 'http://dummy.org/'),
             'changelog'  => $this->ifEmpty($pkg, 'changelog', ''),
-            'developer'  => null,
-            //'support_url' => 'http://dummy.org/',
-            'beta'       => $pkg->beta,         // beta channel
             'thirdparty' => true,
-            'model'      => null,
-            //'icon'       => $pkg->thumbnail[0],               // Old icon property for pre 4.2 compatibility
-            //'icon'       => $pkg->package_icon,               // Get icon from INFO file
-            //'category'   => 2,                                          // New property introduced, no effect on othersources packages
-            'download_count' => 6000,                                    // Will only display values over 1000
-            //'price'      => 0,                                          // New property
-            'recent_download_count' => 1222,                             // Not sure what this does
-            //'type'       => 0                                           // New property introduced, no effect on othersources packages
+            'category'    => 0,
+            'subcategory' => 0,
+            'type'       => 0,
+            'silent_install'   => $this->ifEmpty($pkg, 'silent_install', false),
+            'silent_uninstall' => $this->ifEmpty($pkg, 'silent_uninstall', false),
+            'silent_upgrade'   => $this->ifEmpty($pkg, 'silent_upgrade', false),
+            'beta'       => $pkg->beta,         // beta channel
         );
         return $packageJSON;
     }

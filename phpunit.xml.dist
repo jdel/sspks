@@ -19,8 +19,8 @@
     </logging>
 
     <testsuites>
-        <testsuite name="Scrutinizer">
-            <directory>./</directory>
+        <testsuite name="SSpkS Testsuite">
+            <directory>./tests</directory>
             <exclude>./vendor</exclude>
         </testsuite>
     </testsuites>

@@ -1,4 +1,5 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mbirth/sspks/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mbirth/sspks/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/mbirth/sspks/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mbirth/sspks/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/mbirth/sspks/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mbirth/sspks/build-status/master)
 
 Simple SPK Server

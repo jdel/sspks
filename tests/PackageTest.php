@@ -26,7 +26,7 @@ class PackageTest extends TestCase
         $this->assertFileNotExists($file_nfo);
         $this->assertFileNotExists($file_icon);
         $p = new Package($this->tempPkg);
-        $md = $p->getMetadata();
+        $p->getMetadata();
         $this->assertFileExists($file_nfo);
         $this->assertFileExists($file_icon);
     }
@@ -35,6 +35,7 @@ class PackageTest extends TestCase
     {
         $p = new Package($this->tempPkg);
         $md = $p->getMetadata();
+        $this->assertGreaterThan(0, count($md));
         $this->assertEquals($p->package, 'Docker');
         $this->assertEquals($md['version'], '1.11.1-0265');
     }
@@ -44,6 +45,9 @@ class PackageTest extends TestCase
         $p = new Package($this->tempPkg);
         $this->assertTrue($p->isCompatibleToArch('x86_64'));
         $this->assertFalse($p->isCompatibleToArch('avoton'));
+        $this->assertTrue($p->isCompatibleToFirmware('6.0.1-7393'));
+        $this->assertFalse($p->isCompatibleToFirmware('6.0.0'));
+        $this->assertFalse($p->isBeta());
     }
 
     public function tearDown()

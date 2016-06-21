@@ -3,6 +3,7 @@ filter:
         - 'conf/*'
         - 'etc/*'
         - 'packages/*'
+        - 'tests/*'
     dependency_paths:
         - 'vendor/*'
 

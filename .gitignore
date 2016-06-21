@@ -1,3 +1,6 @@
-/vendor/*
+/clover.xml
 /composer.phar
-/phpunit.phar
+/packages/*.nfo
+/packages/*.png
+/packages/*.spk
+/vendor/*

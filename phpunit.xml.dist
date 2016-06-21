@@ -7,7 +7,7 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./</directory>
+            <directory suffix=".php">./lib</directory>
             <exclude>
                 <directory suffix=".php">./vendor</directory>
             </exclude>
@@ -16,6 +16,7 @@
 
     <logging>
         <log type="coverage-clover" target="./clover.xml"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
     </logging>
 
     <testsuites>

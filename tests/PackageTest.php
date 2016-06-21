@@ -39,6 +39,13 @@ class PackageTest extends TestCase
         $this->assertEquals($md['version'], '1.11.1-0265');
     }
 
+    public function testHelperMethods()
+    {
+        $p = new Package($this->tempPkg);
+        $this->assertTrue($p->isCompatibleToArch('x86_64'));
+        $this->assertFalse($p->isCompatibleToArch('avoton'));
+    }
+
     public function tearDown()
     {
         $mask = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '*';
@@ -47,6 +54,4 @@ class PackageTest extends TestCase
             unlink($f);
         }
     }
-
-
 }

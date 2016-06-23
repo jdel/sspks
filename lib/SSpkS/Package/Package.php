@@ -136,7 +136,7 @@ class Package
         if (!isset($this->metadata['displayname'])) {
             $this->metadata['displayname'] = $this->metadata['package'];
         }
-        $this->metadata['spk']       = $this->filepath;
+        $this->metadata['spk'] = $this->filepath;
 
         // Convert architecture(s) to array, as multiple architectures can be specified
         $this->metadata['arch'] = explode(' ', $this->metadata['arch']);

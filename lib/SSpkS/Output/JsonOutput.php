@@ -94,38 +94,39 @@ auto_upgrade_from - version number (optional)
         }
 
         $packageJSON = array(
-            'package'   => $pkg->package,
-            'version'   => $pkg->version,
-            'dname'     => $pkg->displayname,
-            'desc'      => $pkg->description,
-            'price'     => 0,
-            'download_count'        => 6000,   // Will only display values over 1000
+            'package'      => $pkg->package,
+            'version'      => $pkg->version,
+            'dname'        => $pkg->displayname,
+            'desc'         => $pkg->description,
+            'price'        => 0,
+            'download_count'        => 6000, // Will only display values over 1000
             'recent_download_count' => 1222,
-            'link'      => $pkg->spk_url,
-            'size'      => filesize($pkg->spk),
-            'md5'       => md5_file($pkg->spk),
-            'thumbnail' => $pkg->thumbnail_url,
-            'snapshot'  => $pkg->snapshot_url,
-            'qinst'     => $this->ifEmpty($pkg, 'qinst', false),        // quick install
-            'qstart'    => $this->ifEmpty($pkg, 'start', false),        // quick start
-            'qupgrade'  => $this->ifEmpty($pkg, 'qupgrade', false),     // quick upgrade
-            'depsers'   => $this->ifEmpty($pkg, 'start_dep_services'),  // required started packages
-            'deppkgs'   => $deppkgs,
+            'link'         => $pkg->spk_url,
+            'size'         => filesize($pkg->spk),
+            'md5'          => md5_file($pkg->spk),
+            'thumbnail'    => $pkg->thumbnail_url,
+            'snapshot'     => $pkg->snapshot_url,
+            // quick install/start/upgrade
+            'qinst'        => $this->ifEmpty($pkg, 'qinst', false),
+            'qstart'       => $this->ifEmpty($pkg, 'start', false),
+            'qupgrade'     => $this->ifEmpty($pkg, 'qupgrade', false),
+            'depsers'      => $this->ifEmpty($pkg, 'start_dep_services'), // required started packages
+            'deppkgs'      => $deppkgs,
             'conflictpkgs' => null,
-            'start'     => true,
+            'start'        => true,
             'maintainer'      => $this->ifEmpty($pkg, 'maintainer', 'SSpkS'),
             'maintainer_url'  => $this->ifEmpty($pkg, 'maintainer_url', 'http://dummy.org/'),
             'distributor'     => $this->ifEmpty($pkg, 'distributor', 'SSpkS'),
             'distributor_url' => $this->ifEmpty($pkg, 'distributor_url', 'http://dummy.org/'),
-            'changelog'  => $this->ifEmpty($pkg, 'changelog', ''),
-            'thirdparty' => true,
-            'category'    => 0,
-            'subcategory' => 0,
-            'type'       => 0,
+            'changelog'    => $this->ifEmpty($pkg, 'changelog', ''),
+            'thirdparty'   => true,
+            'category'     => 0,
+            'subcategory'  => 0,
+            'type'         => 0,
             'silent_install'   => $this->ifEmpty($pkg, 'silent_install', false),
             'silent_uninstall' => $this->ifEmpty($pkg, 'silent_uninstall', false),
             'silent_upgrade'   => $this->ifEmpty($pkg, 'silent_upgrade', false),
-            'beta'       => $pkg->beta,         // beta channel
+            'beta'         => $pkg->beta, // beta channel
         );
         return $packageJSON;
     }
@@ -150,7 +151,7 @@ auto_upgrade_from - version number (optional)
             $mygpgkey     = file_get_contents('./gpgkey.asc');
             $mygpgkey     = str_replace("\n", "\\n", $mygpgkey);
             $keyring      = array(0 => $mygpgkey);
-            $jsonOutput['keyrings'] = $keyring;  // Add GPG key in [keyrings], and packages as [packages]
+            $jsonOutput['keyrings'] = $keyring;
         }
 
         echo stripslashes(json_encode($jsonOutput));

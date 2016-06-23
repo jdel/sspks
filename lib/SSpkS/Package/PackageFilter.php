@@ -79,7 +79,7 @@ class PackageFilter
             return true;
         }
         $matches = array_intersect($this->filterArch, $package->arch);
-        return (count($matches)>0);
+        return (count($matches) > 0);
     }
 
     /**

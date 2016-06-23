@@ -16,7 +16,10 @@ class PackageTest extends TestCase
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
         $phar->addFromString('PACKAGE_ICON.PNG', file_get_contents(__DIR__ . '/example_package/PACKAGE_ICON.PNG'));
         $phar->compress(\Phar::GZ, '.spk');
-        $this->tempPkg = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '.spk';
+        $tempNoExt = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.'));
+        $this->tempPkg = $tempNoExt . '.spk';
+        touch($tempNoExt . '_screen_1.png');
+        touch($tempNoExt . '_screen_2.png');
     }
 
     public function testPackageFileExtraction()
@@ -51,6 +54,8 @@ class PackageTest extends TestCase
         $this->assertTrue($p->silent_install);
         $this->assertTrue($p->silent_uninstall);
         $this->assertTrue($p->silent_upgrade);
+        $this->assertCount(2, $p->thumbnail);
+        $this->assertCount(2, $p->snapshot);
     }
 
     public function testHelperMethods()
@@ -95,6 +100,8 @@ class PackageTest extends TestCase
         $file_icon = $tempNoExt . '_thumb_72.png';
         $p->getMetadata();
         $this->assertFileExists($file_icon);
+        $this->assertCount(2, $p->thumbnail);
+        $this->assertCount(0, $p->snapshot);
         unlink($tempPkg);
         unlink($file_nfo);
         unlink($file_icon);

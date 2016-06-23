@@ -22,11 +22,9 @@ class UrlFixerTest extends TestCase
         touch($tempNoExt . '_screen_2.png');
     }
 
-    public function testSinglePackageFix()
+    public function singlePackagePreTest($p)
     {
         $tempNoExt = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.'));
-        $p = new Package($this->tempPkg);
-
         $thumb0 = $tempNoExt . '_thumb_72.png';
         $thumb1 = dirname($tempNoExt) . '/default_package_icon_120.png';
         $this->assertEquals($thumb0, $p->thumbnail[0]);
@@ -38,19 +36,46 @@ class UrlFixerTest extends TestCase
         $this->assertEquals($snap0, $p->snapshot[0]);
         $this->assertEquals($snap1, $p->snapshot[1]);
         $this->assertFalse(isset($p->snapshot_url));
+    }
 
-        $prefix = 'http://prefix';
-        $uf = new UrlFixer($prefix);
-        $uf->fixPackage($p);
+    public function singlePackagePostTest($p, $prefix)
+    {
+        $tempNoExt = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.'));
+        $thumb0 = $tempNoExt . '_thumb_72.png';
+        $thumb1 = dirname($tempNoExt) . '/default_package_icon_120.png';
+
         $this->assertTrue(isset($p->thumbnail_url));
         $this->assertCount(count($p->thumbnail), $p->thumbnail_url);
         $this->assertEquals($prefix . $thumb0, $p->thumbnail_url[0]);
         $this->assertEquals($prefix . $thumb1, $p->thumbnail_url[1]);
 
+        $snap0 = $tempNoExt . '_screen_1.png';
+        $snap1 = $tempNoExt . '_screen_2.png';
         $this->assertTrue(isset($p->snapshot_url));
         $this->assertCount(count($p->snapshot), $p->snapshot_url);
         $this->assertEquals($prefix . $snap0, $p->snapshot_url[0]);
         $this->assertEquals($prefix . $snap1, $p->snapshot_url[1]);
+    }
+
+    public function testSinglePackageFix()
+    {
+        $p = new Package($this->tempPkg);
+        $this->singlePackagePreTest($p);
+        $prefix = 'http://prefix';
+        $uf = new UrlFixer($prefix);
+        $uf->fixPackage($p);
+        $this->singlePackagePostTest($p, $prefix);
+    }
+
+    public function testPackageListFix()
+    {
+        $p = new Package($this->tempPkg);
+        $pl = array($p);
+        $this->singlePackagePreTest($pl[0]);
+        $prefix = 'http://prefix';
+        $uf = new UrlFixer($prefix);
+        $uf->fixPackageList($pl);
+        $this->singlePackagePostTest($pl[0], $prefix);
     }
 
 

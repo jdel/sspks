@@ -20,7 +20,7 @@ class PackageFinder
      */
     public function __construct($folder, $glob = '*.spk')
     {
-        if (!file_exists($folder) && !is_dir($folder)) {
+        if (!file_exists($folder) || !is_dir($folder)) {
             throw new \Exception($folder . ' is not a folder!');
         }
         if (substr($folder, -1) != '/') {

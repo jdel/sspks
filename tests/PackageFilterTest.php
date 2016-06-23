@@ -49,6 +49,37 @@ class PackageFilterTest extends TestCase
         $this->assertCount(3, $newList);
     }
 
+    public function testFirmwareVersionFilter()
+    {
+        $pf = new PackageFilter($this->testList);
+        $pf->setFirmwareVersionFilter('1.0-0000');
+        $newList = $pf->getFilteredPackageList();
+        $this->assertCount(3, $newList);
+        $pf->setFirmwareVersionFilter('0.9-9999');
+        $newList = $pf->getFilteredPackageList();
+        $this->assertCount(0, $newList);
+        $pf->setFirmwareVersionFilter('1.0-1233');
+        $newList = $pf->getFilteredPackageList();
+        $this->assertCount(4, $newList);
+        $pf->setFirmwareVersionFilter('1.0-1234');
+        $newList = $pf->getFilteredPackageList();
+        $this->assertCount(5, $newList);
+    }
+
+    public function testChannelFilter()
+    {
+        $pf = new PackageFilter($this->testList);
+        $pf->setChannelFilter('stable');
+        $newList = $pf->getFilteredPackageList();
+        $this->assertCount(4, $newList);
+        $pf->setChannelFilter('beta');
+        $newList = $pf->getFilteredPackageList();
+        $this->assertCount(5, $newList);
+        $pf->setChannelFilter('invalid');
+        $newList = $pf->getFilteredPackageList();
+        $this->assertCount(0, $newList);
+    }
+
     public function tearDown()
     {
         $del = array_merge(glob($this->testFolder . '*.nfo'), glob($this->testFolder . '*.png'));

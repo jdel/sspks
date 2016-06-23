@@ -20,7 +20,9 @@ class PackageFilterTest extends TestCase
     public function testPassThru()
     {
         $pf = new PackageFilter($this->testList);
-        $this->assertEquals($pf->getFilteredPackageList(), $this->testList);
+        $pl = $pf->getFilteredPackageList();
+        $this->assertContainsOnlyInstancesOf(\SSpkS\Package\Package::class, $pl);
+        $this->assertEquals($pl, $this->testList);
     }
 
     public function testOmitOldVersions()
@@ -30,6 +32,21 @@ class PackageFilterTest extends TestCase
         $newList = $pf->getFilteredPackageList();
         // 2 files are dupes
         $this->assertCount(count($this->testList)-2, $newList);
+    }
+
+    public function testArchitectureFilter()
+    {
+        $pf = new PackageFilter($this->testList);
+        $pf->setArchitectureFilter('x86_64');
+        $newList = $pf->getFilteredPackageList();
+        foreach ($newList as $pkg) {
+            $this->assertContains($pkg->arch[0], 'x86_64 noarch');
+        }
+
+        $pf->setArchitectureFilter('avoton');
+        $newList = $pf->getFilteredPackageList();
+        // expect avoton + noarch packages: 3
+        $this->assertCount(3, $newList);
     }
 
     public function tearDown()

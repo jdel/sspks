@@ -15,7 +15,7 @@ class PackageFinderTest extends TestCase
      */
     public function testNotExistFolder()
     {
-        $pf = new PackageFinder('/nonexistingfolder');
+        new PackageFinder('/nonexistingfolder');
     }
 
     /**
@@ -24,6 +24,27 @@ class PackageFinderTest extends TestCase
      */
     public function testFileInsteadFolder()
     {
-        $pf = new PackageFinder(__FILE__);
+        new PackageFinder(__FILE__);
+    }
+
+    public function testFilelist()
+    {
+        $pf = new PackageFinder($this->testFolder);
+        $fl = $pf->getAllPackageFiles();
+        $this->assertCount(3, $fl);
+        foreach ($fl as $f) {
+            $this->assertStringEndsWith('.spk', $f);
+            $this->assertFileExists($f);
+        }
+    }
+
+    public function testPackageList()
+    {
+        $pf = new PackageFinder($this->testFolder);
+        $pl = $pf->getAllPackages();
+        $this->assertCount(3, $pl);
+        foreach ($pl as $p) {
+            $this->assertInstanceOf(\SSpkS\Package\Package::class, $p);
+        }
     }
 }

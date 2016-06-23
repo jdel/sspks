@@ -81,6 +81,25 @@ class PackageTest extends TestCase
         new Package('notexisting.spk');
     }
 
+    public function testIconFromInfo()
+    {
+        $tempPkg = tempnam(sys_get_temp_dir(), 'SSpkS') . '.tar';
+        $phar = new \PharData($tempPkg);
+        $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
+        $phar->compress(\Phar::GZ, '.spk');
+        $tempNoExt = substr($tempPkg, 0, strrpos($tempPkg, '.'));
+        $tempPkg = $tempNoExt . '.spk';
+
+        $p = new Package($tempPkg);
+        $file_nfo  = $tempNoExt . '.nfo';
+        $file_icon = $tempNoExt . '_thumb_72.png';
+        $p->getMetadata();
+        $this->assertFileExists($file_icon);
+        unlink($tempPkg);
+        unlink($file_nfo);
+        unlink($file_icon);
+    }
+
     public function tearDown()
     {
         $mask = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '*';

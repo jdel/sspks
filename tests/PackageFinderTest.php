@@ -7,7 +7,7 @@ use SSpkS\Package\PackageFinder;
 
 class PackageFinderTest extends TestCase
 {
-    private $testFolder = __DIR__ . '/example_packageset/';
+    private $testFolder = __DIR__ . '/example_packageset';
 
     /**
      * @expectedException \Exception
@@ -31,7 +31,7 @@ class PackageFinderTest extends TestCase
     {
         $pf = new PackageFinder($this->testFolder);
         $fl = $pf->getAllPackageFiles();
-        $this->assertCount(3, $fl);
+        $this->assertCount(5, $fl);
         foreach ($fl as $f) {
             $this->assertStringEndsWith('.spk', $f);
             $this->assertFileExists($f);
@@ -42,7 +42,7 @@ class PackageFinderTest extends TestCase
     {
         $pf = new PackageFinder($this->testFolder);
         $pl = $pf->getAllPackages();
-        $this->assertCount(3, $pl);
+        $this->assertCount(5, $pl);
         foreach ($pl as $p) {
             $this->assertInstanceOf(\SSpkS\Package\Package::class, $p);
         }

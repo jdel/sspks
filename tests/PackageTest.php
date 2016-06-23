@@ -39,12 +39,18 @@ class PackageTest extends TestCase
         $md = $p->getMetadata();
         $this->assertGreaterThan(0, count($md));
         $this->assertEquals($p->package, 'Docker');
+        $this->assertTrue(isset($p->displayname));
+        $this->assertEquals($p->displayname, 'Docker');
         $this->assertEquals($md['version'], '1.11.1-0265');
         $p->newprop = 'test';
-        $this->assertEquals($p->newprop, 'test');
         $this->assertTrue(isset($p->newprop));
+        $this->assertEquals($p->newprop, 'test');
         unset($p->newprop);
         $this->assertFalse(isset($p->newprop));
+        $this->assertObjectNotHasAttribute('newprop', $p);
+        $this->assertTrue($p->silent_install);
+        $this->assertTrue($p->silent_uninstall);
+        $this->assertTrue($p->silent_upgrade);
     }
 
     public function testHelperMethods()

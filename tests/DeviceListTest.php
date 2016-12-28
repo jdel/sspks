@@ -32,8 +32,16 @@ class DeviceListTest extends TestCase
     {
         $dl = new DeviceList($this->goodFile);
         $d  = $dl->getDevices();
-        $this->assertCount(4, $d);
+        $this->assertCount(6, $d);
         $this->assertContainsOnly('array', $d);
         $this->assertContains(array('arch' => 'architecture2', 'name' => 'model4'), $d);
+    }
+
+    public function testPlusSigns()
+    {
+        $dl = new DeviceList($this->goodFile);
+        $d  = $dl->getDevices();
+        $this->assertContains(array('arch' => 'plussign', 'name' => 'DS411+II'), $d);
+        $this->assertContains(array('arch' => 'plussign', 'name' => 'DS211+'), $d);
     }
 }

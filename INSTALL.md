@@ -8,14 +8,9 @@ $ cd /home/git/
 $ git clone https://github.com/mbirth/sspks.git
 ```
 
-Get Composer to install dependencies ([Details](https://getcomposer.org/download/))
-
-```sh
-$ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-$ php -r "if (hash_file('SHA384', 'composer-setup.php') === '070854512ef404f16bac87071a6db9fd9721da1684cd4589b1196c3faf71b9a2682e2311b36a5079825e155ac7ce150d') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-$ php composer-setup.php
-$ php -r "unlink('composer-setup.php');"
-```
+Get Composer (to install dependencies): Please see the
+[Composer download instructions](https://getcomposer.org/download/)
+on how to do this.
 
 Add the [Asset plugin](https://github.com/francoispluchino/composer-asset-plugin) to Composer
 

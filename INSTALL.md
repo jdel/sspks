@@ -21,7 +21,19 @@ $ ./composer.phar global require "fxp/composer-asset-plugin:~1.1"
 Install all dependencies
 
 ```sh
-$ ./composer.phar install
+$ ./composer.phar install --no-dev
+```
+
+**Note:** With newer *Web Station* versions, you might have also installed
+different versions of PHP, likely PHP 5.6 and PHP 7.0. If the command above
+gives you errors, try running one of these commands:
+
+(And if you have open_basedir() restrictions enabled, don't forget to add
+`/root/.composer` to the list of allowed directories.)
+
+```sh
+$ php56 composer.phar install --no-dev
+$ php70 composer.phar install --no-dev
 ```
 
 Now, just symlink the sspks directory into

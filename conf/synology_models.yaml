@@ -30,12 +30,21 @@
     - RS812
 
 alpine:
+    - DS715
+    - DS1515
     - DS2015xs
+
+alpine4k:
+    - DS215+
+    - DS416
 
 avoton:
     - DS1515+
     - DS1815+
+    - DS2415+
     - DS415+
+    - RS815(RP)+
+    - RS2416(RP)+
 
 armada370:
     - DS114
@@ -45,7 +54,17 @@ armada370:
     - DS414slim
 
 armada375:
+    - DS115
     - DS215j
+
+armada38x:
+    - DS116
+    - DS216
+    - DS216j
+    - DS416j
+    - DS416slim
+    - RS217
+    - RS816
 
 armadaxp:
     - DS214+
@@ -54,12 +73,23 @@ armadaxp:
     - RS214
     - RS814
 
+braswell:
+    - DS216+
+    - DS216+II
+    - DS716+
+    - DS716+II
+    - DS416play
+    - DS916+
+
+broadwell:
+    - RS3617xs+
+
 bromolow:
     - DS3611xs
     - DS3612xs
     - RS10613xs+
-    - RS3411xs/RS3411RPxs
-    - RS3412xs/RS3412RPxs
+    - RS3411(RP)xs
+    - RS3412(RP)xs
     - RS3413xs+
 
 cedarview:
@@ -71,20 +101,41 @@ cedarview:
     - RS2414(RP)+
     - DS412+
     - DS713+
-    - RS2212+/RS2212
-    - RS2414/RS2414RP
-    - RS2414+/RS2414RP+
-    - RS812+/RS812RP+
-    - RS814+/RS814RP+
+    - RS2212/RS2212+
+    - RS2414(RP)
+    - RS2414(RP)+
+    - RS812(RP)+
+    - RS814(RP)+
 
 comcerto2k:
     - DS214air
     - DS414j
 
+dockerx64:
+    - DockerDSM
+
 evansport:
     - DS214play
     - DS414play
     - DS415play
+
+grantley:
+    - FS3017
+
+hi3535:
+    - NVR216
+
+ipq806x:
+    - RT2600ac
+
+kvmx64:
+    - VirtualDSM
+
+monaco:
+    - DS216play
+
+northstartplus:
+    - RT1900ac
 
 ppc824x:
     - CS406
@@ -117,14 +168,13 @@ ppc853x:
     - DS410
     - DS508
     - DS509+
-    - RS408/RS408RP
-    - RS409+RS409RP+
-    - RS409+/RS409RP+
+    - RS408(RP)
+    - RS409(RP)+
 
 ppc854x:
     - DS408
     - DS508
-    - RS408/RS408RP+
+    - RS408(RP)+
 
 qoriq:
     - DS213+
@@ -140,8 +190,6 @@ x86:
     - DS710+
     - DS712+
     - RS2211+
-    - RS2211+RS2211RP+
-    - RS2211+/RS2211RP+
-    - RS810+RS810RP+
-    - RS810+/RS810RP+
+    - RS2211(RP)+
+    - RS810(RP)+
 

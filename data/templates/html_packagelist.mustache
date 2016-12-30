@@ -9,10 +9,10 @@
                         <p class="dsm-version">Minimum DSM version: {{ firmware }}</p>
                         <p>{{ description }}</p>
                         <p>
-                            <a id="{{ package }}_show" href="#nogo" onclick="Effect.toggle('{{ package }}_detail', 'blind', { duration: 0.5 }); Effect.toggle('{{ package }}_show', 'appear', { duration: 0.3 }); Effect.toggle('{{ package }}_hide', 'appear', { duration: 0.3, delay: 0.5 }); return false;">More...</a>
-                            <a id="{{ package }}_hide" href="#nogo" onclick="Effect.toggle('{{ package }}_detail', 'blind', { duration: 0.5 }); Effect.toggle('{{ package }}_hide', 'appear', { duration: 0.3 }); Effect.toggle('{{ package }}_show', 'appear', { duration: 0.3, delay: 0.5 }); return false;" style="display: none;">Hide</a>
+                            <a id="{{ package }}_show" href="#nogo" onclick="toggleClass('open', ['{{ package }}_detail']); toggleClass('hidden', ['{{ package }}_show', '{{ package }}_hide']); return false;">More...</a>
+                            <a id="{{ package }}_hide" href="#nogo" onclick="toggleClass('open', ['{{ package }}_detail']); toggleClass('hidden', ['{{ package }}_hide', '{{ package }}_show']); return false;" class="hidden">Hide</a>
                         </p>
-                        <div style="display: none;" id="{{ package }}_detail">
+                        <div class="toggler" id="{{ package }}_detail">
                             <table>
                                 <tr><td>Package</td><td>{{ package }}</td></tr>
                                 <tr><td>Version</td><td>{{ version }}</td></tr>

@@ -12,12 +12,6 @@ Get Composer (to install dependencies): Please see the
 [Composer download instructions](https://getcomposer.org/download/)
 on how to do this.
 
-Add the [Asset plugin](https://github.com/francoispluchino/composer-asset-plugin) to Composer
-
-```sh
-$ ./composer.phar global require "fxp/composer-asset-plugin:~1.1"
-```
-
 Install all dependencies
 
 ```sh

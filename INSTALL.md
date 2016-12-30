@@ -40,7 +40,7 @@ Now, just symlink the sspks directory into
 any place already served by apache, for example:
 
 ```sh
-$ ln -s /home/git/sspks/share/sspks/ /var/www/sspks
+$ ln -s /home/git/sspks /var/www/sspks
 ```
 
 You need PHP with the Phar extension and `allow_url_fopen` enabled.

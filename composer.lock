@@ -4,55 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "63bae771b85f65964ac1d5f4326a3cc3",
-    "content-hash": "f65f8026fc9492862306752b72506319",
+    "hash": "d2566d9e16e5525dafe7b210cb5f1ba4",
+    "content-hash": "24f035e7e39493d81c7f1660f1e92136",
     "packages": [
-        {
-            "name": "bower-asset/prototypejs-bower",
-            "version": "1.7.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/plynchnlm/prototypejs-bower.git",
-                "reference": "5da3d86b77b94ec7eb5b92b8b5e0a7a241adae43"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/plynchnlm/prototypejs-bower/zipball/5da3d86b77b94ec7eb5b92b8b5e0a7a241adae43",
-                "reference": "5da3d86b77b94ec7eb5b92b8b5e0a7a241adae43",
-                "shasum": ""
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "prototype.js"
-            }
-        },
-        {
-            "name": "bower-asset/scriptaculous-bower",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/plynchnlm/scriptaculous-bower.git",
-                "reference": "881e5499c2ffc187beb3348965903062a6cf85f6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/plynchnlm/scriptaculous-bower/zipball/881e5499c2ffc187beb3348965903062a6cf85f6",
-                "reference": "881e5499c2ffc187beb3348965903062a6cf85f6",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/prototypejs-bower": ">=1.7.0,<2.0.0"
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "scriptaculous.js",
-                "bower-asset-ignore": [],
-                "branch-alias": {
-                    "dev-master": "1.9.0-dev"
-                }
-            },
-            "time": "2014-11-05 21:20:46"
-        },
         {
             "name": "mustache/mustache",
             "version": "v2.11.1",
@@ -1408,9 +1362,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "bower-asset/scriptaculous-bower": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

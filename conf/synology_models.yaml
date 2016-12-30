@@ -1,3 +1,9 @@
+88f5281:
+    - CS407
+    - DS107+
+    - DS207+
+    - RS407
+
 88f6281:
     - DS109
     - DS110j
@@ -38,20 +44,15 @@ alpine4k:
     - DS215+
     - DS416
 
-avoton:
-    - DS1515+
-    - DS1815+
-    - DS2415+
-    - DS415+
-    - RS815(RP)+
-    - RS2416(RP)+
-
 armada370:
     - DS114
     - DS115j
     - DS213j
     - DS214se
+    - DS216se
     - DS414slim
+    - EDS14
+    - RS214
 
 armada375:
     - DS115
@@ -73,6 +74,14 @@ armadaxp:
     - RS214
     - RS814
 
+avoton:
+    - DS415+
+    - DS1515+
+    - DS1815+
+    - DS2415+
+    - RS815(RP)+
+    - RS2416(RP)+
+
 braswell:
     - DS216+
     - DS216+II
@@ -87,10 +96,16 @@ broadwell:
 bromolow:
     - DS3611xs
     - DS3612xs
+    - DS3615xs
     - RS10613xs+
+    - RS10815xs+
+    - RS18016xs+
     - RS3411(RP)xs
     - RS3412(RP)xs
     - RS3413xs+
+    - RS3614xs+
+    - RS3614(RP)xs
+    - RS3617(RP)xs
 
 cedarview:
     - DS1512+
@@ -137,8 +152,13 @@ monaco:
 northstarplus:
     - RT1900ac
 
+powerpc:
+    - DS101
+    - DS101j
+
 ppc824x:
     - CS406
+    - CS406e
     - CS407e
     - DS101g+
     - DS106

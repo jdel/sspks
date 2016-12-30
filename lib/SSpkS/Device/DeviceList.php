@@ -52,7 +52,7 @@ class DeviceList
                 $idx++;
             }
         }
-        array_multisort($sortkey, SORT_NATURAL, $this->devices);
+        array_multisort($sortkey, SORT_NATURAL|SORT_FLAG_CASE, $this->devices);
     }
 
     /**

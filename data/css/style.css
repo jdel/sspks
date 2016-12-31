@@ -108,7 +108,7 @@ a img {
 }
 
 .spk-icon a ins {
-    background: url('/data/images/beta_badge.png') no-repeat 0 0;
+    background: url('../images/beta_badge.png') no-repeat 0 0;
     position: absolute;
     left: 42px;
     top: -7px;
@@ -135,6 +135,45 @@ a img {
     margin-top: 0;
 }
 
+.hidden {
+    display: none;
+}
+
+/* https://tiffanybbrown.com/2011/09/26/toggle-blind-effect-with-css3-transitions/ */
+
+.toggler {
+    min-height: 0px;
+    max-height: 0px;
+    overflow: hidden;
+
+         -o-transition: min-height, max-height;
+        -ms-transition: min-height, max-height;
+       -moz-transition: min-height, max-height;
+     -khtml-transition: min-height, max-height;
+    -webkit-transition: min-height, max-height;
+            transition: min-height, max-height;
+            
+         -o-transition-duration: 0.5s;
+        -ms-transition-duration: 0.5s;
+       -moz-transition-duration: 0.5s;
+     -khtml-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+    
+         -o-transition-timing-function: ease-in-out;
+        -ms-transition-timing-function: ease-in-out;
+       -moz-transition-timing-function: ease-in-out;
+     -khtml-transition-timing-function: ease-in-out;
+    -webkit-transition-timing-function: ease-in-out;
+            transition-timing-function: ease-in-out;
+}
+
+.toggler.open {
+    height: auto;
+    min-height: 10px;
+    max-height: 500px;
+}
+
 hr {
     border: 0;
     border-bottom: 1px solid #3F5E8A;
@@ -149,6 +188,6 @@ hr {
   font-family: 'Alice';
   font-style: normal;
   font-weight: normal;
-  src: url('/data/css/alice-webfont.eot');
-  src: url('/data/css/alice.woff') format('woff');
+  src: url('alice-webfont.eot');
+  src: url('alice.woff') format('woff');
 }

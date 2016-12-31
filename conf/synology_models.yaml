@@ -1,0 +1,215 @@
+88f5281:
+    - CS407
+    - DS107+
+    - DS207+
+    - RS407
+
+88f6281:
+    - DS109
+    - DS110j
+    - DS112j
+    - DS209
+    - DS210j
+    - DS211j
+    - DS212j
+    - DS409
+    - DS409slim
+    - DS410j
+    - DS411j
+    - RS409
+
+88f6282:
+    - DS111
+    - DS112
+    - DS112+
+    - DS211
+    - DS211+
+    - DS212
+    - DS212+
+    - DS213
+    - DS213air
+    - DS411
+    - DS411slim
+    - DS413j
+    - RS212
+    - RS411
+    - RS812
+
+alpine:
+    - DS715
+    - DS1515
+    - DS2015xs
+
+alpine4k:
+    - DS215+
+    - DS416
+
+armada370:
+    - DS114
+    - DS115j
+    - DS213j
+    - DS214se
+    - DS216se
+    - DS414slim
+    - EDS14
+    - RS214
+
+armada375:
+    - DS115
+    - DS215j
+
+armada38x:
+    - DS116
+    - DS216
+    - DS216j
+    - DS416j
+    - DS416slim
+    - RS217
+    - RS816
+
+armadaxp:
+    - DS214+
+    - DS214
+    - DS414
+    - RS214
+    - RS814
+
+avoton:
+    - DS415+
+    - DS1515+
+    - DS1815+
+    - DS2415+
+    - RS815(RP)+
+    - RS2416(RP)+
+
+braswell:
+    - DS216+
+    - DS216+II
+    - DS716+
+    - DS716+II
+    - DS416play
+    - DS916+
+
+broadwell:
+    - RS3617xs+
+
+bromolow:
+    - DS3611xs
+    - DS3612xs
+    - DS3615xs
+    - RS10613xs+
+    - RS10815xs+
+    - RS18016xs+
+    - RS3411(RP)xs
+    - RS3412(RP)xs
+    - RS3413xs+
+    - RS3614xs+
+    - RS3614(RP)xs
+    - RS3617(RP)xs
+
+cedarview:
+    - DS1512+
+    - DS1513+
+    - DS1812+
+    - DS1813+
+    - DS2413+
+    - RS2414(RP)+
+    - DS412+
+    - DS713+
+    - RS2212/RS2212+
+    - RS2414(RP)
+    - RS2414(RP)+
+    - RS812(RP)+
+    - RS814(RP)+
+
+comcerto2k:
+    - DS214air
+    - DS414j
+
+dockerx64:
+    - DockerDSM
+
+evansport:
+    - DS214play
+    - DS414play
+    - DS415play
+
+grantley:
+    - FS3017
+
+hi3535:
+    - NVR216
+
+ipq806x:
+    - RT2600ac
+
+kvmx64:
+    - VirtualDSM
+
+monaco:
+    - DS216play
+
+northstarplus:
+    - RT1900ac
+
+powerpc:
+    - DS101
+    - DS101j
+
+ppc824x:
+    - CS406
+    - CS406e
+    - CS407e
+    - DS101g+
+    - DS106
+    - DS106e
+    - DS106j
+    - DS106x
+    - DS107
+    - DS107e
+    - DS108j
+    - DS109j
+    - DS207.128
+    - DS207
+    - DS209j
+    - DS406
+    - DS406e
+    - DS407e
+    - RS406
+
+ppc853x:
+    - DS109+
+    - DS110+
+    - DS209+
+    - DS209+II
+    - DS210+
+    - DS408
+    - DS409+
+    - DS410
+    - DS508
+    - DS509+
+    - RS408(RP)
+    - RS409(RP)+
+
+ppc854x:
+    - DS408
+    - DS508
+    - RS408(RP)+
+
+qoriq:
+    - DS213+
+    - DS413
+
+x86:
+    - DS1010+
+    - DS1511+
+    - DS2411+
+    - DS3615xs
+    - DS411+
+    - DS411+II
+    - DS710+
+    - DS712+
+    - RS2211+
+    - RS2211(RP)+
+    - RS810(RP)+
+

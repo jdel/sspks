@@ -11,6 +11,10 @@ namespace SSpkS\Package;
  * @property string $package Package name
  * @property string $version Package version
  * @property string $description Package description
+ * @property string $maintainer Package maintainer
+ * @property string $maintainer_url URL of maintainer's web page
+ * @property string $distributor Package distributor
+ * @property string $distributor_url URL of distributor's web page
  * @property array $arch List of supported architectures, or 'noarch'
  * @property array $thumbnail List of thumbnail files
  * @property array $thumbnail_url List of thumbnail URLs
@@ -165,7 +169,7 @@ class Package
         $this->collectMetadata();
         return $this->metadata;
     }
- 
+
     /**
      * Extracts $inPkgName from package to $targetFile, if it doesn't
      * already exist. Needs the phar.so extension and allow_url_fopen.

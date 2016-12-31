@@ -34,7 +34,7 @@ class JsonOutput
      */
     private function ifEmpty($obj, $property, $alternative = null)
     {
-        if (property_exists($obj, $property) && !empty($obj->$property)) {
+        if (isset($obj->$property) && !empty($obj->$property)) {
             return $obj->$property;
         }
         return $alternative;

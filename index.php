@@ -1,5 +1,11 @@
 <?php
 
+if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+    print('Autoloader not found! Did you follow the instructions from the INSTALL.md?<br />');
+    print('(If you want to keep the old version, switch to the <tt>legacy</tt> branch by running: <tt>git checkout legacy</tt>');
+    exit();
+}
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 use \SSpkS\Device\DeviceList;

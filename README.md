@@ -16,11 +16,11 @@ SPKs.
 Installation
 ============
 
-Please see the INSTALL file for instructions.
+Please see the [INSTALL](INSTALL.md) file for instructions.
 
 
 Contribute
 ==========
 
 Feel free to contribute, improve the code or the design by forking
-https://github.com/mbirth/sspks.git
+https://github.com/jdel/sspks.git

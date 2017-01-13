@@ -9,13 +9,13 @@ RUN apk update && apk add --no-cache supervisor apache2 php5-apache2 php5-ctype 
  && apk add --virtual=.build-dependencies php5 php5-phar php5-json php5-openssl git \
  && rm -rf /var/www/localhost/htdocs/* \
  && cd /var/www/localhost/htdocs/ \
- && git init && git remote add origin https://github.com/jdel/sspks.git
- && git fetch origin ${COMMIT}
+ && git init && git remote add origin https://github.com/jdel/sspks.git \
+ && git fetch origin ${COMMIT} \
  && wget -q -O /usr/local/bin/composer http://getcomposer.org/download/1.3.1/composer.phar \
  && chmod +x /usr/local/bin/composer \
  && cd /var/www/localhost/htdocs \
- && if [ -f composer.json ]; then composer install --no-dev; fi \
- && rm -f /usr/local/bin/composer \
+ && composer install --no-dev \
+  ; rm -f /usr/local/bin/composer \
  && apk del .build-dependencies \
  && rm -rf /var/cache/apk/* \
  && mkdir /run/apache2 \

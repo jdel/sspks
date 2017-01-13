@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+docker build --build-arg=BRANCH=$(git rev-parse --abbrev-ref HEAD) -t $IMAGE_NAME .

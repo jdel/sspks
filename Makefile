@@ -1,4 +1,4 @@
-BRANCH?=master
+BRANCH?=`git rev-parse --abbrev-ref HEAD`
 
 all: build
 

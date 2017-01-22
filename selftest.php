@@ -45,6 +45,7 @@
             display: inline-block;
             line-height: 1em;
             vertical-align: middle;
+            font-size: 2.5em;
         }
 
         .ok {
@@ -78,13 +79,13 @@ function assertTrue($assertion, $description, $error_text)
     echo('<div class="check">');
     echo('<div class="checkline">');
     echo('<div class="description"><span>' . $description . '</span></div>');
-    if ($assertion) {
+    if ($assertion === true) {
         // All OK
-        echo('<div class="result ok"><span>✔<br/>OK</span></div>');
+        echo('<div class="result ok"><span>✔</span></div>');
         echo('</div>');  // close checkline
     } else {
         // Not OK
-        echo('<div class="result error"><span>✖<br/>ERR</span></div>');
+        echo('<div class="result error"><span>✖</span></div>');
         echo('</div>');  // close checkline
         echo('<div class="errortext">' . $error_text . '</div>');
     }
@@ -106,9 +107,15 @@ assertTrue(
 );
 
 assertTrue(
-    is_writable('packages/'),
-    'Directory <tt>packages/</tt> writeable',
-    'Please make the <tt>packages/</tt> directory writeable for the web server process.'
+    is_dir(dirname(__FILE__) . '/vendor'),
+    'Composer <tt>vendor</tt> directory exists',
+    'Please download and run Composer according to the <tt>INSTALL.md</tt>.'
+);
+
+assertTrue(
+    file_exists(dirname(__FILE__) . '/vendor/autoload.php'),
+    'Composer <tt>autoload.php</tt> was generated',
+    'Please download and run Composer according to the <tt>INSTALL.md</tt>.'
 );
 
 assertTrue(
@@ -118,12 +125,32 @@ assertTrue(
 );
 
 assertTrue(
+    is_writable(dirname(__FILE__) . '/packages/'),
+    'Directory <tt>packages/</tt> writeable',
+    'Please make the <tt>packages/</tt> directory writeable for the web server process.'
+);
+
+$test_file = dirname(__FILE__) . '/packages/testfile.$$$';
+
+assertTrue(
+    (file_put_contents($test_file, 'TestData12345678') === 16),
+    'Can write testfile to <tt>packages/</tt> directory',
+    'Please make the <tt>packages/</tt> directory writeable for the web server process.'
+);
+
+assertTrue(
+    unlink($test_file),
+    'Can remove testfile from <tt>packages/</tt> directory',
+    'Please make the <tt>packages/</tt> directory writeable for the web server process (also allow deletions).'
+);
+
+/*
+assertTrue(
     false,
     'This is to see how a failed test looks like.',
     'Don\'t panic. This is only here during development.'
 );
-
-// TEST: Probably write a test file to packages/ dir and delete again
+*/
 
 ?>
 </body>

@@ -114,8 +114,20 @@ assertTrue(
 
 assertTrue(
     file_exists(dirname(__FILE__) . '/vendor/autoload.php'),
-    'Composer <tt>autoload.php</tt> was generated',
+    'Composer <tt>vendor/autoload.php</tt> was generated',
     'Please download and run Composer according to the <tt>INSTALL.md</tt>.'
+);
+
+assertTrue(
+    is_dir(sys_get_temp_dir()),
+    'System temporary directory (' . sys_get_temp_dir() . ') exists.',
+    'Make sure your temporary directory exists and is writeable and your environment variables (<tt>TMP</tt>, <tt>TEMP</tt>) are set or set <tt>sys_temp_dir</tt> in your <tt>php.ini</tt>.'
+);
+
+assertTrue(
+    is_writeable(sys_get_temp_dir()),
+    'System temporary directory (' . sys_get_temp_dir() . ') is writeable.',
+    'Make sure your temporary directory is writeable for the web server process.'
 );
 
 assertTrue(

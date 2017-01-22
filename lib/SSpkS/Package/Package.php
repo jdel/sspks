@@ -185,12 +185,11 @@ class Package
             // Everything in working order
             return true;
         }
-        // TODO: Extract using PharData object, to not depend on allow_url_fopen and for better error handling
         // Try to extract file
-        @copy('phar://' . $this->filepath . '/' . $inPkgName, $targetFile);
-        if (!file_exists($targetFile)) {
-            throw new \Exception('Could not extract ' . $inPkgName . ' from ' . $this->filepath . '!');
-        }
+        $tmp_dir = sys_get_temp_dir();
+        $p = new \PharData($this->filepath, \Phar::CURRENT_AS_FILEINFO | \Phar::KEY_AS_FILENAME);
+        $p->extractTo($tmp_dir, $inPkgName);
+        rename($tmp_dir . DIRECTORY_SEPARATOR . $inPkgName, $targetFile);
         return true;
     }
 

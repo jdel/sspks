@@ -12,14 +12,16 @@ use \Symfony\Component\Yaml\Exception\ParseException;
  * @property array $paths Different paths
  * @property array excludedSynoServices Synology services to exclude from package list
  */
-class Config
+class Config implements \Iterator
 {
+    private $iterPos;
     private $basePath;
     private $cfgFile;
     private $config;
 
     public function __construct($basePath, $cfgFile = 'conf/sspks.yaml')
     {
+        $this->iterPos  = 0;
         $this->basePath = $basePath;
         $this->cfgFile  = $this->basePath . DIRECTORY_SEPARATOR . $cfgFile;
 
@@ -57,5 +59,30 @@ class Config
     public function __isset($name)
     {
         return isset($this->config[$name]);
+    }
+
+    public function rewind()
+    {
+        $this->iterPos = 0;
+    }
+
+    public function current()
+    {
+        return $this->config[array_keys($this->config)[$this->iterPos]];
+    }
+
+    public function key()
+    {
+        return array_keys($this->config)[$this->iterPos];
+    }
+
+    public function next()
+    {
+        $this->iterPos++;
+    }
+
+    public function valid()
+    {
+        return isset(array_keys($this->config)[$this->iterPos]);
     }
 }

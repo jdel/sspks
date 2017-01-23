@@ -1,0 +1,6 @@
+site:
+    name: Test config file
+
+paths:
+    models: blafasel
+    packages pancakes

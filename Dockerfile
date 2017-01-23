@@ -5,7 +5,9 @@ ARG COMMIT=""
 LABEL branch=${BRANCH}
 LABEL commit=${COMMIT}
 
-RUN apk update && apk add --no-cache supervisor apache2 php5-apache2 php5-phar php5-ctype \
+RUN echo "${BRANCH}" \
+ && echo "${COMMIT}" \
+ && apk update && apk add --no-cache supervisor apache2 php5-apache2 php5-phar php5-ctype \
  && apk add --virtual=.build-dependencies openssl php5 php5-json php5-openssl git \
  && rm -rf /var/www/localhost/htdocs \
  && wget -O /var/www/localhost/sspks.zip https://github.com/jdel/sspks/archive/${COMMIT}.zip \

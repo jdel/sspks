@@ -37,6 +37,7 @@ class Config implements \Iterator
         }
 
         $this->config = $config;
+        $this->config['basePath'] = $this->basePath;
     }
 
     /**
@@ -51,6 +52,17 @@ class Config implements \Iterator
     }
 
     /**
+     * Setter magic method.
+     *
+     * @param string $name Name of variable to set.
+     * @param mixed $value Value to set.
+     */
+    public function __set($name, $value)
+    {
+        $this->config[$name] = $value;
+    }
+
+    /**
      * Isset feature magic method.
      *
      * @param string $name Name of requested value.
@@ -59,6 +71,16 @@ class Config implements \Iterator
     public function __isset($name)
     {
         return isset($this->config[$name]);
+    }
+
+    /**
+     * Unset feature magic method.
+     *
+     * @param string $name Name of value to unset.
+     */
+    public function __unset($name)
+    {
+        unset($this->config[$name]);
     }
 
     public function rewind()

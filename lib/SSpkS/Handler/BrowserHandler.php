@@ -74,7 +74,7 @@ class BrowserHandler implements HandlerInterface
             $packages = array();
             foreach ($packagesList as $spkFile) {
                 $packages[] = array(
-                    'url'      => $baseUrl . $spkFile,
+                    'url'      => $this->config->baseUrl . $spkFile,
                     'filename' => basename($spkFile),
                 );
             }

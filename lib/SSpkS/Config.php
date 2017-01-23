@@ -11,6 +11,8 @@ use \Symfony\Component\Yaml\Exception\ParseException;
  * @property array $site Site properties
  * @property array $paths Different paths
  * @property array excludedSynoServices Synology services to exclude from package list
+ * @property string basePath Path to site root (where index.php is located)
+ * @property string baseUrl URL to site root (where index.php is located)
  */
 class Config implements \Iterator
 {

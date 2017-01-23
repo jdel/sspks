@@ -32,7 +32,6 @@ class ConfigTest extends TestCase
     {
         $cfg = new Config(__DIR__, $this->goodFile);
         $this->assertCount(5, $cfg->excludedSynoServices);
-        $this->assertContainsOnly('array', $cfg);
         $this->assertEquals(array('name' => 'Test config file'), $cfg->site);
         $this->assertContains('service5', $cfg->excludedSynoServices);
     }

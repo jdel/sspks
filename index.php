@@ -8,12 +8,15 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use \SSpkS\Config;
 use \SSpkS\Device\DeviceList;
 use \SSpkS\Output\JsonOutput;
 use \SSpkS\Output\UrlFixer;
 use \SSpkS\Package\Package;
 use \SSpkS\Package\PackageFinder;
 use \SSpkS\Package\PackageFilter;
+
+$config = new Config(__DIR__, 'conf/sspks.yaml');
 
 /*
 example data passed by a syno
@@ -38,14 +41,14 @@ package_update_channel = stable
 */
 
 // This has to be a directory relative to where this script is and served by Apache
-$spkDir = 'packages/';
+$spkDir = $config->paths['packages'];
 
 // File where Syno models are stored in Yaml format
-$synologyModels = 'conf/synology_models.yaml';
-$excludedSynoServices = array('apache-sys', 'apache-web', 'mdns', 'samba', 'db', 'applenetwork', 'cron', 'nfs', 'firewall');
+$synologyModels = $config->paths['models'];
+$excludedSynoServices = $config->excludedSynoServices;
 $baseUrl = 'http' . ($_SERVER['HTTPS']?'s':'') . '://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')) . '/';
 
-$siteName = 'Simple SPK Server';
+$siteName = $config->site['name'];
 
 if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology') {
     // Synology request --> show JSON

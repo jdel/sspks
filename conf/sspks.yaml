@@ -1,0 +1,19 @@
+site:
+    name: Simple SPK Server
+
+# ALL PATHS MUST BE RELATIVE TO THE ROOT
+# DIRECTORY (where the index.php is located)
+paths:
+    models: conf/synology_models.yaml
+    packages: packages/
+
+excludedSynoServices:
+    - apache-sys
+    - apache-web
+    - mdns
+    - samba
+    - db
+    - applenetwork
+    - cron
+    - nfs
+    - firewall

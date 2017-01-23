@@ -130,8 +130,11 @@ assertTrue(
     'Make sure your temporary directory is writeable for the web server process.'
 );
 
+// NOTE: (From PHP doc:) A boolean ini value of _off_ will be returned as an empty
+//       string or "0" while a boolean ini value of _on_ will be returned as "1".
+//       The function can also return the literal string of INI value.
 assertTrue(
-    (ini_get('allow_url_fopen') == true),
+    (boolval(ini_get('allow_url_fopen')) === true),
     'Using URLs in <tt>fopen()</tt> is allowed',
     'Please set <tt>allow_url_fopen</tt> to <tt>true</tt> in your <tt>php.ini</tt>.'
 );

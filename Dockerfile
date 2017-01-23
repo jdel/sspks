@@ -5,8 +5,10 @@ ARG COMMIT=""
 LABEL branch=${BRANCH}
 LABEL commit=${COMMIT}
 
-RUN echo "${BRANCH}" \
- && echo "${COMMIT}" \
+RUN echo "BRANCH: ${BRANCH}" \
+ && echo "COMMIT: ${COMMIT}" \
+ && echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}" \
+ && echo "TRAVIS_COMMIT: ${TRAVIS_COMMIT}" \
  && apk update && apk add --no-cache supervisor apache2 php5-apache2 php5-phar php5-ctype \
  && apk add --virtual=.build-dependencies openssl php5 php5-json php5-openssl git \
  && rm -rf /var/www/localhost/htdocs \

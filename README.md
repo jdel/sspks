@@ -1,6 +1,7 @@
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mbirth/sspks/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mbirth/sspks/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/mbirth/sspks/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mbirth/sspks/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/mbirth/sspks/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mbirth/sspks/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jdel/sspks/badges/quality-score.png?b=rework)](https://scrutinizer-ci.com/g/jdel/sspks/?branch=rework)
+[![Code Coverage](https://scrutinizer-ci.com/g/jdel/sspks/badges/coverage.png?b=rework)](https://scrutinizer-ci.com/g/jdel/sspks/?branch=rework)
+[![Build Status](https://scrutinizer-ci.com/g/jdel/sspks/badges/build.png?b=rework)](https://scrutinizer-ci.com/g/jdel/sspks/build-status/rework)
+[![Build Status](https://travis-ci.org/jdel/sspks.svg?branch=rework)](https://travis-ci.org/jdel/sspks)
 
 Simple SPK Server
 =================

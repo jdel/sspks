@@ -3,6 +3,7 @@
 namespace SSpkS\Handler;
 
 use \SSpkS\Device\DeviceList;
+use \SSpkS\Output\HtmlOutput;
 use \SSpkS\Output\UrlFixer;
 use \SSpkS\Package\PackageFinder;
 use \SSpkS\Package\PackageFilter;
@@ -29,21 +30,10 @@ class BrowserHandler implements HandlerInterface
         $fullList = trim($_GET['fulllist']);
         $packagesAvailable = array();
 
-        $mustache = new \Mustache_Engine(array(
-            'loader'          => new \Mustache_Loader_FilesystemLoader($this->config->basePath . '/data/templates'),
-            'partials_loader' => new \Mustache_Loader_FilesystemLoader($this->config->basePath . '/data/templates/partials'),
-            'charset'         => 'utf-8',
-            'logger'          => new \Mustache_Logger_StreamLogger('php://stderr'),
-        ));
-
-        $tpl_vars = array(
-            'siteName'   => $this->config->site['name'],
-            'arch'       => $arch,
-            'channel'    => ($channel == 'beta'),
-            'requestUri' => $_SERVER['REQUEST_URI'],
-            'baseUrl'    => $this->config->baseUrl,
-            'fullList'   => $fullList,
-        );
+        $output = new HtmlOutput($this->config);
+        $output->setVariable('arch', $arch);
+        $output->setVariable('channel', ($channel == 'beta'));
+        $output->setVariable('fullList', $fullList);
 
         if ($arch) {
             // Architecture is set --> show packages for that arch
@@ -63,8 +53,8 @@ class BrowserHandler implements HandlerInterface
                 $packages[] = $pkg->getMetadata();
             }
 
-            $tpl_vars['packagelist'] = array_values($packages);
-            $tpl = $mustache->loadTemplate('html_packagelist');
+            $output->setVariable('packagelist', array_values($packages));
+            $output->setTemplate('html_packagelist');
         } elseif ($fullList) {
             // No architecture, but full list of packages requested --> show simple list
             $pkgs = new PackageFinder($this->config->paths['packages']);
@@ -78,24 +68,24 @@ class BrowserHandler implements HandlerInterface
                     'filename' => basename($spkFile),
                 );
             }
-            $tpl_vars['packagelist'] = $packages;
-            $tpl = $mustache->loadTemplate('html_packagelist_all');
+            $output->setVariable('packagelist', $packages);
+            $output->setTemplate('html_packagelist_all');
         } else {
             // Nothing requested --> show models overview
             try {
                 $deviceList = new DeviceList($this->config->paths['models']);
                 $models = $deviceList->getDevices();
                 if (count($models) == 0) {
-                    $tpl = $mustache->loadTemplate('html_modellist_none');
+                    $output->setTemplate('html_modellist_none');
                 } else {
-                    $tpl_vars['modellist'] = $models;
-                    $tpl = $mustache->loadTemplate('html_modellist');
+                    $output->setVariable('modellist', $models);
+                    $output->setTemplate('html_modellist');
                 }
             } catch (\Exception $e) {
-                $tpl_vars['errorMessage'] = $e->getMessage();
-                $tpl = $mustache->loadTemplate('html_modellist_error');
+                $output->setVariable('errorMessage', $e->getMessage());
+                $output->setTemplate('html_modellist_error');
             }
         }
-        echo $tpl->render($tpl_vars);
+        $output->output();
     }
 }

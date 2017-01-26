@@ -4,7 +4,9 @@
 
 namespace SSpkS;
 
-use \SSpkS\Handler\BrowserHandler;
+use \SSpkS\Handler\BrowserAllPackagesListHandler;
+use \SSpkS\Handler\BrowserDeviceListHandler;
+use \SSpkS\Handler\BrowserPackageListHandler;
 use \SSpkS\Handler\NotFoundHandler;
 use \SSpkS\Handler\SynologyHandler;
 
@@ -25,7 +27,20 @@ class Handler
         if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology') {
             $handler = new SynologyHandler($this->config);
         } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $handler = new BrowserHandler($this->config);
+            // GET-request, probably browser --> show HTML
+            $arch     = trim($_GET['arch']);
+            $fullList = trim($_GET['fulllist']);
+
+            if ($arch) {
+                // Architecture is set --> show packages for that arch
+                $handler = new BrowserPackageListHandler($this->config);
+            } elseif ($fullList) {
+                // No architecture, but full list of packages requested --> show simple list
+                $handler = new BrowserAllPackagesListHandler($this->config);
+            } else {
+                // Nothing specific requested --> show models overview
+                $handler = new BrowserDeviceListHandler($this->config);
+            }
         } else {
             $handler = new NotFoundHandler($this->config);
         }

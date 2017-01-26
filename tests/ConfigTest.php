@@ -35,4 +35,15 @@ class ConfigTest extends TestCase
         $this->assertEquals(array('name' => 'Test config file'), $cfg->site);
         $this->assertContains('service5', $cfg->excludedSynoServices);
     }
+
+    public function testSetUnset()
+    {
+        $cfg = new Config(__DIR__, $this->goodFile);
+        $cfg->thisIsATest = 123;
+        $this->assertContains(123, $cfg);
+        $this->assertTrue(isset($cfg->thisIsATest));
+        $this->assertEquals(123, $cfg->thisIsATest);
+        unset($cfg->thisIsATest);
+        $this->assertFalse(isset($cfg->thisIsATest));
+    }
 }

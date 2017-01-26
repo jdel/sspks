@@ -11,12 +11,13 @@ class PackageTest extends TestCase
 
     public function setUp()
     {
-        $this->tempPkg = tempnam(sys_get_temp_dir(), 'SSpkS') . '.tar';
+        $tempNoExt = tempnam(sys_get_temp_dir(), 'SSpkS');
+        unlink($tempNoExt);   // don't need the file without ext'
+        $this->tempPkg = $tempNoExt . '.tar';
         $phar = new \PharData($this->tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
         $phar->addFromString('PACKAGE_ICON.PNG', file_get_contents(__DIR__ . '/example_package/PACKAGE_ICON.PNG'));
         $phar->compress(\Phar::GZ, '.spk');
-        $tempNoExt = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.'));
         $this->tempPkg = $tempNoExt . '.spk';
         touch($tempNoExt . '_screen_1.png');
         touch($tempNoExt . '_screen_2.png');
@@ -88,11 +89,12 @@ class PackageTest extends TestCase
 
     public function testIconFromInfo()
     {
-        $tempPkg = tempnam(sys_get_temp_dir(), 'SSpkS') . '.tar';
+        $tempNoExt = tempnam(sys_get_temp_dir(), 'SSpkS');
+        unlink($tempNoExt);   // Don't need file without ext
+        $tempPkg = $tempNoExt . '.tar';
         $phar = new \PharData($tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
         $phar->compress(\Phar::GZ, '.spk');
-        $tempNoExt = substr($tempPkg, 0, strrpos($tempPkg, '.'));
         $tempPkg = $tempNoExt . '.spk';
 
         $p = new Package($tempPkg);
@@ -102,9 +104,23 @@ class PackageTest extends TestCase
         $this->assertFileExists($file_icon);
         $this->assertCount(2, $p->thumbnail);
         $this->assertCount(0, $p->snapshot);
-        unlink($tempPkg);
-        unlink($file_nfo);
-        unlink($file_icon);
+        $del_files = glob($tempNoExt . '*');
+        foreach ($del_files as $f) {
+            unlink($f);
+        }
+    }
+
+    public function testExtraction()
+    {
+        $test_file = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '.txt';
+        $p = new Package($this->tempPkg);
+        $this->assertFileNotExists($test_file);
+        $p->extractIfMissing('INFO', $test_file);
+        $this->assertFileExists($test_file);
+        $file_stat = stat($test_file);
+        // this should not overwrite the already extracted file
+        $this->assertTrue($p->extractIfMissing('INFO', $test_file));
+        $this->assertEquals($file_stat, stat($test_file));
     }
 
     public function tearDown()

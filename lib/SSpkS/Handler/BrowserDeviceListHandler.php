@@ -5,15 +5,8 @@ namespace SSpkS\Handler;
 use \SSpkS\Device\DeviceList;
 use \SSpkS\Output\HtmlOutput;
 
-class BrowserDeviceListHandler implements HandlerInterface
+class BrowserDeviceListHandler extends AbstractHandler
 {
-    private $config;
-
-    public function __construct(\SSpkS\Config $config)
-    {
-        $this->config = $config;
-    }
-
     public function handle()
     {
         // Nothing requested --> show models overview

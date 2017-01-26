@@ -5,15 +5,8 @@ namespace SSpkS\Handler;
 use \SSpkS\Output\HtmlOutput;
 use \SSpkS\Package\PackageFinder;
 
-class BrowserAllPackagesListHandler implements HandlerInterface
+class BrowserAllPackagesListHandler extends AbstractHandler
 {
-    private $config;
-
-    public function __construct(\SSpkS\Config $config)
-    {
-        $this->config = $config;
-    }
-
     public function handle()
     {
         // No architecture, but full list of packages requested --> show simple list

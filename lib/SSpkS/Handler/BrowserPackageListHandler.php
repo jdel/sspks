@@ -7,15 +7,8 @@ use \SSpkS\Output\UrlFixer;
 use \SSpkS\Package\PackageFilter;
 use \SSpkS\Package\PackageFinder;
 
-class BrowserPackageListHandler implements HandlerInterface
+class BrowserPackageListHandler extends AbstractHandler
 {
-    private $config;
-
-    public function __construct(\SSpkS\Config $config)
-    {
-        $this->config = $config;
-    }
-
     public function handle()
     {
         // Architecture is set --> show packages for that arch
@@ -24,7 +17,6 @@ class BrowserPackageListHandler implements HandlerInterface
         if ($channel != 'beta') {
             $channel = 'stable';
         }
-        $packagesAvailable = array();
 
         $output = new HtmlOutput($this->config);
         $output->setVariable('arch', $arch);

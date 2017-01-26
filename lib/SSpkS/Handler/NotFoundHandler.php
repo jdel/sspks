@@ -2,13 +2,8 @@
 
 namespace SSpkS\Handler;
 
-class NotFoundHandler implements HandlerInterface
+class NotFoundHandler extends AbstractHandler
 {
-
-    public function __construct(\SSpkS\Config $config)
-    {
-    }
-
     public function handle()
     {
         header('Content-type: text/html');

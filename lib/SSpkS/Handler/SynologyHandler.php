@@ -31,15 +31,8 @@ package_update_channel = stable
 
 // if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology') {
 
-class SynologyHandler implements HandlerInterface
+class SynologyHandler extends AbstractHandler
 {
-    private $config;
-
-    public function __construct(\SSpkS\Config $config)
-    {
-        $this->config = $config;
-    }
-
     public function handle()
     {
         // Synology request --> show JSON

@@ -188,6 +188,6 @@ hr {
   font-family: 'Alice';
   font-style: normal;
   font-weight: normal;
-  src: url('alice-webfont.eot');
-  src: url('alice.woff') format('woff');
+  src: url('../fonts/alice-webfont.eot');
+  src: url('../fonts/alice.woff') format('woff');
 }

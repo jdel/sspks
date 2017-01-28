@@ -12,3 +12,42 @@ function toggleClass(class_name, element_ids)
         }
     }
 }
+
+function toggleBeta()
+{
+    var input_element = document.getElementById('switch-beta');
+    var elements = document.getElementsByClassName('spk-beta');
+    var newState = "none";
+    if (input_element.checked) {
+        newState = "";
+    }
+    for (var i in elements) {
+        if (!elements.hasOwnProperty(i)) continue;
+        elements[i].style.display = newState;
+    }
+}
+
+function toggleDetails(clicked_element)
+{
+    var card = clicked_element.parentElement.parentElement;
+    var details = card.getElementsByClassName('spk-details')[0];
+    console.log('Element: %o', details);
+    if (details.style.display) {
+        // Make details visible
+        details.style.display = "";
+        clicked_element.innerHTML = 'Hide Info';
+    } else {
+        // Hide details
+        details.style.display = "none";
+        clicked_element.innerHTML = 'More Info';
+    }
+}
+
+function hideAllDetails()
+{
+    var elements = document.getElementsByClassName('spk-details');
+    for (var i in elements) {
+        if (!elements.hasOwnProperty(i)) continue;
+        elements[i].style.display = "none";
+    }
+}

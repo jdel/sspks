@@ -24,6 +24,7 @@ class BrowserDeviceListHandler extends AbstractHandler
             $output->setVariable('errorMessage', $e->getMessage());
             $output->setTemplate('html_modellist_error');
         }
+        $output->setVariable('is_devicelist', true);
         $output->output();
     }
 }

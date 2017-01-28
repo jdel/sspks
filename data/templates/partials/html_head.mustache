@@ -1,33 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="description" content="Simple SPK Server"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
         <title>{{ siteName }}</title>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <script src="data/js/material.min.js" type="text/javascript"></script>
         <script src="data/js/script.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="data/css/material.min.css" type="text/css" />
+        <link rel="stylesheet" href="data/css/roboto-font.css" type="text/css" />
+        <link rel="stylesheet" href="data/css/material-icons.css" type="text/css" />
         <link rel="stylesheet" href="data/css/style.css" type="text/css" />
-        <link rel="stylesheet" href="data/css/style_mobile.css" type="text/css" media="handheld"/>
     </head>
-    <body>
-        <h1>{{ siteName }}</h1>
-        <div id="menu">
-            <ul>
-                <li><a href=".">Synology Models</a></li>
-{{# arch }}
-    {{^ channel }}
-                <li><a href="{{ requestUri }}&channel=beta">Show Beta Packages</a></li>
-    {{/ channel }}
-{{/ arch }}
-{{# channel }}
-                <li><a href="./?arch={{ arch }}">Hide Beta Packages</a></li>
-{{/ channel }}
-{{^ fullList }}
-                <li><a href="./?fulllist=true">Full Packages List</a></li>
+    <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-color--grey-100">
+            <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary mdl-color-text--grey-100">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title mdl-layout--large-screen-only">{{ siteName }}</span>
+                    <div class="mdl-layout-spacer mdl-layout--large-screen-only"></div>
+                    <nav class="mdl-navigation">
+{{# is_devicelist }}
+                        <span class="mdl-navigation__link mdl-typography--font-bold">Synology Models</span>
+{{/ is_devicelist }}
+{{^ is_devicelist }}
+                        <a href="." class="mdl-navigation__link">Synology Models</a>
+{{/ is_devicelist }}
+{{# fullList }}
+                        <span class="mdl-navigation__link mdl-typography--font-bold">Full Packages List</a>
 {{/ fullList }}
-                <li class="last"><a href="http://github.com/jdel/sspks">Host your own packages</a></li>
-            </ul>
-        </div>
-        <div id="source-info">
-            <p>Add <span>{{ baseUrl }}</span> to your Synology NAS Package Center sources !</p>
-        </div>
-        <div id="content">
-            <ul>
+{{^ fullList }}
+                        <a href="./?fulllist=true" class="mdl-navigation__link">Full Packages List</a>
+{{/ fullList }}
+                    </nav>
+                </div>
+            </header>
+            <main class="mdl-layout__content">
+{{^ arch }}
+                <div class="mdl-layout__header-row mdl-color--yellow-100" id="setup-info">
+                    <span>Add <span>&nbsp;{{ baseUrl }}&nbsp;</span> to your Synology NAS Package Center sources!</span>
+                </div>
+{{/ arch }}
+                <div class="page-content">

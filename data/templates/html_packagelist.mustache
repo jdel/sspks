@@ -23,7 +23,7 @@
         <div class="mdl-card__supporting-text">
             {{ description }}
         </div>
-        <div class="mdl-card__supporting-text spk-details">
+        <div class="mdl-card__supporting-text spk-details spk-details-hidden">
             <table>
                 <tr><td>Package</td><td>{{ package }}</td></tr>
                 <tr><td>Version</td><td>{{ version }}</td></tr>
@@ -44,7 +44,6 @@
 <script type="text/javascript">
     (function () {
         toggleBeta();
-        hideAllDetails();
     })();
 </script>
 {{> html_tail }}

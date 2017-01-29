@@ -30,6 +30,20 @@
     line-height: 8px;
 }
 
+.spk-details {
+    max-height: 200px;
+    -webkit-transition: all 0.5s ease-in;
+    -moz-transition: all 0.5s ease-in;
+    -o-transition: all 0.5s ease-in;
+    transition: all 0.5s ease-in;
+}
+
+.spk-details-hidden {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 div.spk-icon {
     display: inline-block;
     top: 16px;

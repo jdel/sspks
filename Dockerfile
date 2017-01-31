@@ -14,7 +14,9 @@ RUN echo "BRANCH: ${BRANCH}" \
  && rm -rf /var/www/localhost/htdocs \
  && wget -O /var/www/localhost/sspks.zip https://github.com/jdel/sspks/archive/${COMMIT}.zip \
  && unzip /var/www/localhost/sspks.zip -d /var/www/localhost/ \
+ && rm /var/www/localhost/sspks.zip \
  && mv /var/www/localhost/sspks-*/ /var/www/localhost/htdocs/ && cd /var/www/localhost/htdocs \
+ && chown -R apache:apache /var/www/localhost/htdocs/ \
  && wget -q -O /usr/local/bin/composer https://getcomposer.org/download/1.3.1/composer.phar \
  && chmod +x /usr/local/bin/composer \
  && cd /var/www/localhost/htdocs \
@@ -25,6 +27,8 @@ RUN echo "BRANCH: ${BRANCH}" \
  && mkdir /run/apache2 \
  && ln -sf /dev/stdout /var/log/apache2/access.log \
  && ln -sf /dev/stderr /var/log/apache2/error.log
+
+USER apache
 
 COPY ./docker/supervisord.conf /usr/local/etc/supervisor/
 

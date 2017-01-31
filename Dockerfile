@@ -25,6 +25,7 @@ RUN echo "BRANCH: ${BRANCH}" \
  && apk del .build-dependencies \
  && rm -rf /var/cache/apk/* \
  && mkdir /run/apache2 \
+ && sed -i 's/Listen 80/Listen 8080/' /etc/apache2/httpd.conf \
  && ln -sf /dev/stdout /var/log/apache2/access.log \
  && ln -sf /dev/stderr /var/log/apache2/error.log
 
@@ -32,6 +33,6 @@ USER apache
 
 COPY ./docker/supervisord.conf /usr/local/etc/supervisor/
 
-EXPOSE 80
+EXPOSE 8080
 VOLUME "/var/www/localhost/htdocs/packages"
 CMD ["/usr/bin/supervisord", "-c", "/usr/local/etc/supervisor/supervisord.conf"]

@@ -16,7 +16,6 @@ RUN echo "BRANCH: ${BRANCH}" \
  && unzip /var/www/localhost/sspks.zip -d /var/www/localhost/ \
  && rm /var/www/localhost/sspks.zip \
  && mv /var/www/localhost/sspks-*/ /var/www/localhost/htdocs/ && cd /var/www/localhost/htdocs \
- && chown -R apache:apache /var/www/localhost/htdocs/ \
  && wget -q -O /usr/local/bin/composer https://getcomposer.org/download/1.3.1/composer.phar \
  && chmod +x /usr/local/bin/composer \
  && cd /var/www/localhost/htdocs \

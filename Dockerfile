@@ -17,7 +17,6 @@ RUN echo "BRANCH: ${BRANCH}" \
  && rm /var/www/localhost/sspks.zip \
  && mv /var/www/localhost/sspks-*/ /var/www/localhost/htdocs/ && cd /var/www/localhost/htdocs \
  && chown -R apache:apache /var/www/localhost/htdocs/ \
- && chown -R apache:apache /var/www/logs \
  && wget -q -O /usr/local/bin/composer https://getcomposer.org/download/1.3.1/composer.phar \
  && chmod +x /usr/local/bin/composer \
  && cd /var/www/localhost/htdocs \
@@ -29,8 +28,6 @@ RUN echo "BRANCH: ${BRANCH}" \
  && sed -i 's/Listen 80/Listen 8080/' /etc/apache2/httpd.conf \
  && ln -sf /dev/stdout /var/log/apache2/access.log \
  && ln -sf /dev/stderr /var/log/apache2/error.log
-
-USER apache
 
 COPY ./docker/supervisord.conf /usr/local/etc/supervisor/
 

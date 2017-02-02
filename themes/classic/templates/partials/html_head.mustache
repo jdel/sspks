@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ siteName }}</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <script src="{{ themeUrl }}js/script.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="{{ themeUrl }}css/style.css" type="text/css" />
+        <link rel="stylesheet" href="{{ themeUrl }}css/style_mobile.css" type="text/css" media="handheld"/>
+    </head>
+    <body>
+        <h1>{{ siteName }}</h1>
+        <div id="menu">
+            <ul>
+                <li><a href=".">Synology Models</a></li>
+{{# arch }}
+    {{^ channel }}
+                <li><a href="./?arch={{ arch }}" id="beta-toggle">Hide Beta Packages</a></li>
+    {{/ channel }}
+{{/ arch }}
+{{^ fullList }}
+                <li><a href="./?fulllist=true">Full Packages List</a></li>
+{{/ fullList }}
+                <li class="last"><a href="http://github.com/jdel/sspks">Host your own packages</a></li>
+            </ul>
+        </div>
+        <div id="source-info">
+            <p>Add <span>{{ baseUrl }}</span> to your Synology NAS Package Center sources !</p>
+        </div>
+        <div id="content">
+            <ul>

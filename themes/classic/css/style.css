@@ -1,0 +1,193 @@
+html {
+    background-color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-family: 'Alice', Arial, Helvetica, sans-serif;
+    font-size: x-large;
+    font-weight: bold;
+    color: #3F5E8A;
+}
+
+#menu ul {
+    list-style-type: none;
+    padding: 1em 0;
+    margin-top: -19px;
+    background-color: #3F5E8A;
+    border-top: 3px double #fff;
+}
+
+#menu ul li {
+    margin: 0;
+    padding: 0 1em 0 1em;
+    display: inline;
+    border-right: 1px solid #fff;
+}
+
+#menu ul li.last {
+    border: 0;
+}
+
+a img {
+    border: 0;
+}
+
+#menu ul li a:visited,
+#menu ul li a {
+    color: #fff;
+    font-family: 'Alice', sans-serif;
+    font-variant: small-caps;
+}
+
+#source-info {
+    font-size: small;
+    padding: 1em;
+    margin-top: -19px;
+    background-color: #DF3A01;
+    color: white;
+    border-top: 3px double #fff;
+}
+
+#source-info p {
+    border: 0px;
+    margin: 0px;
+}
+
+#source-info span {
+    font-family: Courier;
+}
+
+#content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#content ul li a {
+    text-decoration: none;
+}
+
+#content ul li.package {
+    min-height: 72px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff));
+    background: -moz-linear-gradient(top,  #eee,  #fff);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#ffffff');
+
+    border-radius: 7px; 
+    -moz-border-radius: 7px; 
+    -webkit-border-radius: 7px; 
+    border: 1px solid #ddd;
+
+    width: 500px;
+    padding: 7px;
+    margin-bottom: 10px;
+    margin-left:auto;
+    margin-right:auto;
+
+    color: #555;
+}
+
+#content ul li.syno-model {
+    float: left;
+    display: block;
+    width: 200px;
+    margin-bottom: 1em;
+    padding-left: 1em;
+}
+
+.spk-icon {
+    float: left;
+    margin-right: 13px;
+    display: block;
+}
+
+.spk-icon a {
+    display: inline-block;
+    position: relative;
+    line-height: 0;
+}
+
+.spk-icon a ins {
+    background: url('../images/beta_badge.png') no-repeat 0 0;
+    position: absolute;
+    left: 42px;
+    top: -7px;
+    width: 40px;
+    height: 40px;
+}
+
+.spk-desc {
+    text-align:justify;
+    display: block;
+    font-size:12px;
+}
+
+.spk-title {
+    font-family: 'Alice', sans-serif;
+    font-size:large;
+    font-weight: bold;
+    color:#3F5E8A;
+}
+
+.dsm-version {
+    font-size: x-small;
+    color: #888;
+    margin-top: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+/* https://tiffanybbrown.com/2011/09/26/toggle-blind-effect-with-css3-transitions/ */
+
+.toggler {
+    min-height: 0px;
+    max-height: 0px;
+    overflow: hidden;
+
+         -o-transition: min-height, max-height;
+        -ms-transition: min-height, max-height;
+       -moz-transition: min-height, max-height;
+     -khtml-transition: min-height, max-height;
+    -webkit-transition: min-height, max-height;
+            transition: min-height, max-height;
+            
+         -o-transition-duration: 0.5s;
+        -ms-transition-duration: 0.5s;
+       -moz-transition-duration: 0.5s;
+     -khtml-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+    
+         -o-transition-timing-function: ease-in-out;
+        -ms-transition-timing-function: ease-in-out;
+       -moz-transition-timing-function: ease-in-out;
+     -khtml-transition-timing-function: ease-in-out;
+    -webkit-transition-timing-function: ease-in-out;
+            transition-timing-function: ease-in-out;
+}
+
+.toggler.open {
+    height: auto;
+    min-height: 10px;
+    max-height: 500px;
+}
+
+hr {
+    border: 0;
+    border-bottom: 1px solid #3F5E8A;
+    clear: both;
+}
+
+#footer {
+    font-size: smaller;
+}
+
+@font-face {
+  font-family: 'Alice';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/alice-webfont.eot');
+  src: url('../fonts/alice.woff') format('woff');
+}

@@ -4,6 +4,7 @@ filter:
         - 'etc/*'
         - 'packages/*'
         - 'tests/*'
+        - 'themes/*/js/material.min.js'
     dependency_paths:
         - 'vendor/*'
 

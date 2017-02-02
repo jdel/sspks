@@ -1,7 +1,7 @@
 {{> html_head }}
     <div class="mdl-layout__header-row mdl-color--gray-100">
         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-beta">
-            <input type="checkbox" id="switch-beta" class="mdl-switch__input" onclick="toggleBeta();"/>
+            <input type="checkbox" id="switch-beta" class="mdl-switch__input" onclick="toggleBeta();" checked/>
             <span class="mdl-switch__label">Show Beta Packages</span>
         </label>
     </div>
@@ -43,7 +43,11 @@
 </div>
 <script type="text/javascript">
     (function () {
-        toggleBeta();
+        if (document.location.search.indexOf('channel=beta') == -1) {
+            var toggle = document.getElementById('switch-beta');
+            toggle.checked = false;
+            toggle.onclick();
+        }
     })();
 </script>
 {{> html_tail }}

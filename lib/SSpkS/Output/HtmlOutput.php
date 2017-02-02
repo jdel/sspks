@@ -16,16 +16,19 @@ class HtmlOutput
     public function __construct(\SSpkS\Config $config)
     {
         $this->config = $config;
+        $tplBase  = $this->config->basePath . DIRECTORY_SEPARATOR . $this->config->paths['themes'];
+        $tplBase .= $this->config->site['theme'] . DIRECTORY_SEPARATOR . 'templates';
 
         $this->mustache = new Mustache_Engine(array(
-            'loader'          => new Mustache_Loader_FilesystemLoader($this->config->basePath . '/data/templates'),
-            'partials_loader' => new Mustache_Loader_FilesystemLoader($this->config->basePath . '/data/templates/partials'),
+            'loader'          => new Mustache_Loader_FilesystemLoader($tplBase),
+            'partials_loader' => new Mustache_Loader_FilesystemLoader($tplBase . '/partials'),
             'charset'         => 'utf-8',
             'logger'          => new Mustache_Logger_StreamLogger('php://stderr'),
         ));
 
         $this->setVariable('siteName', $this->config->site['name']);
         $this->setVariable('baseUrl', $this->config->baseUrl);
+        $this->setVariable('themeUrl', $this->config->baseUrl . $this->config->paths['themes'] . $this->config->site['theme'] . '/');
         $this->setVariable('requestUri', $_SERVER['REQUEST_URI']);
     }
 

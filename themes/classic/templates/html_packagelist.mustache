@@ -1,6 +1,6 @@
 {{> html_head }}
 {{# packagelist }}
-                <li class="package">
+                <li class="package{{#beta}} beta-package{{/beta}}">
                     <div class="spk-icon">
                         <a href="{{ spk_url }}"><img src="{{ thumbnail_url.0 }}" alt="{{ displayname }}" />{{# beta }}<ins></ins>{{/ beta }}</a>
                     </div>
@@ -25,4 +25,11 @@
                     </div>
                 </li>
 {{/ packagelist }}
+<script type="text/javascript">
+    (function () {
+        if (document.location.search.indexOf('channel=beta') == -1) {
+            hideBeta();
+        }
+    })();
+</script>
 {{> html_tail }}

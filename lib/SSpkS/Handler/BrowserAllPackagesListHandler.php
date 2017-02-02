@@ -24,6 +24,7 @@ class BrowserAllPackagesListHandler extends AbstractHandler
             );
         }
         $output->setVariable('packagelist', $packages);
+        $output->setVariable('fullList', true);
         $output->setTemplate('html_packagelist_all');
         $output->output();
     }

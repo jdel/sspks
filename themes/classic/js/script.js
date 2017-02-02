@@ -12,3 +12,18 @@ function toggleClass(class_name, element_ids)
         }
     }
 }
+
+function hideBeta()
+{
+    // Hide beta packages, change link
+    var link = document.getElementById('beta-toggle');
+    link.href += '&channel=beta';
+    link.innerHTML = 'Show Beta Packages';
+    var betaPkgs = document.getElementsByClassName('beta-package');
+    for (var i in betaPkgs) {
+        if (!betaPkgs.hasOwnProperty(i)) {
+            continue;
+        }
+        betaPkgs[i].style.display = 'none';
+    }
+}

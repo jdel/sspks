@@ -5,7 +5,7 @@ Clone the repository wherever you want
 
 ```sh
 $ cd /home/git/
-$ git clone https://github.com/mbirth/sspks.git
+$ git clone https://github.com/jdel/sspks.git
 ```
 
 Get Composer (to install dependencies): Please see the

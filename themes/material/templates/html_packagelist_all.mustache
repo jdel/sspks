@@ -1,0 +1,11 @@
+{{> html_head }}
+<div class="mdl-grid">
+{{# packagelist }}
+    <div class="mdl-cell mdl-cell--3-col mdl-card small-card clickable-card mdl-shadow--2dp" onclick="location.href='{{ url }}';">
+        <div class="mdl-card__title">
+            {{ filename }}
+        </div>
+    </div>
+{{/ packagelist }}
+</div>
+{{> html_tail }}

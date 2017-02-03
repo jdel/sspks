@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="description" content="Simple SPK Server"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+        <title>{{ siteName }}</title>
+        <script src="{{ themeUrl }}js/material.min.js" type="text/javascript"></script>
+        <script src="{{ themeUrl }}js/script.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="{{ themeUrl }}css/material.min.css" type="text/css" />
+        <link rel="stylesheet" href="{{ themeUrl }}css/roboto-font.css" type="text/css" />
+        <link rel="stylesheet" href="{{ themeUrl }}css/material-icons.css" type="text/css" />
+        <link rel="stylesheet" href="{{ themeUrl }}css/style.css" type="text/css" />
+    </head>
+    <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-color--grey-100">
+            <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary mdl-color-text--grey-100">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title mdl-layout--large-screen-only">{{ siteName }}</span>
+                    <div class="mdl-layout-spacer mdl-layout--large-screen-only"></div>
+                    <nav class="mdl-navigation">
+{{# is_devicelist }}
+                        <span class="mdl-navigation__link mdl-typography--font-bold">Synology Models</span>
+{{/ is_devicelist }}
+{{^ is_devicelist }}
+                        <a href="." class="mdl-navigation__link">Synology Models</a>
+{{/ is_devicelist }}
+{{# fullList }}
+                        <span class="mdl-navigation__link mdl-typography--font-bold">Full Packages List</a>
+{{/ fullList }}
+{{^ fullList }}
+                        <a href="./?fulllist=true" class="mdl-navigation__link">Full Packages List</a>
+{{/ fullList }}
+                    </nav>
+                </div>
+            </header>
+            <main class="mdl-layout__content">
+{{^ arch }}
+                <div class="mdl-layout__header-row mdl-color--yellow-100" id="setup-info">
+                    <span>Add <span>&nbsp;{{ baseUrl }}&nbsp;</span> to your Synology NAS Package Center sources!</span>
+                </div>
+{{/ arch }}
+                <div class="page-content">

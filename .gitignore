@@ -1,0 +1,6 @@
+/clover.xml
+/composer.phar
+/packages/*.nfo
+/packages/*.png
+/packages/*.spk
+/vendor/*

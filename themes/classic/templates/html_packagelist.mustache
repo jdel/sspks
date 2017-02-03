@@ -1,0 +1,35 @@
+{{> html_head }}
+{{# packagelist }}
+                <li class="package{{#beta}} beta-package{{/beta}}">
+                    <div class="spk-icon">
+                        <a href="{{ spk_url }}"><img src="{{ thumbnail_url.0 }}" alt="{{ displayname }}" />{{# beta }}<ins></ins>{{/ beta }}</a>
+                    </div>
+                    <div class="spk-desc">
+                        <span class="spk-title">{{ displayname }} v{{ version }}</span><br />
+                        <p class="dsm-version">Minimum DSM version: {{ firmware }}</p>
+                        <p>{{ description }}</p>
+                        <p>
+                            <a id="{{ package }}_show" href="#nogo" onclick="toggleClass('open', ['{{ package }}_detail']); toggleClass('hidden', ['{{ package }}_show', '{{ package }}_hide']); return false;">More...</a>
+                            <a id="{{ package }}_hide" href="#nogo" onclick="toggleClass('open', ['{{ package }}_detail']); toggleClass('hidden', ['{{ package }}_hide', '{{ package }}_show']); return false;" class="hidden">Hide</a>
+                        </p>
+                        <div class="toggler" id="{{ package }}_detail">
+                            <table>
+                                <tr><td>Package</td><td>{{ package }}</td></tr>
+                                <tr><td>Version</td><td>{{ version }}</td></tr>
+                                <tr><td>Display Name</td><td>{{ displayname }}</td></tr>
+                                <tr><td>Maintainer</td><td>{{ maintainer }}</td></tr>
+                                <tr><td>Arch</td><td>{{# arch}}{{.}} {{/ arch}}</td></tr>
+                                <tr><td>Firmware</td><td>{{ firmware }}</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </li>
+{{/ packagelist }}
+<script type="text/javascript">
+    (function () {
+        if (document.location.search.indexOf('channel=beta') == -1) {
+            hideBeta();
+        }
+    })();
+</script>
+{{> html_tail }}

@@ -1,0 +1,62 @@
+#view-source {
+    position: fixed;
+    display: block;
+    right: 0;
+    bottom: 0;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    z-index: 900;
+}
+
+#setup-info {
+    height: 32px;
+}
+
+#setup-info span span {
+    font-family: monospace;
+}
+
+.small-card {
+    min-height: 32px;
+}
+
+.clickable-card {
+    cursor: pointer;
+}
+
+.spk-dsmversion {
+    font-size: 0.7rem;
+    padding: 0 16px 0 16px;
+    line-height: 8px;
+}
+
+.spk-details {
+    max-height: 200px;
+    -webkit-transition: all 0.5s ease-in;
+    -moz-transition: all 0.5s ease-in;
+    -o-transition: all 0.5s ease-in;
+    transition: all 0.5s ease-in;
+}
+
+.spk-details-hidden {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+div.spk-icon {
+    display: inline-block;
+    top: 16px;
+    right: 16px;
+    position: absolute;
+    line-height: 0;
+}
+
+div.spk-icon ins {
+    background: url('../images/beta_badge.png') no-repeat 0 0;
+    position: absolute;
+    left: 42px;
+    top: -7px;
+    width: 40px;
+    height: 40px;
+}

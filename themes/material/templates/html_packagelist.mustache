@@ -1,0 +1,53 @@
+{{> html_head }}
+    <div class="mdl-layout__header-row mdl-color--gray-100">
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-beta">
+            <input type="checkbox" id="switch-beta" class="mdl-switch__input" onclick="toggleBeta();" checked/>
+            <span class="mdl-switch__label">Show Beta Packages</span>
+        </label>
+    </div>
+{{# channel }}
+                    <a href="./?arch={{ arch }}" class="mdl-navigation__link mdl-color-text--grey-800">Show Beta Packages</a>
+{{/ channel }}
+<div class="mdl-grid">
+{{# packagelist }}
+    <div class="mdl-cell mdl-cell--6-col mdl-card spk-card{{#beta}} spk-beta mdl-color--amber-50{{/beta}} mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h1 class="mdl-card__title-text">{{ displayname }} v{{ version }}</h1>
+        </div>
+        <div class="spk-icon">
+            <img src="{{ thumbnail_url.0 }}" alt="{{ displayname }}" />{{# beta }}<ins></ins>{{/ beta }}
+        </div>
+        <div class="mdl-card__supporting-text spk-dsmversion">
+            Minimum DSM version: {{ firmware }}
+        </div>
+        <div class="mdl-card__supporting-text">
+            {{ description }}
+        </div>
+        <div class="mdl-card__supporting-text spk-details spk-details-hidden">
+            <table>
+                <tr><td>Package</td><td>{{ package }}</td></tr>
+                <tr><td>Version</td><td>{{ version }}</td></tr>
+                <tr><td>Display Name</td><td>{{ displayname }}</td></tr>
+                <tr><td>Maintainer</td><td>{{ maintainer }}</td></tr>
+                <tr><td>Arch</td><td>{{# arch}}{{.}} {{/ arch}}</td></tr>
+                <tr><td>Firmware</td><td>{{ firmware }}</td></tr>
+            </table>
+        </div>
+        <div class="mdl-layout-spacer"></div>
+        <div class="spk-actions mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colord mdl-js-button mdl-js-ripple-effect" href="#" onclick="toggleDetails(this);">More Info</a>
+            <a class="mdl-button mdl-button--colord mdl-js-button mdl-js-ripple-effect" href="{{ spk_url }}">Download</a>
+        </div>
+    </div>
+{{/ packagelist }}
+</div>
+<script type="text/javascript">
+    (function () {
+        if (document.location.search.indexOf('channel=beta') == -1) {
+            var toggle = document.getElementById('switch-beta');
+            toggle.checked = false;
+            toggle.onclick();
+        }
+    })();
+</script>
+{{> html_tail }}

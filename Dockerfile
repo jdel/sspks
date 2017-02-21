@@ -9,8 +9,8 @@ RUN echo "BRANCH: ${BRANCH}" \
  && echo "COMMIT: ${COMMIT}" \
  && echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}" \
  && echo "TRAVIS_COMMIT: ${TRAVIS_COMMIT}" \
- && apk update && apk add --no-cache supervisor apache2 php5-apache2 php5-phar php5-ctype \
- && apk add --virtual=.build-dependencies openssl php5 php5-json php5-openssl git \
+ && apk update && apk add --no-cache supervisor apache2 php5-apache2 php5-phar php5-ctype php5-json \
+ && apk add --virtual=.build-dependencies openssl php5 php5-openssl git \
  && rm -rf /var/www/localhost/htdocs \
  && wget -O /var/www/localhost/sspks.zip https://github.com/jdel/sspks/archive/${COMMIT}.zip \
  && unzip /var/www/localhost/sspks.zip -d /var/www/localhost/ \

@@ -186,7 +186,7 @@ class Package
             return true;
         }
         // Try to extract file
-        $tmp_dir = sys_get_temp_dir();
+        $tmp_dir = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
         $free_tmp = disk_free_space($tmp_dir);
         if ($free_tmp < 2048) {
             throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes space available. Disk full!');

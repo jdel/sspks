@@ -154,6 +154,6 @@ auto_upgrade_from - version number (optional)
             $jsonOutput['keyrings'] = $keyring;
         }
 
-        echo stripslashes(json_encode($jsonOutput));
+        echo stripslashes(json_encode($jsonOutput, JSON_UNESCAPED_UNICODE));
     }
 }

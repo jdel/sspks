@@ -223,6 +223,16 @@ class Package
                 file_put_contents($this->filepathNoExt . '_thumb_72.png', base64_decode($this->metadata['package_icon']));
             }
         }
+        /* Synology itself uses 256x256 img for the 120 thumb (see the Calendar package) */
+        try {
+            $this->extractIfMissing('PACKAGE_ICON_256.PNG', $this->filepathNoExt . '_thumb_120.png');
+        } catch (\Exception $e) {
+            // Check if icon is in metadata
+            $this->collectMetadata();
+            if (isset($this->metadata['package_icon_256'])) {
+                file_put_contents($this->filepathNoExt . '_thumb_120.png', base64_decode($this->metadata['package_icon_256']));
+            }
+        }
         $thumbnails = array();
         foreach (array('72', '120') as $size) {
             $thumb_name = $this->filepathNoExt . '_thumb_' . $size . '.png';

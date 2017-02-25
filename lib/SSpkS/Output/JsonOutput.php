@@ -99,8 +99,8 @@ auto_upgrade_from - version number (optional)
             'dname'        => $pkg->displayname,
             'desc'         => $pkg->description,
             'price'        => 0,
-            'download_count'        => 6000, // Will only display values over 1000
-            'recent_download_count' => 1222,
+            'download_count'        => 0, // Will only display values over 1000, do not display it by default
+            'recent_download_count' => 0,
             'link'         => $pkg->spk_url,
             'size'         => filesize($pkg->spk),
             'md5'          => md5_file($pkg->spk),

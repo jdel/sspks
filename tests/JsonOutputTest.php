@@ -62,7 +62,7 @@ class JsonOutputTest extends TestCase
         $this->expectOutputString(
             '{"packages":[{"package":"Docker","version":"1.11.1-0265","dname":"Docker","desc":"Docker is a lightweight virtualization application that ' .
             'gives you the ability to run thousands of containers created by developers from all over the world on DSM. The hugely popular built-in image repository, Docker ' .
-            'Hub, allows you to find shared applications from other talented developers.","price":0,"download_count":6000,"recent_download_count":1222,"link":"http://prefix' . $this->tempPkg .
+            'Hub, allows you to find shared applications from other talented developers.","price":0,"download_count":0,"recent_download_count":0,"link":"http://prefix' . $this->tempPkg .
             '","size":' . $pkgSize . ',"md5":"' . $pkgMd5 . '","thumbnail":["http://prefix' . $p->thumbnail[0] . '","http://prefix' . $p->thumbnail[1] . '"],' .
             '"snapshot":["http://prefix' . $p->snapshot[0] . '","http://prefix' . $p->snapshot[1] . '"],"qinst":false,"qstart":false,"qupgrade":false,"depsers":null,"deppkgs"' .
             ':null,"conflictpkgs":null,"start":true,"maintainer":"Synology Inc.","maintainer_url":"http://dummy.org/","distributor":"SSpkS","distributor_url":"http://dummy.org/",' .

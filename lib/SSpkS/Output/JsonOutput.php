@@ -9,9 +9,11 @@ namespace SSpkS\Output;
 class JsonOutput
 {
     private $excludedServices = array();
+    private $config;
 
-    public function __construct()
+    public function __construct(\SSpkS\Config $config)
     {
+        $this->config = $config;
     }
 
     /**
@@ -114,10 +116,10 @@ auto_upgrade_from - version number (optional)
             'deppkgs'      => $deppkgs,
             'conflictpkgs' => null,
             'start'        => true,
-            'maintainer'      => $this->ifEmpty($pkg, 'maintainer', 'SSpkS'),
-            'maintainer_url'  => $this->ifEmpty($pkg, 'maintainer_url', 'http://dummy.org/'),
-            'distributor'     => $this->ifEmpty($pkg, 'distributor', 'SSpkS'),
-            'distributor_url' => $this->ifEmpty($pkg, 'distributor_url', 'http://dummy.org/'),
+            'maintainer'      => $this->ifEmpty($pkg, 'maintainer', $this->config->packages['maintainer']),
+            'maintainer_url'  => $this->ifEmpty($pkg, 'maintainer_url', $this->config->packages['maintainer_url']),
+            'distributor'     => $this->ifEmpty($pkg, 'distributor', $this->config->packages['distributor']),
+            'distributor_url' => $this->ifEmpty($pkg, 'distributor_url', $this->config->packages['distributor_url']),
             'changelog'    => $this->ifEmpty($pkg, 'changelog', ''),
             'thirdparty'   => true,
             'category'     => 0,

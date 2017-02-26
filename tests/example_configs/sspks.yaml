@@ -2,10 +2,10 @@ site:
     name: Test config file
 
 packages:
-    maintainer:
-    maintainer_url:
-    distributor:
-    distributor_url:
+    maintainer: SSpkS
+    maintainer_url: http://dummy.org/
+    distributor: SSpkS
+    distributor_url: http://dummy.org/
 
 paths:
     models: tests/example_devicelists/models.yaml

@@ -63,7 +63,7 @@ class SynologyHandler extends AbstractHandler
         $uf = new UrlFixer($this->config->baseUrl);
         $uf->fixPackageList($filteredPkgList);
 
-        $jo = new JsonOutput();
+        $jo = new JsonOutput(this->config);
         $jo->setExcludedServices($this->config->excludedSynoServices);
         $jo->outputPackages($filteredPkgList);
     }

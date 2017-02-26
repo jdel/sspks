@@ -6,10 +6,12 @@ use PHPUnit\Framework\TestCase;
 use SSpkS\Package\Package;
 use SSpkS\Output\JsonOutput;
 use SSpkS\Output\UrlFixer;
+use SSpkS\Config;
 
 class JsonOutputTest extends TestCase
 {
     private $tempPkg;
+    private $goodFile = 'example_configs/sspks.yaml';
 
     public function setUp()
     {
@@ -36,7 +38,7 @@ class JsonOutputTest extends TestCase
         $uf = new UrlFixer('http://prefix');
         $uf->fixPackageList($pl);
 
-        $jo = new JsonOutput();
+        $jo = new JsonOutput(new Config(__DIR__, $this->goodFile));
         $jo->setExcludedServices(array('test3'));
 
         $jo->outputPackages($pl);
@@ -52,7 +54,7 @@ class JsonOutputTest extends TestCase
         $uf = new UrlFixer('http://prefix');
         $uf->fixPackageList($pl);
 
-        $jo = new JsonOutput();
+        $jo = new JsonOutput(new Config(__DIR__, $this->goodFile));
 
         $jo->outputPackages($pl);
 

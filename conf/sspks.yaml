@@ -3,10 +3,10 @@ site:
     theme: material
 
 packages:
-    maintainer:
-    maintainer_url:
-    distributor:
-    distributor_url:
+    maintainer: ""
+    maintainer_url: ""
+    distributor: ""
+    distributor_url: ""
 
 # ALL PATHS MUST BE RELATIVE TO THE ROOT
 # DIRECTORY (where the index.php is located)

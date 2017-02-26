@@ -1,6 +1,12 @@
 site:
     name: Test config file
 
+packages:
+    maintainer:
+    maintainer_url:
+    distributor:
+    distributor_url:
+
 paths:
     models: tests/example_devicelists/models.yaml
     packages: tests/example_packageset/

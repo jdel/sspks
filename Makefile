@@ -36,11 +36,11 @@ package.tgz: .htaccess
 	@echo "DirectoryIndex index.php" > ./_syno_package/package/share/sspks/.htaccess
 
 INFO: VERSION
-	@sed -i '' "s/version=\"\"/version=\"$(shell cat VERSION)\"/" ./_syno_package/INFO
+	@sed -i "s/version=\"\"/version=\"$(shell cat VERSION)\"/" ./_syno_package/INFO
 
 .PHONY: clean
 clean:
-	@sed -i '' "s/version=\"$(shell cat VERSION)\"/version=\"\"/" ./_syno_package/INFO
+	@sed -i "s/version=\"$(shell cat VERSION)\"/version=\"\"/" ./_syno_package/INFO
 	@rm -rf ./_syno_package/package/share/sspks/ ./_syno_package/package.tgz ./sspks_noarch_${DATE}.spk
 
 .PHONY: release

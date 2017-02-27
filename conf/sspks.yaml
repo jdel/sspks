@@ -1,6 +1,7 @@
 site:
     name: Simple SPK Server
     theme: material
+    redirectindex:
 
 # ALL PATHS MUST BE RELATIVE TO THE ROOT
 # DIRECTORY (where the index.php is located)

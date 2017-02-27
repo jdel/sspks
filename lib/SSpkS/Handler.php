@@ -26,6 +26,9 @@ class Handler
 
         if (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology') {
             $handler = new SynologyHandler($this->config);
+        } elseif (isset($this->config->site['redirectindex']) && !empty($this->config->site['redirectindex'])) {
+            header('Location: '.$this->config->site['redirectindex']);
+            die();
         } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
             // GET-request, probably browser --> show HTML
             $arch     = trim($_GET['arch']);

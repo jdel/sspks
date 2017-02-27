@@ -1,6 +1,8 @@
 site:
     name: Simple SPK Server
     theme: material
+    # If set, packet listing will be disabled
+    # and will redirect to the given URL
     redirectindex:
 
 # ALL PATHS MUST BE RELATIVE TO THE ROOT

@@ -109,9 +109,9 @@ auto_upgrade_from - version number (optional)
             'thumbnail'    => $pkg->thumbnail_url,
             'snapshot'     => $pkg->snapshot_url,
             // quick install/start/upgrade
-            'qinst'        => $this->ifEmpty($pkg, 'qinst', false),
-            'qstart'       => $this->ifEmpty($pkg, 'start', false),
-            'qupgrade'     => $this->ifEmpty($pkg, 'qupgrade', false),
+            'qinst'        => $this->ifEmpty($pkg, 'qinst', true),
+            'qstart'       => $this->ifEmpty($pkg, 'start', true),
+            'qupgrade'     => $this->ifEmpty($pkg, 'qupgrade', true),
             'depsers'      => $this->ifEmpty($pkg, 'start_dep_services'), // required started packages
             'deppkgs'      => $deppkgs,
             'conflictpkgs' => null,

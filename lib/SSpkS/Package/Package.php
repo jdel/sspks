@@ -254,6 +254,16 @@ class Package
      */
     public function getSnapshots($pathPrefix = '')
     {
+        /* Let's first try to extract screenshots from package (SSpkS feature) */
+        $i = 1;
+        while (true) {
+            try {
+                $this->extractIfMissing('screen_' . $i . '.png', $this->filepathNoExt . '_screen_' . $i . '.png');
+                $i++;
+            } catch (\Exception $e) {
+                break;
+            }
+        }
         $snapshots = array();
         // Add screenshots, if available
         foreach (glob($this->filepathNoExt . '*_screen_*.png') as $snapshot) {

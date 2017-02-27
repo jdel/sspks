@@ -1,0 +1,18 @@
+[{
+    "step_title": "Basic configuration",
+    "items": [{
+        "type": "textfield",
+        "desc": "Subdirectory of /var/services/web/ that sspks will be installed to. Defaults to \"sspks\". This directory has to be empty, if it doesn't exist, it will be created.",
+        "subitems": [{
+            "key": "wizard_install_dir",
+            "desc": "Install directory"
+        }]
+    }, {
+        "type": "textfield",
+        "desc": "Packages directory. Defaults to /var/services/web/packages. If this directory doesn't exist, it will be created. If this directory is not in /var/services/web/, you will need to amend your PHP open_basedir value to allow this path.",
+        "subitems": [{
+            "key": "wizard_packages_dir",
+            "desc": "Packages directory"
+        }]
+    }]
+}]

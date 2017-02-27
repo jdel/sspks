@@ -1,0 +1,80 @@
+#!/bin/sh
+
+# Package
+PACKAGE="sspks"
+DNAME="Simple SPK Server"
+
+# Others
+INSTALL_DIR="/usr/local/${PACKAGE}"
+LOGFILE=""
+
+start_daemon ()
+{
+    sspks_url=`cat ${INSTALL_DIR}/etc/install_dir`
+    sspks_install_dir="/var/services/web/${sspks_url}"
+    sspks_packages_dir=`cat ${INSTALL_DIR}/etc/packages_dir`
+    if [ $(find ${sspks_install_dir} 2>/dev/null | wc -l) -gt 1 ]; then
+        echo "${sspks_install_dir} is not empty !"
+        return 1
+    else
+        mkdir -p ${sspks_install_dir}
+        cp -rf ${INSTALL_DIR}/share/sspks/{composer.json,composer.lock,conf,index.php,lib,selftest.php,themes,.htaccess} ${sspks_install_dir}
+        if [ ! -L ${sspks_install_dir}/packages ]; then
+            ln -s ${sspks_packages_dir} ${sspks_install_dir}/packages
+        fi
+    fi
+}
+
+stop_daemon ()
+{
+    sspks_url=`cat ${INSTALL_DIR}/etc/install_dir`
+    sspks_install_dir="/var/services/web/${sspks_url}"
+    rm -f ${sspks_install_dir}/packages
+    rm -rf ${sspks_install_dir}
+}
+
+daemon_status ()
+{
+    sspks_url=`cat ${INSTALL_DIR}/etc/install_dir`
+    sspks_install_dir="/var/services/web/${sspks_url}"
+    if [[ -f ${sspks_install_dir}/index.php && -d ${sspks_install_dir}/conf/ && -L ${sspks_install_dir}/packages ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+
+case $1 in
+    start)
+        if daemon_status; then
+            echo ${DNAME} is already running
+        else
+            echo Starting ${DNAME} ...
+            start_daemon
+        fi
+        ;;
+    stop)
+        if daemon_status; then
+            echo Stopping ${DNAME} ...
+            stop_daemon
+        else
+            echo ${DNAME} is not running
+        fi
+        ;;
+    status)
+        if daemon_status; then
+            echo ${DNAME} is running
+            exit 0
+        else
+            echo ${DNAME} is not running
+            exit 1
+        fi
+        ;;
+    log)
+        echo ${LOG_FILE}
+        ;;
+    *)
+        exit 1
+        ;;
+esac

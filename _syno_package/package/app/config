@@ -1,0 +1,15 @@
+{
+    ".url": {
+        "org.jdel.packages.sspks": {
+            "title": "Simple SPK Server",
+            "desc": "A very simple php SPK Server",
+            "icon": "images/sspks-{0}.png",
+            "type": "url",
+            "protocol": "http",
+            "port": "80",
+            "url": "@sspks_url@",
+            "allUsers": true,
+            "grantPrivilege": "local"
+        }
+    }
+}

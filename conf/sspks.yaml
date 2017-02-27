@@ -1,6 +1,9 @@
 site:
     name: Simple SPK Server
     theme: material
+    # If set, packet listing will be disabled
+    # and will redirect to the given URL
+    redirectindex:
 
 packages:
     maintainer: ""

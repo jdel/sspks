@@ -12,7 +12,9 @@ function toggleClassElement(class_name, element)
 function toggleClass(class_name, element_ids)
 {
     for (var i in element_ids) {
-        if (!element_ids.hasOwnProperty(i)) continue;
+        if (!element_ids.hasOwnProperty(i)) {
+            continue;
+        }
         var element = document.getElementById(element_ids[i]);
         toggleClassElement(class_name, element);
     }
@@ -27,7 +29,9 @@ function toggleBeta()
         newState = "";
     }
     for (var i in elements) {
-        if (!elements.hasOwnProperty(i)) continue;
+        if (!elements.hasOwnProperty(i)) {
+            continue;
+        }
         elements[i].style.display = newState;
     }
 }

@@ -28,7 +28,8 @@ class HtmlOutput
 
         $this->setVariable('siteName', $this->config->site['name']);
         $this->setVariable('baseUrl', $this->config->baseUrl);
-        $this->setVariable('themeUrl', $this->config->baseUrl . $this->config->paths['themes'] . $this->config->site['theme'] . '/');
+        $this->setVariable('baseUrlRelative', $this->config->baseUrlRelative);
+        $this->setVariable('themeUrl', $this->config->baseUrlRelative . $this->config->paths['themes'] . $this->config->site['theme'] . '/');
         $this->setVariable('requestUri', $_SERVER['REQUEST_URI']);
     }
 

@@ -12,7 +12,8 @@ use \SSpkS\Config;
 use \SSpkS\Handler;
 
 $config = new Config(__DIR__, 'conf/sspks.yaml');
-$config->baseUrl = 'http' . ($_SERVER['HTTPS']?'s':'') . '://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')) . '/';
+$config->baseUrlRelative = substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')) . '/';
+$config->baseUrl = 'http' . ($_SERVER['HTTPS']?'s':'') . '://' . $_SERVER['HTTP_HOST'] . $config->baseUrlRelative;
 
 $handler = new Handler($config);
 $handler->handle();

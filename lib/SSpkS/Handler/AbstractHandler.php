@@ -11,5 +11,6 @@ abstract class AbstractHandler
         $this->config = $config;
     }
 
+    abstract public function canHandle();
     abstract public function handle();
 }

@@ -7,6 +7,11 @@ use \SSpkS\Package\PackageFinder;
 
 class BrowserAllPackagesListHandler extends AbstractHandler
 {
+    public function canHandle()
+    {
+        return ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty(trim($_GET['fulllist'])));
+    }
+
     public function handle()
     {
         // No architecture, but full list of packages requested --> show simple list

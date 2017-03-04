@@ -7,6 +7,11 @@ use \SSpkS\Output\HtmlOutput;
 
 class BrowserDeviceListHandler extends AbstractHandler
 {
+    public function canHandle()
+    {
+        return ($_SERVER['REQUEST_METHOD'] == 'GET');
+    }
+
     public function handle()
     {
         // Nothing requested --> show models overview

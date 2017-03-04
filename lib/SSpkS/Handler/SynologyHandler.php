@@ -29,10 +29,13 @@ package_update_channel = stable
     [timezone] => Amsterdam
 */
 
-// Assume Synology if parameter 'unique' begins with 'synology'
-
 class SynologyHandler extends AbstractHandler
 {
+    public function canHandle()
+    {
+        return (isset($_REQUEST['unique']) && substr($_REQUEST['unique'], 0, 8) == 'synology');
+    }
+
     public function handle()
     {
         // Synology request --> show JSON

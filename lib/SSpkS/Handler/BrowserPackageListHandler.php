@@ -9,6 +9,11 @@ use \SSpkS\Package\PackageFinder;
 
 class BrowserPackageListHandler extends AbstractHandler
 {
+    public function canHandle()
+    {
+        return ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty(trim($_GET['arch'])));
+    }
+
     public function handle()
     {
         // Architecture is set --> show packages for that arch

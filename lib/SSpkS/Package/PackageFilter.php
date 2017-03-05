@@ -2,6 +2,7 @@
 
 namespace SSpkS\Package;
 
+use \SSpkS\Device\DeviceList;
 use \SSpkS\Package\Package;
 
 /**
@@ -9,6 +10,7 @@ use \SSpkS\Package\Package;
  */
 class PackageFilter
 {
+    private $config;
     private $pkgList;
     /** @var bool|string[] $filterArch Array of allowed architectures, or FALSE to ignore. */
     private $filterArch = false;
@@ -20,10 +22,12 @@ class PackageFilter
     private $filterOldVersions = false;
 
     /**
+     * @param \SSpkS\Config $config Config object
      * @param \SSpkS\Package\Package[] $pkgList List of Package objects to filter
      */
-    public function __construct(array $pkgList)
+    public function __construct(\SSpkS\Config $config, array $pkgList)
     {
+        $this->config = $config;
         $this->pkgList = $pkgList;
     }
 
@@ -34,7 +38,9 @@ class PackageFilter
      */
     public function setArchitectureFilter($arch)
     {
-        $this->filterArch = array('noarch', $arch);
+        $dl = new DeviceList($this->config);
+        $family = $dl->getFamily($arch);
+        $this->filterArch = array_unique(array('noarch', $arch, $family));
     }
 
     /**

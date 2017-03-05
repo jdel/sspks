@@ -294,6 +294,7 @@ class Package
     {
         // Make sure we have metadata available
         $this->collectMetadata();
+        // TODO: Check arch family, too?
         return (in_array($arch, $this->metadata['arch']) || in_array('noarch', $this->metadata['arch']));
     }
 

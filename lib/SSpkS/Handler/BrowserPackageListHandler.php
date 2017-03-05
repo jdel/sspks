@@ -23,7 +23,7 @@ class BrowserPackageListHandler extends AbstractHandler
         $output->setVariable('arch', $arch);
 
         $pkgs = new PackageFinder($this->config);
-        $pkgf = new PackageFilter($pkgs->getAllPackages());
+        $pkgf = new PackageFilter($this->config, $pkgs->getAllPackages());
         $pkgf->setArchitectureFilter($arch);
         $pkgf->setFirmwareVersionFilter(false);
         $pkgf->setOldVersionFilter(true);
@@ -34,8 +34,11 @@ class BrowserPackageListHandler extends AbstractHandler
 
         $packages = array();
         foreach ($filteredPkgList as $pkg) {
-            $packages[] = $pkg->getMetadata();
+            $pkgMeta = $pkg->getMetadata();
+            $packages[$pkgMeta['displayname']] = $pkgMeta;
         }
+
+        ksort($packages, SORT_NATURAL | SORT_FLAG_CASE);
 
         $output->setVariable('packagelist', array_values($packages));
         $output->setTemplate('html_packagelist');

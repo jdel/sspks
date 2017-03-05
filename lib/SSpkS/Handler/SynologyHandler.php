@@ -54,7 +54,7 @@ class SynologyHandler extends AbstractHandler
         header('Content-type: application/json');
         $fw_version = $major . '.' . $minor . '.' . $build;
         $pkgs = new PackageFinder($this->config);
-        $pkgf = new PackageFilter($pkgs->getAllPackages());
+        $pkgf = new PackageFilter($this->config, $pkgs->getAllPackages());
         $pkgf->setArchitectureFilter($arch);
         $pkgf->setChannelFilter($channel);
         $pkgf->setFirmwareVersionFilter($fw_version);

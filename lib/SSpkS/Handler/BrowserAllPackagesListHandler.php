@@ -23,12 +23,13 @@ class BrowserAllPackagesListHandler extends AbstractHandler
         // Prepare data for template
         $packages = array();
         foreach ($packagesList as $spkFile) {
-            $packages[] = array(
+            $packages[basename($spkFile)] = array(
                 'url'      => $this->config->baseUrl . $spkFile,
                 'filename' => basename($spkFile),
             );
         }
-        $output->setVariable('packagelist', $packages);
+        ksort($packages, SORT_NATURAL | SORT_FLAG_CASE);
+        $output->setVariable('packagelist', array_values($packages));
         $output->setVariable('fullList', true);
         $output->setTemplate('html_packagelist_all');
         $output->output();

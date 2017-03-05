@@ -26,7 +26,7 @@ class PackageFilterTest extends TestCase
 
     public function testPassThru()
     {
-        $pf = new PackageFilter($this->testList);
+        $pf = new PackageFilter($this->config, $this->testList);
         $pl = $pf->getFilteredPackageList();
         $this->assertContainsOnlyInstancesOf(\SSpkS\Package\Package::class, $pl);
         $this->assertEquals($pl, $this->testList);
@@ -34,7 +34,7 @@ class PackageFilterTest extends TestCase
 
     public function testOmitOldVersions()
     {
-        $pf = new PackageFilter($this->testList);
+        $pf = new PackageFilter($this->config, $this->testList);
         $pf->setOldVersionFilter(true);
         $newList = $pf->getFilteredPackageList();
         // 2 files are dupes
@@ -43,7 +43,7 @@ class PackageFilterTest extends TestCase
 
     public function testArchitectureFilter()
     {
-        $pf = new PackageFilter($this->testList);
+        $pf = new PackageFilter($this->config, $this->testList);
         $pf->setArchitectureFilter('x86_64');
         $newList = $pf->getFilteredPackageList();
         foreach ($newList as $pkg) {
@@ -58,7 +58,7 @@ class PackageFilterTest extends TestCase
 
     public function testFirmwareVersionFilter()
     {
-        $pf = new PackageFilter($this->testList);
+        $pf = new PackageFilter($this->config, $this->testList);
         $pf->setFirmwareVersionFilter('1.0-0000');
         $newList = $pf->getFilteredPackageList();
         $this->assertCount(3, $newList);
@@ -75,7 +75,7 @@ class PackageFilterTest extends TestCase
 
     public function testChannelFilter()
     {
-        $pf = new PackageFilter($this->testList);
+        $pf = new PackageFilter($this->config, $this->testList);
         $pf->setChannelFilter('stable');
         $newList = $pf->getFilteredPackageList();
         $this->assertCount(4, $newList);

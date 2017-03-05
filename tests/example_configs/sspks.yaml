@@ -3,6 +3,7 @@ site:
     theme: material
 
 packages:
+    file_mask: "*.spk"
     maintainer: SSpkS
     maintainer_url: http://dummy.org/
     distributor: SSpkS

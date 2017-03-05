@@ -44,7 +44,7 @@ class DeviceListTest extends TestCase
         $d  = $dl->getDevices();
         $this->assertCount(6, $d);
         $this->assertContainsOnly('array', $d);
-        $this->assertContains(array('arch' => 'architecture2', 'name' => 'model4'), $d);
+        $this->assertContains(array('arch' => 'architecture2', 'name' => 'model4', 'family' => 'family1'), $d);
     }
 
     public function testPlusSigns()
@@ -52,7 +52,7 @@ class DeviceListTest extends TestCase
         $this->config->paths = array('models' => $this->goodFile);
         $dl = new DeviceList($this->config);
         $d  = $dl->getDevices();
-        $this->assertContains(array('arch' => 'plussign', 'name' => 'DS411+II'), $d);
-        $this->assertContains(array('arch' => 'plussign', 'name' => 'DS211+'), $d);
+        $this->assertContains(array('arch' => 'plussign', 'name' => 'DS411+II', 'family' => 'family2'), $d);
+        $this->assertContains(array('arch' => 'plussign', 'name' => 'DS211+', 'family' => 'family2'), $d);
     }
 }

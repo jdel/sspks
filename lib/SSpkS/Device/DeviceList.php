@@ -48,15 +48,32 @@ class DeviceList
             foreach ($archlist as $arch => $archmodels) {
                 foreach ($archmodels as $model) {
                     $this->devices[$idx] = array(
-                        'arch' => $arch,
-                        'name' => $model,
+                        'arch'   => $arch,
+                        'name'   => $model,
+                        'family' => $family,
                     );
                     $sortkey[$idx] = $model;
                     $idx++;
                 }
             }
         }
-        array_multisort($sortkey, SORT_NATURAL|SORT_FLAG_CASE, $this->devices);
+        array_multisort($sortkey, SORT_NATURAL | SORT_FLAG_CASE, $this->devices);
+    }
+
+    /**
+     * Returns the architecture family for given $arch
+     *
+     * @param string $arch Architecture
+     * @return string Family or $arch if not found
+     */
+    public function getFamily($arch)
+    {
+        foreach ($this->devices as $d) {
+            if ($d['arch'] == $arch) {
+                return $d['family'];
+            }
+        }
+        return $arch;
     }
 
     /**

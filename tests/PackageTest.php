@@ -3,14 +3,21 @@
 namespace SSpkS\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SSpkS\Config;
 use SSpkS\Package\Package;
 
 class PackageTest extends TestCase
 {
+    private $config;
     private $tempPkg;
 
     public function setUp()
     {
+        $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
+        $this->config->paths = array_merge(
+            $this->config->paths,
+            array('cache' => sys_get_temp_dir() . '/')
+        );
         $tempNoExt = tempnam(sys_get_temp_dir(), 'SSpkS');
         unlink($tempNoExt);   // don't need the file without ext'
         $this->tempPkg = $tempNoExt . '.tar';
@@ -31,7 +38,7 @@ class PackageTest extends TestCase
         $this->assertFileExists($file_spk);
         $this->assertFileNotExists($file_nfo);
         $this->assertFileNotExists($file_icon);
-        $p = new Package($this->tempPkg);
+        $p = new Package($this->config, $this->tempPkg);
         $p->getMetadata();
         $this->assertFileExists($file_nfo);
         $this->assertFileExists($file_icon);
@@ -39,7 +46,7 @@ class PackageTest extends TestCase
 
     public function testMetadata()
     {
-        $p = new Package($this->tempPkg);
+        $p = new Package($this->config, $this->tempPkg);
         $md = $p->getMetadata();
         $this->assertGreaterThan(0, count($md));
         $this->assertEquals($p->package, 'Docker');
@@ -61,7 +68,7 @@ class PackageTest extends TestCase
 
     public function testHelperMethods()
     {
-        $p = new Package($this->tempPkg);
+        $p = new Package($this->config, $this->tempPkg);
         $this->assertTrue($p->isCompatibleToArch('x86_64'));
         $this->assertFalse($p->isCompatibleToArch('avoton'));
         $this->assertTrue($p->isCompatibleToFirmware('6.0.1-7393'));
@@ -75,7 +82,7 @@ class PackageTest extends TestCase
      */
     public function testBadFilename()
     {
-        new Package('badfilename.xyz');
+        new Package($this->config, 'badfilename.xyz');
     }
 
     /**
@@ -84,7 +91,7 @@ class PackageTest extends TestCase
      */
     public function testNonExistFile()
     {
-        new Package('notexisting.spk');
+        new Package($this->config, 'notexisting.spk');
     }
 
     public function testIconFromInfo()
@@ -97,7 +104,7 @@ class PackageTest extends TestCase
         $phar->compress(\Phar::GZ, '.spk');
         $tempPkg = $tempNoExt . '.spk';
 
-        $p = new Package($tempPkg);
+        $p = new Package($this->config, $tempPkg);
         $file_nfo  = $tempNoExt . '.nfo';
         $file_icon = $tempNoExt . '_thumb_72.png';
         $p->getMetadata();
@@ -113,7 +120,7 @@ class PackageTest extends TestCase
     public function testExtraction()
     {
         $test_file = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '.txt';
-        $p = new Package($this->tempPkg);
+        $p = new Package($this->config, $this->tempPkg);
         $this->assertFileNotExists($test_file);
         $p->extractIfMissing('INFO', $test_file);
         $this->assertFileExists($test_file);

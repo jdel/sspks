@@ -1,6 +1,6 @@
 /clover.xml
 /composer.phar
-/packages/*.nfo
-/packages/*.png
+/cache/*.nfo
+/cache/*.png
 /packages/*.spk
 /vendor/*

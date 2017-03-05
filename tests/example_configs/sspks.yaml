@@ -1,5 +1,6 @@
 site:
     name: Test config file
+    theme: material
 
 packages:
     maintainer: SSpkS
@@ -8,8 +9,10 @@ packages:
     distributor_url: http://dummy.org/
 
 paths:
+    cache: tests/example_packageset/
     models: tests/example_devicelists/models.yaml
     packages: tests/example_packageset/
+    themes: ../themes/
 
 excludedSynoServices:
     - service1

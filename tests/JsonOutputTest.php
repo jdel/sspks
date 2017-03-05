@@ -10,11 +10,16 @@ use SSpkS\Config;
 
 class JsonOutputTest extends TestCase
 {
+    private $config;
     private $tempPkg;
-    private $goodFile = 'example_configs/sspks.yaml';
 
     public function setUp()
     {
+        $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
+        $this->config->paths = array_merge(
+            $this->config->paths,
+            array('cache' => sys_get_temp_dir() . '/')
+        );
         $this->tempPkg = tempnam(sys_get_temp_dir(), 'SSpkS') . '.tar';
         $phar = new \PharData($this->tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
@@ -31,14 +36,14 @@ class JsonOutputTest extends TestCase
 
     public function testExcludedServices()
     {
-        $p = new Package($this->tempPkg);
+        $p = new Package($this->config, $this->tempPkg);
         $p->install_dep_services = 'test1 test2 test3 test4';
         $pl = array($p);
 
         $uf = new UrlFixer('http://prefix');
         $uf->fixPackageList($pl);
 
-        $jo = new JsonOutput(new Config(__DIR__, $this->goodFile));
+        $jo = new JsonOutput($this->config);
         $jo->setExcludedServices(array('test3'));
 
         $jo->outputPackages($pl);
@@ -48,13 +53,13 @@ class JsonOutputTest extends TestCase
 
     public function testJsonConversion()
     {
-        $p = new Package($this->tempPkg);
+        $p = new Package($this->config, $this->tempPkg);
         $pl = array($p);
 
         $uf = new UrlFixer('http://prefix');
         $uf->fixPackageList($pl);
 
-        $jo = new JsonOutput(new Config(__DIR__, $this->goodFile));
+        $jo = new JsonOutput($this->config);
 
         $jo->outputPackages($pl);
 

@@ -3,17 +3,20 @@
 namespace SSpkS\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SSpkS\Config;
 use SSpkS\Package\PackageFinder;
 use SSpkS\Package\PackageFilter;
 
 class PackageFilterTest extends TestCase
 {
+    private $config;
     private $testFolder = __DIR__ . '/example_packageset/';
     private $testList;
 
     public function setUp()
     {
-        $pf = new PackageFinder($this->testFolder);
+        $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
+        $pf = new PackageFinder($this->config, $this->testFolder);
         $this->testList = $pf->getAllPackages();
     }
 

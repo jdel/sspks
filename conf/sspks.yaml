@@ -15,6 +15,7 @@ packages:
 # DIRECTORY (where the index.php is located)
 # INCLUDE TRAILING SLASH FOR DIRECTORIES!
 paths:
+    cache: cache/
     models: conf/synology_models.yaml
     packages: packages/
     themes: themes/

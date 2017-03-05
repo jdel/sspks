@@ -29,6 +29,7 @@ namespace SSpkS\Package;
  */
 class Package
 {
+    private $config;
     private $filepath;
     private $filepathNoExt;
     private $filename;
@@ -37,10 +38,12 @@ class Package
     private $metadata;
 
     /**
+     * @param \SSpkS\Config $config Config object
      * @param string $filename Filename of SPK file
      */
-    public function __construct($filename)
+    public function __construct(\SSpkS\Config $config, $filename)
     {
+        $this->config = $config;
         if (!preg_match('/\.spk$/', $filename)) {
             throw new \Exception('File ' . $filename . ' doesn\'t have .spk extension!');
         }
@@ -48,9 +51,9 @@ class Package
             throw new \Exception('File ' . $filename . ' not found!');
         }
         $this->filepath      = $filename;
-        $this->filepathNoExt = substr($filename, 0, -4);
         $this->filename      = basename($filename);
         $this->filenameNoExt = basename($filename, '.spk');
+        $this->filepathNoExt = $this->config->paths['cache'] . $this->filenameNoExt;
         $this->metafile      = $this->filepathNoExt . '.nfo';
     }
 
@@ -201,8 +204,13 @@ class Package
             rename($this->filepath, $this->filepath . '.invalid');
             throw new \Exception('Package ' . $this->filepath . ' not readable! Will be ignored in the future. Please try again!');
         }
+        $tmpExtractedFilepath = $tmp_dir . DIRECTORY_SEPARATOR . $inPkgName;
+        if (file_exists($tmpExtractedFilepath)) {
+            // stale file from before - unlink first
+            unlink($tmpExtractedFilepath);
+        }
         $p->extractTo($tmp_dir, $inPkgName);
-        rename($tmp_dir . DIRECTORY_SEPARATOR . $inPkgName, $targetFile);
+        rename($tmpExtractedFilepath, $targetFile);
         return true;
     }
 
@@ -242,7 +250,9 @@ class Package
             if (file_exists($thumbName)) {
                 $thumbnails[] = $pathPrefix . $thumbName;
             } else {
-                $thumbnails[] = $pathPrefix . dirname($thumbName) . '/default_package_icon_' . $size . '.png';
+                // Use theme's default pictures
+                $themeUrl = $this->config->paths['themes'] . $this->config->site['theme'] . '/';
+                $thumbnails[] = $pathPrefix . $themeUrl . 'images/default_package_icon_' . $size . '.png';
             }
         }
         return $thumbnails;

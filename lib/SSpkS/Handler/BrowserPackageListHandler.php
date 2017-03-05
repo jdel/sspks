@@ -22,7 +22,7 @@ class BrowserPackageListHandler extends AbstractHandler
         $output = new HtmlOutput($this->config);
         $output->setVariable('arch', $arch);
 
-        $pkgs = new PackageFinder($this->config->paths['packages']);
+        $pkgs = new PackageFinder($this->config, $this->config->paths['packages']);
         $pkgf = new PackageFilter($pkgs->getAllPackages());
         $pkgf->setArchitectureFilter($arch);
         $pkgf->setFirmwareVersionFilter(false);

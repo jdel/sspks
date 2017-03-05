@@ -17,7 +17,7 @@ class BrowserAllPackagesListHandler extends AbstractHandler
         // No architecture, but full list of packages requested --> show simple list
         $output = new HtmlOutput($this->config);
 
-        $pkgs = new PackageFinder($this->config->paths['packages']);
+        $pkgs = new PackageFinder($this->config, $this->config->paths['packages']);
         $packagesList = $pkgs->getAllPackageFiles();
 
         // Prepare data for template

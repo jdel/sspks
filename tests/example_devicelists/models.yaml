@@ -1,11 +1,13 @@
-architecture1:
-    - model1
-    - model2
+family1:
+    architecture1:
+        - model1
+        - model2
 
-architecture2:
-    - model3
-    - model4
+    architecture2:
+        - model3
+        - model4
 
-plussign:
-    - DS411+II
-    - DS211+
+family2:
+    plussign:
+        - DS411+II
+        - DS211+

@@ -7,16 +7,18 @@ use \Symfony\Component\Yaml\Exception\ParseException;
 
 class DeviceList
 {
+    private $config;
     private $yamlFilepath;
     private $devices = array();
 
     /**
-     * @param string $yamlFilepath Filename of Yaml file containing model list
+     * @param \SSpkS\Config $config Config object
      * @throws \Exception if file is not found or parsing error.
      */
-    public function __construct($yamlFilepath)
+    public function __construct(\SSpkS\Config $config)
     {
-        $this->yamlFilepath = $yamlFilepath;
+        $this->config = $config;
+        $this->yamlFilepath = $this->config->paths['models'];
         if (!file_exists($this->yamlFilepath)) {
             throw new \Exception('DeviceList file ' . $this->yamlFilepath . ' not found!');
         }
@@ -42,14 +44,16 @@ class DeviceList
         }
         $idx = 0;
         $sortkey = array();
-        foreach ($archlist as $arch => $archmodels) {
-            foreach ($archmodels as $model) {
-                $this->devices[$idx] = array(
-                    'arch' => $arch,
-                    'name' => $model,
-                );
-                $sortkey[$idx] = $model;
-                $idx++;
+        foreach ($archlist as $family => $archlist) {
+            foreach ($archlist as $arch => $archmodels) {
+                foreach ($archmodels as $model) {
+                    $this->devices[$idx] = array(
+                        'arch' => $arch,
+                        'name' => $model,
+                    );
+                    $sortkey[$idx] = $model;
+                    $idx++;
+                }
             }
         }
         array_multisort($sortkey, SORT_NATURAL|SORT_FLAG_CASE, $this->devices);

@@ -17,7 +17,7 @@ class BrowserDeviceListHandler extends AbstractHandler
         // Nothing requested --> show models overview
         $output = new HtmlOutput($this->config);
         try {
-            $deviceList = new DeviceList($this->config->paths['models']);
+            $deviceList = new DeviceList($this->config);
             $models = $deviceList->getDevices();
             if (count($models) == 0) {
                 $output->setTemplate('html_modellist_none');

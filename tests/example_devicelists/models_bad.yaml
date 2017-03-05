@@ -1,3 +1,4 @@
-architecture
-    - model1
-    - model2
+family1:
+    architecture
+        - model1
+        - model2

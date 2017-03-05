@@ -3,12 +3,19 @@
 namespace SSpkS\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SSpkS\Config;
 use SSpkS\Device\DeviceList;
 
 class DeviceListTest extends TestCase
 {
+    private $config;
     private $goodFile = __DIR__ . '/example_devicelists/models.yaml';
     private $badFile  = __DIR__ . '/example_devicelists/models_bad.yaml';
+
+    public function setUp()
+    {
+        $this->config = new Config(__DIR__, '/example_configs/sspks.yaml');
+    }
 
     /**
      * @expectedException \Exception
@@ -16,21 +23,24 @@ class DeviceListTest extends TestCase
      */
     public function testNonExistYaml()
     {
-        new DeviceList('nonexist.yaml');
+        $this->config->paths = array('models' => 'nonexist.yaml');
+        new DeviceList($this->config);
     }
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unable to parse at line 1 (near "architecture").
+     * @expectedExceptionMessage Unable to parse at line 2 (near "architecture").
      */
     public function testBadYaml()
     {
-        new DeviceList($this->badFile);
+        $this->config->paths = array('models' => $this->badFile);
+        new DeviceList($this->config);
     }
 
     public function testYaml()
     {
-        $dl = new DeviceList($this->goodFile);
+        $this->config->paths = array('models' => $this->goodFile);
+        $dl = new DeviceList($this->config);
         $d  = $dl->getDevices();
         $this->assertCount(6, $d);
         $this->assertContainsOnly('array', $d);
@@ -39,7 +49,8 @@ class DeviceListTest extends TestCase
 
     public function testPlusSigns()
     {
-        $dl = new DeviceList($this->goodFile);
+        $this->config->paths = array('models' => $this->goodFile);
+        $dl = new DeviceList($this->config);
         $d  = $dl->getDevices();
         $this->assertContains(array('arch' => 'plussign', 'name' => 'DS411+II'), $d);
         $this->assertContains(array('arch' => 'plussign', 'name' => 'DS211+'), $d);

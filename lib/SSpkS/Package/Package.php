@@ -214,33 +214,35 @@ class Package
      */
     public function getThumbnails($pathPrefix = '')
     {
-        try {
-            $this->extractIfMissing('PACKAGE_ICON.PNG', $this->filepathNoExt . '_thumb_72.png');
-        } catch (\Exception $e) {
-            // Check if icon is in metadata
-            $this->collectMetadata();
-            if (isset($this->metadata['package_icon'])) {
-                file_put_contents($this->filepathNoExt . '_thumb_72.png', base64_decode($this->metadata['package_icon']));
-            }
-        }
-        /* Synology itself uses 256x256 img for the 120 thumb (see the Calendar package) */
-        try {
-            $this->extractIfMissing('PACKAGE_ICON_256.PNG', $this->filepathNoExt . '_thumb_120.png');
-        } catch (\Exception $e) {
-            // Check if icon is in metadata
-            $this->collectMetadata();
-            if (isset($this->metadata['package_icon_256'])) {
-                file_put_contents($this->filepathNoExt . '_thumb_120.png', base64_decode($this->metadata['package_icon_256']));
-            }
-        }
+        $thumbnailSources = array(
+            '72' => array(
+                'file' => 'PACKAGE_ICON.PNG',
+                'info' => 'package_icon',
+            ),
+            '120' => array(
+                'file' => 'PACKAGE_ICON_256.PNG',
+                'info' => 'package_icon_256',
+            ),
+        );
         $thumbnails = array();
-        foreach (array('72', '120') as $size) {
-            $thumb_name = $this->filepathNoExt . '_thumb_' . $size . '.png';
+        foreach ($thumbnailSources as $size => $sourceList) {
+            $thumbName = $this->filepathNoExt . '_thumb_' . $size . '.png';
+            // Try to find file in package, otherwise check if defined in INFO
+            try {
+                $this->extractIfMissing($sourceList['file'], $thumbName);
+            } catch (\Exception $e) {
+                // Check if icon is in metadata
+                $this->collectMetadata();
+                if (isset($this->metadata[$sourceList['info']])) {
+                    file_put_contents($thumbName, base64_decode($this->metadata[$sourceList['info']]));
+                }
+            }
+
             // Use $size px thumbnail, if available
-            if (file_exists($thumb_name)) {
-                $thumbnails[] = $pathPrefix . $thumb_name;
+            if (file_exists($thumbName)) {
+                $thumbnails[] = $pathPrefix . $thumbName;
             } else {
-                $thumbnails[] = $pathPrefix . dirname($thumb_name) . '/default_package_icon_' . $size . '.png';
+                $thumbnails[] = $pathPrefix . dirname($thumbName) . '/default_package_icon_' . $size . '.png';
             }
         }
         return $thumbnails;

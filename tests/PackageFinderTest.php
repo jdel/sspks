@@ -22,7 +22,11 @@ class PackageFinderTest extends TestCase
      */
     public function testNotExistFolder()
     {
-        new PackageFinder($this->config, '/nonexistingfolder');
+        $this->config->paths = array_merge(
+            $this->config->paths,
+            array('packages' => '/nonexistingfolder')
+        );
+        new PackageFinder($this->config);
     }
 
     /**
@@ -31,12 +35,20 @@ class PackageFinderTest extends TestCase
      */
     public function testFileInsteadFolder()
     {
-        new PackageFinder($this->config, __FILE__);
+        $this->config->paths = array_merge(
+            $this->config->paths,
+            array('packages' => __FILE__)
+        );
+        new PackageFinder($this->config);
     }
 
     public function testFilelist()
     {
-        $pf = new PackageFinder($this->config, $this->testFolder);
+        $this->config->paths = array_merge(
+            $this->config->paths,
+            array('packages' => $this->testFolder)
+        );
+        $pf = new PackageFinder($this->config);
         $fl = $pf->getAllPackageFiles();
         $this->assertCount(5, $fl);
         foreach ($fl as $f) {
@@ -47,7 +59,11 @@ class PackageFinderTest extends TestCase
 
     public function testPackageList()
     {
-        $pf = new PackageFinder($this->config, $this->testFolder);
+        $this->config->paths = array_merge(
+            $this->config->paths,
+            array('packages' => $this->testFolder)
+        );
+        $pf = new PackageFinder($this->config);
         $pl = $pf->getAllPackages();
         $this->assertCount(5, $pl);
         foreach ($pl as $p) {

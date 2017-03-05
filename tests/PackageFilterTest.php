@@ -16,7 +16,11 @@ class PackageFilterTest extends TestCase
     public function setUp()
     {
         $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
-        $pf = new PackageFinder($this->config, $this->testFolder);
+        $this->config->paths = array_merge(
+            $this->config->paths,
+            array('packages' => $this->testFolder)
+        );
+        $pf = new PackageFinder($this->config);
         $this->testList = $pf->getAllPackages();
     }
 

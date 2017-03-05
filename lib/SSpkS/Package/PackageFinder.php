@@ -16,13 +16,13 @@ class PackageFinder
 
     /**
      * @param \SSpkS\Config $config Config object
-     * @param string $folder Folder to search for SPK files
      * @param string $glob Filemask for package files (default: '*.spk')
      * @throws \Exception if $folder is not a folder.
      */
-    public function __construct(\SSpkS\Config $config, $folder, $glob = '*.spk')
+    public function __construct(\SSpkS\Config $config, $glob = '*.spk')
     {
         $this->config = $config;
+        $folder = $this->config->paths['packages'];
         if (!file_exists($folder) || !is_dir($folder)) {
             throw new \Exception($folder . ' is not a folder!');
         }

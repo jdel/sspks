@@ -53,7 +53,7 @@ class SynologyHandler extends AbstractHandler
         // Make sure, that the "client" knows that output is sent in JSON format
         header('Content-type: application/json');
         $fw_version = $major . '.' . $minor . '.' . $build;
-        $pkgs = new PackageFinder($this->config, $this->config->paths['packages']);
+        $pkgs = new PackageFinder($this->config);
         $pkgf = new PackageFilter($pkgs->getAllPackages());
         $pkgf->setArchitectureFilter($arch);
         $pkgf->setChannelFilter($channel);

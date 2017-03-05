@@ -140,23 +140,23 @@ assertTrue(
 );
 
 assertTrue(
-    is_writable(dirname(__FILE__) . '/packages/'),
-    'Directory <tt>packages/</tt> writeable',
-    'Please make the <tt>packages/</tt> directory writeable for the web server process.'
+    is_writable(dirname(__FILE__) . '/cache/'),
+    'Directory <tt>cache/</tt> writeable',
+    'Please make the <tt>cache/</tt> directory writeable for the web server process.'
 );
 
-$test_file = dirname(__FILE__) . '/packages/testfile.$$$';
+$test_file = dirname(__FILE__) . '/cache/testfile.$$$';
 
 assertTrue(
     (file_put_contents($test_file, 'TestData12345678') === 16),
-    'Can write testfile to <tt>packages/</tt> directory',
-    'Please make the <tt>packages/</tt> directory writeable for the web server process.'
+    'Can write testfile to <tt>cache/</tt> directory',
+    'Please make the <tt>cache/</tt> directory writeable for the web server process.'
 );
 
 assertTrue(
     unlink($test_file),
-    'Can remove testfile from <tt>packages/</tt> directory',
-    'Please make the <tt>packages/</tt> directory writeable for the web server process (also allow deletions).'
+    'Can remove testfile from <tt>cache/</tt> directory',
+    'Please make the <tt>cache/</tt> directory writeable for the web server process (also allow deletions).'
 );
 
 /*

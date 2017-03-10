@@ -11,7 +11,7 @@ class BrowserPackageListHandler extends AbstractHandler
 {
     public function canHandle()
     {
-        return ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty(trim($_GET['arch'])));
+        return ($_SERVER['REQUEST_METHOD'] == 'GET' && array_key_exists('arch', $_GET) && !empty(trim($_GET['arch'])));
     }
 
     public function handle()

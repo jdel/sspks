@@ -32,5 +32,6 @@ COPY ./docker/supervisord.conf /usr/local/etc/supervisor/
 
 EXPOSE 8080
 VOLUME "/var/www/localhost/htdocs/packages"
+VOLUME "/var/www/localhost/htdocs/cache"
 VOLUME "/tmp"
 CMD ["/usr/bin/supervisord", "-c", "/usr/local/etc/supervisor/supervisord.conf"]

@@ -9,7 +9,7 @@ class BrowserAllPackagesListHandler extends AbstractHandler
 {
     public function canHandle()
     {
-        return ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty(trim($_GET['fulllist'])));
+        return ($_SERVER['REQUEST_METHOD'] == 'GET' && array_key_exists('fulllist', $_GET) && !empty(trim($_GET['fulllist'])));
     }
 
     public function handle()

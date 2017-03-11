@@ -2,6 +2,8 @@ FROM alpine:3.5
 MAINTAINER Julien Del-Piccolo <julien@del-piccolo.com>
 ARG BRANCH="master"
 ARG COMMIT=""
+ENV SSPKS_BRANCH=${BRANCH}
+ENV SSPKS_COMMIT=${COMMIT}
 LABEL branch=${BRANCH}
 LABEL commit=${COMMIT}
 

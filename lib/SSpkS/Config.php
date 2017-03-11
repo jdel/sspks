@@ -40,6 +40,14 @@ class Config implements \Iterator
             throw new \Exception($e->getMessage());
         }
 
+        /** Override config values with environment variables if present */
+        $config['SSPKS_COMMIT'] = (array_key_exists('SSPKS_COMMIT', $_ENV) && $_ENV['SSPKS_COMMIT'])?$_ENV['SSPKS_COMMIT']:NULL;
+        $config['SSPKS_BRANCH'] = (array_key_exists('SSPKS_BRANCH', $_ENV) && $_ENV['SSPKS_BRANCH'])?$_ENV['SSPKS_BRANCH']:NULL;
+        
+        $config['site']['name'] = (array_key_exists('SSPKS_SITE_NAME', $_ENV) && $_ENV['SSPKS_SITE_NAME'])?$_ENV['SSPKS_SITE_NAME']:$config['site']['name'];
+        $config['site']['theme'] = (array_key_exists('SSPKS_SITE_THEME', $_ENV) && $_ENV['SSPKS_SITE_THEME'])?$_ENV['SSPKS_SITE_THEME']:$config['site']['theme'];
+        $config['site']['redirectindex'] = (array_key_exists('SSPKS_SITE_REDIRECTINDEX', $_ENV) && $_ENV['SSPKS_SITE_REDIRECTINDEX'])?$_ENV['SSPKS_SITE_REDIRECTINDEX']:$config['site']['redirectindex'];
+
         $this->config = $config;
         $this->config['basePath'] = $this->basePath;
     }

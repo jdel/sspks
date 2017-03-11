@@ -31,12 +31,8 @@ class HtmlOutput
         $this->setVariable('baseUrlRelative', $this->config->baseUrlRelative);
         $this->setVariable('themeUrl', $this->config->baseUrlRelative . $this->config->paths['themes'] . $this->config->site['theme'] . '/');
         $this->setVariable('requestUri', $_SERVER['REQUEST_URI']);
-        if (getenv('SSPKS_COMMIT')){
-            $this->setVariable('commitHash', getenv('SSPKS_COMMIT'));
-        }
-        if (getenv('SSPKS_BRANCH')){
-            $this->setVariable('branch', getenv('SSPKS_BRANCH'));
-        }
+        $this->setVariable('commitHash', $this->config->SSPKS_COMMIT);
+        $this->setVariable('branch', $this->config->SSPKS_BRANCH);
     }
 
     public function setVariable($name, $value)

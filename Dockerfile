@@ -27,6 +27,7 @@ RUN echo "BRANCH: ${BRANCH}" \
  && rm -rf /var/cache/apk/* \
  && mkdir /run/apache2 \
  && sed -i 's/Listen 80/Listen 8080/' /etc/apache2/httpd.conf \
+ && sed -i 's/^variables_order = "GPCS"/variables_order = "EGPCS"/' /etc/php5/php.ini \
  && ln -sf /dev/stdout /var/log/apache2/access.log \
  && ln -sf /dev/stderr /var/log/apache2/error.log
 

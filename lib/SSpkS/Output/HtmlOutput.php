@@ -31,8 +31,8 @@ class HtmlOutput
         $this->setVariable('baseUrlRelative', $this->config->baseUrlRelative);
         $this->setVariable('themeUrl', $this->config->baseUrlRelative . $this->config->paths['themes'] . $this->config->site['theme'] . '/');
         $this->setVariable('requestUri', $_SERVER['REQUEST_URI']);
-        if (array_key_exists('SSPKS_COMMIT', $_ENV)){
-            $this->setVariable('commitHash', $_ENV['SSPKS_COMMIT']);
+        if (array_key_exists('SSPKS_COMMIT', $_SERVER)){
+            $this->setVariable('commitHash', $_SERVER['SSPKS_COMMIT']);
         }
     }
 

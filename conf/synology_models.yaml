@@ -72,6 +72,8 @@ armv7:
     alpine:
         - DS715
         - DS1515
+        - DS1517
+        - DS1817
         - DS2015xs
     alpine4k:
         - DS215+
@@ -149,7 +151,9 @@ x86_64:
     avoton:
         - DS415+
         - DS1515+
+        - DS1517+
         - DS1815+
+        - DS1817+
         - DS2415+
         - RS815(RP)+
         - RS2416(RP)+
@@ -161,7 +165,12 @@ x86_64:
         - DS416play
         - DS916+
     broadwell:
+        - DS3617xs
+        - FS2017
         - RS3617xs+
+        - RS3617(RP)xs
+        - RS4017xs+
+        - RS18017xs+
     bromolow:
         - DS3611xs
         - DS3612xs
@@ -174,7 +183,7 @@ x86_64:
         - RS3413xs+
         - RS3614xs+
         - RS3614(RP)xs
-        - RS3617(RP)xs
+        - RS3617xs
     cedarview:
         - DS1512+
         - DS1513+

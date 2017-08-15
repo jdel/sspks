@@ -99,8 +99,8 @@ auto_upgrade_from - version number (optional)
         $packageJSON = array(
             'package'      => $pkg->package,
             'version'      => $pkg->version,
-            'dname'        => $this->ifEmpty($pkg, "displayname_$language", $pkg->displayname),
-            'desc'         => $this->ifEmpty($pkg, "description_$language", $pkg->description),
+            'dname'        => $this->ifEmpty($pkg, 'displayname_' . $language, $pkg->displayname),
+            'desc'         => $this->ifEmpty($pkg, 'description_' . $language, $pkg->description),
             'price'        => 0,
             'download_count'        => 0, // Will only display values over 1000, do not display it by default
             'recent_download_count' => 0,

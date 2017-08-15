@@ -41,8 +41,8 @@ class Config implements \Iterator
         }
         
         /** Init variables that are not actual config variables */
-        $config['SSPKS_COMMIT'] = ''
-        $config['SSPKS_BRANCH'] = ''
+        $config['SSPKS_COMMIT'] = '';
+        $config['SSPKS_BRANCH'] = '';
         
         /** Override config values with environment variables if present */
         if (envVarIsNotEmpty('SSPKS_COMMIT'){

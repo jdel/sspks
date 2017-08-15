@@ -31,13 +31,22 @@ class HtmlOutput
         $this->setVariable('baseUrlRelative', $this->config->baseUrlRelative);
         $this->setVariable('themeUrl', $this->config->baseUrlRelative . $this->config->paths['themes'] . $this->config->site['theme'] . '/');
         $this->setVariable('requestUri', $_SERVER['REQUEST_URI']);
+        $this->setVariable('commitHash', $this->config->SSPKS_COMMIT);
+        $this->setVariable('branch', $this->config->SSPKS_BRANCH);
     }
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
     public function setVariable($name, $value)
     {
         $this->tplVars[$name] = $value;
     }
 
+    /**
+     * @param string $tplName
+     */
     public function setTemplate($tplName)
     {
         $this->template = $tplName;

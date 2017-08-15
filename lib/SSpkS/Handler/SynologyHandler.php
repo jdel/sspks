@@ -44,7 +44,11 @@ class SynologyHandler extends AbstractHandler
         $minor    = trim($_REQUEST['minor']);
         $build    = trim($_REQUEST['build']);
         $channel  = trim($_REQUEST['package_update_channel']);
-        // more parameters: language, timezone and unique
+        if (isset($_REQUEST['language']))
+            $language = trim($_REQUEST['language']);
+        else
+            $language = '';
+        // more parameters: timezone and unique
 
         if ($arch == '88f6282') {
             $arch = '88f6281';
@@ -66,6 +70,6 @@ class SynologyHandler extends AbstractHandler
 
         $jo = new JsonOutput($this->config);
         $jo->setExcludedServices($this->config->excludedSynoServices);
-        $jo->outputPackages($filteredPkgList);
+        $jo->outputPackages($filteredPkgList, $language);
     }
 }

@@ -4,3 +4,4 @@
 /cache/*.png
 /packages/*.spk
 /vendor/*
+/.idea/

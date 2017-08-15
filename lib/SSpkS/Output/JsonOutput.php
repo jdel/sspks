@@ -140,7 +140,7 @@ auto_upgrade_from - version number (optional)
      * @param \SSpkS\Package\Package[] $pkgList List of packages to output.
      * @param string $language The output language (this has impact on display name and description)
      */
-    public function outputPackages($pkgList, $language)
+    public function outputPackages($pkgList, $language = 'enu')
     {
         $jsonOutput = array(
             'packages' => array(),

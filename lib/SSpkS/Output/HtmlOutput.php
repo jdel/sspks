@@ -37,7 +37,7 @@ class HtmlOutput
 
     /**
      * @param string $name
-     * @param string $value
+     * @param mixed $value
      */
     public function setVariable($name, $value)
     {

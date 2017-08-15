@@ -46,9 +46,10 @@ class JsonOutput
      * Returns JSON-ready array of Package $pkg.
      *
      * @param \SSpkS\Package\Package $pkg Package
+     * @param string $language The output language (this has impact on display name and description)
      * @return array JSON-ready array of $pkg.
      */
-    private function packageToJson($pkg)
+    private function packageToJson($pkg, $language)
     {
 /*
 package
@@ -98,8 +99,8 @@ auto_upgrade_from - version number (optional)
         $packageJSON = array(
             'package'      => $pkg->package,
             'version'      => $pkg->version,
-            'dname'        => $pkg->displayname,
-            'desc'         => $pkg->description,
+            'dname'        => $this->ifEmpty($pkg, "displayname_$language", $pkg->displayname),
+            'desc'         => $this->ifEmpty($pkg, "description_$language", $pkg->description),
             'price'        => 0,
             'download_count'        => 0, // Will only display values over 1000, do not display it by default
             'recent_download_count' => 0,
@@ -137,14 +138,15 @@ auto_upgrade_from - version number (optional)
      * Outputs given packages as JSON.
      *
      * @param \SSpkS\Package\Package[] $pkgList List of packages to output.
+     * @param string $language The output language (this has impact on display name and description)
      */
-    public function outputPackages($pkgList)
+    public function outputPackages($pkgList, $language)
     {
         $jsonOutput = array(
             'packages' => array(),
         );
         foreach ($pkgList as $pkg) {
-            $pkgJson = $this->packageToJson($pkg);
+            $pkgJson = $this->packageToJson($pkg, $language);
             $jsonOutput['packages'][] = $pkgJson;
         }
 

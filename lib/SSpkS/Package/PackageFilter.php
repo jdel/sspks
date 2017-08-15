@@ -38,6 +38,11 @@ class PackageFilter
      */
     public function setArchitectureFilter($arch)
     {
+        // Specific corner case
+        if ($arch == '88f6282') {
+            $arch = '88f6281';
+        }
+      
         $dl = new DeviceList($this->config);
         $family = $dl->getFamily($arch);
         $this->filterArch = array_unique(array('noarch', $arch, $family));

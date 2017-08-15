@@ -50,10 +50,6 @@ class SynologyHandler extends AbstractHandler
             $language = '';
         // more parameters: timezone and unique
 
-        if ($arch == '88f6282') {
-            $arch = '88f6281';
-        }
-
         // Make sure, that the "client" knows that output is sent in JSON format
         header('Content-type: application/json');
         $fw_version = $major . '.' . $minor . '.' . $build;

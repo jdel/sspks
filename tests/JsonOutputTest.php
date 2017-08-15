@@ -46,7 +46,7 @@ class JsonOutputTest extends TestCase
         $jo = new JsonOutput($this->config);
         $jo->setExcludedServices(array('test3'));
 
-        $jo->outputPackages($pl);
+        $jo->outputPackages($pl, null);
 
         $this->expectOutputRegex('/"deppkgs":"test1 test2  test4"/');
     }
@@ -61,7 +61,7 @@ class JsonOutputTest extends TestCase
 
         $jo = new JsonOutput($this->config);
 
-        $jo->outputPackages($pl);
+        $jo->outputPackages($pl, null);
 
         $pkgMd5  = md5_file($this->tempPkg);
         $pkgSize = filesize($this->tempPkg);

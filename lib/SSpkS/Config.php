@@ -39,17 +39,45 @@ class Config implements \Iterator
         } catch (ParseException $e) {
             throw new \Exception($e->getMessage());
         }
-
-        /** Override config values with environment variables if present */
-        $config['SSPKS_COMMIT'] = (array_key_exists('SSPKS_COMMIT', $_ENV) && $_ENV['SSPKS_COMMIT'])?$_ENV['SSPKS_COMMIT']:NULL;
-        $config['SSPKS_BRANCH'] = (array_key_exists('SSPKS_BRANCH', $_ENV) && $_ENV['SSPKS_BRANCH'])?$_ENV['SSPKS_BRANCH']:NULL;
         
-        $config['site']['name'] = (array_key_exists('SSPKS_SITE_NAME', $_ENV) && $_ENV['SSPKS_SITE_NAME'])?$_ENV['SSPKS_SITE_NAME']:$config['site']['name'];
-        $config['site']['theme'] = (array_key_exists('SSPKS_SITE_THEME', $_ENV) && $_ENV['SSPKS_SITE_THEME'])?$_ENV['SSPKS_SITE_THEME']:$config['site']['theme'];
-        $config['site']['redirectindex'] = (array_key_exists('SSPKS_SITE_REDIRECTINDEX', $_ENV) && $_ENV['SSPKS_SITE_REDIRECTINDEX'])?$_ENV['SSPKS_SITE_REDIRECTINDEX']:$config['site']['redirectindex'];
+        /** Init variables that are not actual config variables */
+        $config['SSPKS_COMMIT'] = ''
+        $config['SSPKS_BRANCH'] = ''
+        
+        /** Override config values with environment variables if present */
+        if (envVarIsNotEmpty('SSPKS_COMMIT'){
+            $config['SSPKS_COMMIT'] = $_ENV['SSPKS_COMMIT'];
+        }
+        
+        if (envVarIsNotEmpty('SSPKS_BRANCH')){
+            $config['SSPKS_BRANCH'] = $_ENV['SSPKS_BRANCH'];
+        }
+        
+        if (envVarIsNotEmpty('SSPKS_SITE_NAME'){
+            $config['site']['name'] = $_ENV['SSPKS_SITE_NAME'];
+        }
+        
+        if (envVarIsNotEmpty('SSPKS_SITE_THEME'){
+            $config['site']['theme'] = $_ENV['SSPKS_SITE_THEME'];
+        }
+        
+        if (envVarIsNotEmpty('SSPKS_SITE_REDIRECTINDEX'){
+            $config['site']['redirectindex'] = $_ENV['SSPKS_SITE_REDIRECTINDEX'];
+        }
 
         $this->config = $config;
         $this->config['basePath'] = $this->basePath;
+    }
+    
+    /**
+     * checks wether an env variable exists and is not an empty string.
+     *
+     * @param string $name Name of requested environment variable.
+     * @return boolean value.
+     */
+    public function envVarIsNotEmpty($name)
+    {
+        return (array_key_exists($name, $_ENV) && $_ENV[$name]);
     }
 
     /**

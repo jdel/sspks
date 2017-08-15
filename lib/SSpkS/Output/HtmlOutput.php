@@ -35,11 +35,18 @@ class HtmlOutput
         $this->setVariable('branch', $this->config->SSPKS_BRANCH);
     }
 
+    /**
+     * @param string $name
+     * @param string $value
+     */
     public function setVariable($name, $value)
     {
         $this->tplVars[$name] = $value;
     }
 
+    /**
+     * @param string $tplName
+     */
     public function setTemplate($tplName)
     {
         $this->template = $tplName;

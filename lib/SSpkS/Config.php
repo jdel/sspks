@@ -15,6 +15,8 @@ use \Symfony\Component\Yaml\Exception\ParseException;
  * @property string basePath Path to site root (where index.php is located)
  * @property string baseUrl URL to site root (where index.php is located)
  * @property string baseUrlRelative Relative URL to site root (without scheme or hostname)
+ * @property string SSPKS_COMMIT current commit hash taken from ENV variables
+ * @property string SSPKS_BRANCH current branch taken from ENV variables
  */
 class Config implements \Iterator
 {
@@ -45,23 +47,23 @@ class Config implements \Iterator
         $config['SSPKS_BRANCH'] = '';
         
         /** Override config values with environment variables if present */
-        if (envVarIsNotEmpty('SSPKS_COMMIT')){
+        if ($this->envVarIsNotEmpty('SSPKS_COMMIT')){
             $config['SSPKS_COMMIT'] = $_ENV['SSPKS_COMMIT'];
         }
         
-        if (envVarIsNotEmpty('SSPKS_BRANCH')){
+        if ($this->envVarIsNotEmpty('SSPKS_BRANCH')){
             $config['SSPKS_BRANCH'] = $_ENV['SSPKS_BRANCH'];
         }
         
-        if (envVarIsNotEmpty('SSPKS_SITE_NAME')){
+        if ($this->envVarIsNotEmpty('SSPKS_SITE_NAME')){
             $config['site']['name'] = $_ENV['SSPKS_SITE_NAME'];
         }
         
-        if (envVarIsNotEmpty('SSPKS_SITE_THEME')){
+        if ($this->envVarIsNotEmpty('SSPKS_SITE_THEME')){
             $config['site']['theme'] = $_ENV['SSPKS_SITE_THEME'];
         }
         
-        if (envVarIsNotEmpty('SSPKS_SITE_REDIRECTINDEX')){
+        if ($this->envVarIsNotEmpty('SSPKS_SITE_REDIRECTINDEX')){
             $config['site']['redirectindex'] = $_ENV['SSPKS_SITE_REDIRECTINDEX'];
         }
 
@@ -70,7 +72,7 @@ class Config implements \Iterator
     }
     
     /**
-     * checks wether an env variable exists and is not an empty string.
+     * Checks wether an env variable exists and is not an empty string.
      *
      * @param string $name Name of requested environment variable.
      * @return boolean value.

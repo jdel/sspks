@@ -47,23 +47,23 @@ class Config implements \Iterator
         $config['SSPKS_BRANCH'] = '';
         
         /** Override config values with environment variables if present */
-        if ($this->envVarIsNotEmpty('SSPKS_COMMIT')){
+        if ($this->envVarIsNotEmpty('SSPKS_COMMIT')) {
             $config['SSPKS_COMMIT'] = $_ENV['SSPKS_COMMIT'];
         }
         
-        if ($this->envVarIsNotEmpty('SSPKS_BRANCH')){
+        if ($this->envVarIsNotEmpty('SSPKS_BRANCH')) {
             $config['SSPKS_BRANCH'] = $_ENV['SSPKS_BRANCH'];
         }
         
-        if ($this->envVarIsNotEmpty('SSPKS_SITE_NAME')){
+        if ($this->envVarIsNotEmpty('SSPKS_SITE_NAME')) {
             $config['site']['name'] = $_ENV['SSPKS_SITE_NAME'];
         }
         
-        if ($this->envVarIsNotEmpty('SSPKS_SITE_THEME')){
+        if ($this->envVarIsNotEmpty('SSPKS_SITE_THEME')) {
             $config['site']['theme'] = $_ENV['SSPKS_SITE_THEME'];
         }
         
-        if ($this->envVarIsNotEmpty('SSPKS_SITE_REDIRECTINDEX')){
+        if ($this->envVarIsNotEmpty('SSPKS_SITE_REDIRECTINDEX')) {
             $config['site']['redirectindex'] = $_ENV['SSPKS_SITE_REDIRECTINDEX'];
         }
 

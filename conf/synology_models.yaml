@@ -82,6 +82,14 @@ armv7:
         - RT2600ac
     northstarplus:
         - RT1900ac
+        
+armv8:
+    rtd1296:
+        - DS118
+        - DS218
+        - DS218play
+        - DS418j
+        - DS418
 
 comcerto2k:
     comcerto2k:
@@ -132,7 +140,6 @@ ppc:
         - DS209+
         - DS209+II
         - DS210+
-        - DS408
         - DS409+
         - DS410
         - DS508
@@ -171,6 +178,11 @@ x86_64:
         - RS3617(RP)xs
         - RS4017xs+
         - RS18017xs+
+    apollolake:
+        - DS218+
+        - DS418play
+        - DS718+
+        - DS918+
     bromolow:
         - DS3611xs
         - DS3612xs
@@ -208,7 +220,6 @@ x86_64:
         - DS1010+
         - DS1511+
         - DS2411+
-        - DS3615xs
         - DS411+
         - DS411+II
         - DS710+

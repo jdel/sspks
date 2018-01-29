@@ -26,6 +26,9 @@ namespace SSpkS\Package;
  * @property bool $silent_install Allow silent install
  * @property bool $silent_uninstall Allow silent uninstall
  * @property bool $silent_upgrade Allow silent upgrade
+ * @property bool $qinst Allow silent install
+ * @property bool $qupgrade Allow silent upgrade
+ * @property bool $qstart Allow automatic start after install
  */
 class Package
 {
@@ -35,6 +38,8 @@ class Package
     private $filename;
     private $filenameNoExt;
     private $metafile;
+    private $wizfile;
+    private $nowizfile;
     private $metadata;
 
     /**
@@ -55,6 +60,8 @@ class Package
         $this->filenameNoExt = basename($filename, '.spk');
         $this->filepathNoExt = $this->config->paths['cache'] . $this->filenameNoExt;
         $this->metafile      = $this->filepathNoExt . '.nfo';
+        $this->wizfile       = $this->filepathNoExt . '.wiz';
+        $this->nowizfile     = $this->filepathNoExt . '.nowiz';
     }
 
     /**
@@ -158,8 +165,12 @@ class Package
             $this->metadata['beta'] = false;
         }
 
+        $qValue = $this->hasWizardDir()? false : true;
         $this->metadata['thumbnail'] = $this->getThumbnails();
         $this->metadata['snapshot']  = $this->getSnapshots();
+        $this->metadata['qinst']     = !empty($this->metadata['qinst'])? parseBool($this->metadata['qinst']):$qValue;
+        $this->metadata['qupgrade']  = !empty($this->metadata['qupgrade'])? parseBool($this->metadata['qupgrade']):$qValue;
+        $this->metadata['qstart']    = !empty($this->metadata['qstart'])? parseBool($this->metadata['qstart']):$qValue;
     }
 
     /**
@@ -172,7 +183,7 @@ class Package
         $this->collectMetadata();
         return $this->metadata;
     }
-
+      
     /**
      * Extracts $inPkgName from package to $targetFile, if it doesn't
      * already exist. Needs the phar.so extension and allow_url_fopen.
@@ -212,6 +223,37 @@ class Package
         $p->extractTo($tmp_dir, $inPkgName);
         rename($tmpExtractedFilepath, $targetFile);
         return true;
+    }
+
+    /**
+     * Returns a true if the package contains WIZARD_UIFILES.
+     *
+     * @return bool Package has a wizard
+     */
+    public function hasWizardDir()
+    {
+        if (file_exists($this->wizfile)) {
+            return true;
+        }
+
+        if (file_exists($this->nowizfile)) {
+            return false;
+        }
+
+        try {
+            $p = new \PharData($this->filepath, \Phar::CURRENT_AS_FILEINFO | \Phar::KEY_AS_FILENAME);
+        } catch (\UnexpectedValueException $e) {
+            rename($this->filepath, $this->filepath . '.invalid');
+            throw new \Exception('Package ' . $this->filepath . ' not readable! Will be ignored in the future. Please try again!');
+        }
+        foreach ($p as $file) {
+            if (substr($file, strrpos($file, '/') + 1) == 'WIZARD_UIFILES') {
+                touch($this->wizfile);
+                return true;
+            }
+        }
+        touch($this->nowizfile);
+        return false;
     }
 
     /**

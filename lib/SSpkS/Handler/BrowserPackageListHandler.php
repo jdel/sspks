@@ -17,7 +17,7 @@ class BrowserPackageListHandler extends AbstractHandler
     public function handle()
     {
         // Architecture is set --> show packages for that arch
-        $arch     = trim($_GET['arch']);
+        $arch = trim($_GET['arch']);
 
         $output = new HtmlOutput($this->config);
         $output->setVariable('arch', $arch);

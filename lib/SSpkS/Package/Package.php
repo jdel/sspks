@@ -159,7 +159,7 @@ class Package
         $this->fixBoolIfExist('silent_uninstall');
         $this->fixBoolIfExist('silent_upgrade');
 
-        if (isset($this->metadata['beta']) && in_array($this->metadata['beta'], array('true', '1', 'beta'))) {
+        if (isset($this->metadata['beta']) && $this->parseBool($this->metadata['beta'])) {
             $this->metadata['beta'] = true;
         } else {
             $this->metadata['beta'] = false;

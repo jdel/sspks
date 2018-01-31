@@ -201,13 +201,17 @@ class Package
         }
         // Try to extract file
         $tmp_dir = sys_get_temp_dir();
-        $free_tmp = disk_free_space($tmp_dir);
-        if ($free_tmp < 2048) {
-            throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes space available. Disk full!');
+        $free_tmp = @disk_free_space($tmp_dir);
+        if (!empty($free_tmp)) {
+            if ($free_tmp < 2048) {
+                throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes space available. Disk full!');
+            }
         }
-        $free = disk_free_space(dirname($targetFile));
-        if ($free < 2048) {
-            throw new \Exception('Package folder only has ' . $free . ' Bytes space available. Disk full!');
+        $free = @disk_free_space(dirname($targetFile));        
+        if (!empty($free)) {
+            if ($free < 2048) {
+                throw new \Exception('Package folder only has ' . $free . ' Bytes space available. Disk full!');
+            }
         }
         try {
             $p = new \PharData($this->filepath, \Phar::CURRENT_AS_FILEINFO | \Phar::KEY_AS_FILENAME);

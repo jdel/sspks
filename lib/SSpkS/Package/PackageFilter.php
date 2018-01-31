@@ -120,7 +120,7 @@ class PackageFilter
         if ($this->filterChannel === false) {
             return true;
         }
-        if ($this->filterChannel == 'stable' && (!isset($package->beta) || $package->beta === false)) {
+        if ($this->filterChannel == 'stable' && $package->isBeta() === false) {
             return true;
         } elseif ($this->filterChannel == 'beta') {
             return true;

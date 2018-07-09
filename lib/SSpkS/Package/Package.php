@@ -15,6 +15,7 @@ namespace SSpkS\Package;
  * @property string $maintainer_url URL of maintainer's web page
  * @property string $distributor Package distributor
  * @property string $distributor_url URL of distributor's web page
+ * @property string $support_url URL of support web page
  * @property array $arch List of supported architectures, or 'noarch'
  * @property array $thumbnail List of thumbnail files
  * @property array $thumbnail_url List of thumbnail URLs
@@ -28,6 +29,7 @@ namespace SSpkS\Package;
  * @property bool $silent_upgrade Allow silent upgrade
  * @property bool $qinst Allow silent install
  * @property bool $qupgrade Allow silent upgrade
+ * @property bool $auto_upgrade_from allow auto upgrade
  * @property bool $qstart Allow automatic start after install
  */
 class Package

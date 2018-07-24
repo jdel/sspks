@@ -62,6 +62,8 @@ class Package
         $this->metafile      = $this->filepathNoExt . '.nfo';
         $this->wizfile       = $this->filepathNoExt . '.wiz';
         $this->nowizfile     = $this->filepathNoExt . '.nowiz';
+        // Make sure we have metadata available
+        $this->collectMetadata();        
     }
 
     /**
@@ -72,7 +74,6 @@ class Package
      */
     public function __get($name)
     {
-        $this->collectMetadata();
         return $this->metadata[$name];
     }
 
@@ -84,7 +85,6 @@ class Package
      */
     public function __set($name, $value)
     {
-        $this->collectMetadata();
         $this->metadata[$name] = $value;
     }
 
@@ -96,7 +96,6 @@ class Package
      */
     public function __isset($name)
     {
-        $this->collectMetadata();
         return isset($this->metadata[$name]);
     }
 
@@ -107,7 +106,6 @@ class Package
      */
     public function __unset($name)
     {
-        $this->collectMetadata();
         unset($this->metadata[$name]);
     }
 
@@ -159,7 +157,7 @@ class Package
         $this->fixBoolIfExist('silent_uninstall');
         $this->fixBoolIfExist('silent_upgrade');
 
-        if (isset($this->metadata['beta']) && in_array($this->metadata['beta'], array('true', '1', 'beta'))) {
+        if ($this->isBeta()) {
             $this->metadata['beta'] = true;
         } else {
             $this->metadata['beta'] = false;
@@ -180,7 +178,6 @@ class Package
      */
     public function getMetadata()
     {
-        $this->collectMetadata();
         return $this->metadata;
     }
       
@@ -282,7 +279,6 @@ class Package
                 $this->extractIfMissing($sourceList['file'], $thumbName);
             } catch (\Exception $e) {
                 // Check if icon is in metadata
-                $this->collectMetadata();
                 if (isset($this->metadata[$sourceList['info']])) {
                     file_put_contents($thumbName, base64_decode($this->metadata[$sourceList['info']]));
                 }
@@ -334,8 +330,6 @@ class Package
      */
     public function isCompatibleToArch($arch)
     {
-        // Make sure we have metadata available
-        $this->collectMetadata();
         // TODO: Check arch family, too?
         return (in_array($arch, $this->metadata['arch']) || in_array('noarch', $this->metadata['arch']));
     }
@@ -348,7 +342,6 @@ class Package
      */
     public function isCompatibleToFirmware($version)
     {
-        $this->collectMetadata();
         return version_compare($this->metadata['firmware'], $version, '<=');
     }
 
@@ -359,7 +352,6 @@ class Package
      */
     public function isBeta()
     {
-        $this->collectMetadata();
-        return (isset($this->metadata['beta']) && $this->metadata['beta'] == true);
+        return (isset($this->metadata['beta']) && $this->parseBool($this->metadata['beta']));
     }
 }

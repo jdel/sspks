@@ -198,12 +198,12 @@ class Package
         }
         // Try to extract file
         $tmp_dir = sys_get_temp_dir();
-        $free_tmp = disk_free_space($tmp_dir);
-        if ($free_tmp < 2048) {
+        $free_tmp = @disk_free_space($tmp_dir);
+        if (!empty($free_tmp) && $free_tmp < 2048) {
             throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes space available. Disk full!');
         }
-        $free = disk_free_space(dirname($targetFile));
-        if ($free < 2048) {
+        $free = @disk_free_space(dirname($targetFile));        
+        if (!empty($free) && $free < 2048) {
             throw new \Exception('Package folder only has ' . $free . ' Bytes space available. Disk full!');
         }
         try {

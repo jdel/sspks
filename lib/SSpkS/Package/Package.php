@@ -15,6 +15,7 @@ namespace SSpkS\Package;
  * @property string $maintainer_url URL of maintainer's web page
  * @property string $distributor Package distributor
  * @property string $distributor_url URL of distributor's web page
+ * @property string $support_url URL of support web page
  * @property array $arch List of supported architectures, or 'noarch'
  * @property array $thumbnail List of thumbnail files
  * @property array $thumbnail_url List of thumbnail URLs
@@ -26,6 +27,7 @@ namespace SSpkS\Package;
  * @property bool $silent_install Allow silent install
  * @property bool $silent_uninstall Allow silent uninstall
  * @property bool $silent_upgrade Allow silent upgrade
+ * @property bool $auto_upgrade_from Allow auto upgrade if version is newer than this field
  * @property bool $qinst Allow silent install
  * @property bool $qupgrade Allow silent upgrade
  * @property bool $qstart Allow automatic start after install
@@ -200,11 +202,11 @@ class Package
         $tmp_dir = sys_get_temp_dir();
         $free_tmp = @disk_free_space($tmp_dir);
         if (!empty($free_tmp) && $free_tmp < 2048) {
-            throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes space available. Disk full!');
+            throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes available. Disk full!');
         }
-        $free = @disk_free_space(dirname($targetFile));        
+        $free = @disk_free_space(dirname($targetFile));
         if (!empty($free) && $free < 2048) {
-            throw new \Exception('Package folder only has ' . $free . ' Bytes space available. Disk full!');
+            throw new \Exception('Package folder only has ' . $free . ' Bytes available. Disk full!');
         }
         try {
             $p = new \PharData($this->filepath, \Phar::CURRENT_AS_FILEINFO | \Phar::KEY_AS_FILENAME);

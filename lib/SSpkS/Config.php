@@ -66,6 +66,30 @@ class Config implements \Iterator
         if ($this->envVarIsNotEmpty('SSPKS_SITE_REDIRECTINDEX')) {
             $config['site']['redirectindex'] = $_ENV['SSPKS_SITE_REDIRECTINDEX'];
         }
+        
+        if ($this->envVarIsNotEmpty('SSPKS_PACKAGES_FILE_MASK')) {
+            $config['packages']['file_mask'] = $_ENV['SSPKS_PACKAGES_FILE_MASK'];
+        }
+
+        if ($this->envVarIsNotEmpty('SSPKS_PACKAGES_MAINTAINER')) {
+            $config['packages']['maintainer'] = $_ENV['SSPKS_PACKAGES_MAINTAINER'];
+        }
+
+        if ($this->envVarIsNotEmpty('SSPKS_PACKAGES_MAINTAINER_URL')) {
+            $config['packages']['maintainer_url'] = $_ENV['SSPKS_PACKAGES_MAINTAINER_URL'];
+        }
+
+        if ($this->envVarIsNotEmpty('SSPKS_PACKAGES_DISTRIBUTOR')) {
+            $config['packages']['distributor'] = $_ENV['SSPKS_PACKAGES_DISTRIBUTOR'];
+        }
+
+        if ($this->envVarIsNotEmpty('SSPKS_PACKAGES_DISTRIBUTOR_URL')) {
+            $config['packages']['distributor_url'] = $_ENV['SSPKS_PACKAGES_DISTRIBUTOR_URL'];
+        }
+
+        if ($this->envVarIsNotEmpty('SSPKS_PACKAGES_SUPPORT_URL')) {
+            $config['packages']['support_url'] = $_ENV['SSPKS_PACKAGES_SUPPORT_URL'];
+        }
 
         $this->config = $config;
         $this->config['basePath'] = $this->basePath;

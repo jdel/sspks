@@ -8,6 +8,7 @@ packages:
     maintainer_url: http://dummy.org/
     distributor: SSpkS
     distributor_url: http://dummy.org/
+    support_url: http://dummy.org/
 
 paths:
     cache: tests/example_packageset/

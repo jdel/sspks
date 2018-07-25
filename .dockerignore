@@ -1,0 +1,17 @@
+.git
+.gitignore
+.scrutinizer.yml
+.travis.yml
+CHANGELOG
+Dockerfile
+INSTALL.md
+LICENSE
+Makefile
+README.md
+VERSION
+_syno_package
+hooks
+packages
+phpunit.xml.dist
+selftest.php
+tests

@@ -73,7 +73,7 @@ class JsonOutputTest extends TestCase
             '","size":' . $pkgSize . ',"md5":"' . $pkgMd5 . '","thumbnail":["http://prefix' . $p->thumbnail[0] . '","http://prefix' . $p->thumbnail[1] . '"],' .
             '"snapshot":["http://prefix' . $p->snapshot[0] . '","http://prefix' . $p->snapshot[1] . '"],"qinst":true,"qstart":true,"qupgrade":true,"depsers":null,"deppkgs"' .
             ':null,"conflictpkgs":null,"start":true,"maintainer":"Synology Inc.","maintainer_url":"http://dummy.org/","distributor":"SSpkS","distributor_url":"http://dummy.org/","support_url":"http://dummy.org/",' .
-            '"changelog":"","thirdparty":true,"category":0,"subcategory":0,"type":0,"silent_install":true,"silent_uninstall":true,"silent_upgrade":true,"auto_upgrade_from":"","beta":false}],"keyrings":["test\n12345"]}'
+            '"changelog":"","thirdparty":true,"category":0,"subcategory":0,"type":0,"silent_install":true,"silent_uninstall":true,"silent_upgrade":true,"auto_upgrade_from":null,"beta":false}],"keyrings":["test\n12345"]}'
         );
     }
 

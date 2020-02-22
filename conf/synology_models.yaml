@@ -14,15 +14,25 @@ armada375:
         - DS115
         - DS215j
 
+armada37xx:
+    armada37xx:
+        - DS119j
+        - DS120j
+
 armada38x:
     armada38x:
         - DS116
         - DS216
         - DS216j
+        - DS218j
         - DS416j
         - DS416slim
         - RS217
         - RS816
+
+armada38x:
+    armada38x:
+        - DS419slim
 
 armadaxp:
     armadaxp:
@@ -90,6 +100,8 @@ armv8:
         - DS218play
         - DS418j
         - DS418
+        - DS420j
+        - RS819
 
 comcerto2k:
     comcerto2k:
@@ -166,6 +178,10 @@ x86_64:
         - RS818(RP)+
         - RS1219+
         - RS2416(RP)+
+        - RS1219+
+        - RS2416+/RS2416RP+
+        - RS815+/RS815RP+
+        - RS818+/RS818RP+
     braswell:
         - DS216+
         - DS216+II
@@ -176,27 +192,45 @@ x86_64:
     broadwell:
         - DS3617xs
         - FS2017
+        - FS3400
+        - RS1619xs+
+        - RS18017xs+
+        - RS3617RPxs
         - RS3617xs+
         - RS3617(RP)xs
+        - RS3618xs
         - RS4017xs+
         - RS18017xs+
+    broadwellnk:
+        - DS3018xs
+        - FS1018
+        - SA3400
+        - SA3600
+    broadwellntbap:
+        - SA3200D
     apollolake:
+        - DS1019+
         - DS218+
         - DS418play
+        - DS620slim
         - DS718+
         - DS918+
     bromolow:
         - DS3611xs
         - DS3612xs
         - DS3615xs
+        - RC18015xs+
         - RS10613xs+
         - RS10815xs+
         - RS18016xs+
         - RS3411(RP)xs
         - RS3412(RP)xs
+        - RS3411xs/RS3411RPxs
+        - RS3412xs/RS3412RPxs
         - RS3413xs+
         - RS3614xs+
         - RS3614(RP)xs
+        - RS3614xs/RS3614RPxs
         - RS3617xs
     cedarview:
         - DS1512+
@@ -208,16 +242,30 @@ x86_64:
         - DS412+
         - DS713+
         - RS2212/RS2212+
+        - RS2212+/RS2212RP+
         - RS2414(RP)
         - RS2414(RP)+
+        - RS2414+/RS2414RP+
         - RS812(RP)+
+        - RS812+/RS812RP+
         - RS814(RP)+
+        - RS814+/RS814RP+
+    denverton:
+        - DS1618+
+        - DS1819+
+        - DS2419+
+        - DVA3219
+        - RS2418+/RS2418RP+
+        - RS2818RP+
+        - RS820+/RS820RP+
     dockerx64:
         - DockerDSM
     grantley:
         - FS3017
     kvmx64:
         - VirtualDSM
+    purley:
+        - FS6400
     x86:
         - DS1010+
         - DS1511+
@@ -228,4 +276,6 @@ x86_64:
         - DS712+
         - RS2211+
         - RS2211(RP)+
+        - RS2211+/RS2211RP+
         - RS810(RP)+
+        - RS810+/RS810RP+

@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.3] - 2018-07-25
 ### Added
 
-* Add missing support_url and auto_upgrade_from fields (PR #55)
+* Add missing support_url and auto_upgrade_from fields [@MartinRothschink](https://github.com/MartinRothschink) (PR #55)
 * Add more envirinment variables to override configuration (for use with docker)
 
 ### Changed
@@ -48,17 +48,28 @@ Override from ENV variables:
   - site.redirectindex (SSPKS_SITE_REDIRECTINDEX)
   
 And please Scrutinizer.
+### Changed
+
+* Minor update mostly useful for Docker.
 
 
 ## [1.1.0] - 2017-05-15
+### Added
+
+* A License
+* Automated builds, tests and ci
+* Facelift with Material Design
 
 ### Changed
 
+* Updated models
+* Extracted files are put in a cache/ dir
 * Locales support for packages display name and description (#47)
 * Locales in pkg name & description JSON result
 * Fixed tests
 * Scrutinizer didn't like string interpolation
 * JsonOutput $langue default to 'enu'
+* Docker image
 
 ## [1.0.0] - 2017-04-04
 ### Added

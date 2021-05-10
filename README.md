@@ -3,7 +3,7 @@
 [![Build Status](https://scrutinizer-ci.com/g/jdel/sspks/badges/build.png?b=master)](https://scrutinizer-ci.com/g/jdel/sspks/build-status/master)
 [![Build Status](https://travis-ci.org/jdel/sspks.svg?branch=master)](https://travis-ci.org/jdel/sspks)
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://REPOSITORY_FULL_NAME)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://jdel/sspks)
 
 Simple SPK Server
 =================

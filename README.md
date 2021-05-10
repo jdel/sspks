@@ -3,6 +3,8 @@
 [![Build Status](https://scrutinizer-ci.com/g/jdel/sspks/badges/build.png?b=master)](https://scrutinizer-ci.com/g/jdel/sspks/build-status/master)
 [![Build Status](https://travis-ci.org/jdel/sspks.svg?branch=master)](https://travis-ci.org/jdel/sspks)
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://REPOSITORY_FULL_NAME)
+
 Simple SPK Server
 =================
 
@@ -35,7 +37,7 @@ docker run -d --name sspks \
   -p 9999:8080 \
   -e SSPKS_SITE_NAME="My Packages" \
   -e SSPKS_PACKAGES_DISTRIBUTOR_URL=https://cake.com \
-  jdel/sspks:v1.1.3
+  jdel/sspks
 ```
 
 More environment variables are available to configure `SSPKS`:

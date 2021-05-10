@@ -1,0 +1,14 @@
+image:
+  file: .gitpod.Dockerfile
+
+ports:
+  - port: 8000
+    onOpen: open-browser
+
+tasks:
+  - init: composer install --no-dev
+    command: php -S 0.0.0.0:8000 -t ./
+
+vscode:
+  extensions:
+    - felixfbecker.php-debug

@@ -95,11 +95,12 @@ armv8:
         - DS118
         - DS218
         - DS218play
+        - DS220j
         - DS418j
         - DS418
         - DS420j
         - RS819
-
+        
 comcerto2k:
     comcerto2k:
         - DS214air
@@ -172,19 +173,18 @@ x86_64:
         - DS1817+
         - DS2415+
         - RS815(RP)+
-        - RS818(RP)+
         - RS1219+
         - RS2416(RP)+
-        - RS1219+
         - RS2416+/RS2416RP+
         - RS815+/RS815RP+
-        - RS818+/RS818RP+
+        - RS818+
+        - RS818RP+
     braswell:
         - DS216+
         - DS216+II
+        - DS416play
         - DS716+
         - DS716+II
-        - DS416play
         - DS916+
     broadwell:
         - DS3617xs

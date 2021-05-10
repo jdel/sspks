@@ -29,9 +29,6 @@ armada38x:
         - DS416slim
         - RS217
         - RS816
-
-armada38x:
-    armada38x:
         - DS419slim
 
 armadaxp:

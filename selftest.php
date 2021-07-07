@@ -82,11 +82,11 @@ function assertTrue($assertion, $description, $error_text)
     if ($assertion === true) {
         // All OK
         echo('<div class="result ok"><span>✔</span></div>');
-        echo('</div>');  // close checkline
+        echo('</div>'); // close checkline
     } else {
         // Not OK
         echo('<div class="result error"><span>✖</span></div>');
-        echo('</div>');  // close checkline
+        echo('</div>'); // close checkline
         echo('<div class="errortext">' . $error_text . '</div>');
     }
     echo('</div>');

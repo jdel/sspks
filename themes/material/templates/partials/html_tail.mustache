@@ -6,6 +6,18 @@
                             <li><a href="https://github.com/jdel/sspks">Source on GitHub</a></li>
                         </ul>
                     </div>
+{{# branch }}
+                    <div class="mdl-mini-footer--right-section">
+                        <div class="mdl-logo">Version</div>
+                        <ul class="mdl-mini-footer--link-list">
+                            <li><a href="https://github.com/jdel/sspks/tree/{{ branch }}">{{ branch }}</a></li>
+{{# commitHash }}
+                            <li><a href="https://github.com/jdel/sspks/commit/{{ commitHash }}">{{ commitHash }}</a></li>
+{{/ commitHash }}
+                        </ul>
+                        </div>
+                    </div>
+{{/ branch }}
                 </footer>
             </main>
         </div>

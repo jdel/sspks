@@ -44,15 +44,16 @@ class SynologyHandler extends AbstractHandler
         $minor    = trim($_REQUEST['minor']);
         $build    = trim($_REQUEST['build']);
         $channel  = trim($_REQUEST['package_update_channel']);
+
         if (isset($_REQUEST['language']))
             $language = trim($_REQUEST['language']);
         else
             $language = '';
+
         // more parameters: timezone and unique
 
-        if ($arch == '88f6282') {
+        if ($arch == '88f6282')
             $arch = '88f6281';
-        }
 
         // Make sure, that the "client" knows that output is sent in JSON format
         header('Content-type: application/json');

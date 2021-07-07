@@ -110,9 +110,9 @@ auto_upgrade_from - version number (optional)
             'thumbnail'    => $pkg->thumbnail_url,
             'snapshot'     => $pkg->snapshot_url,
             // quick install/start/upgrade
-            'qinst'        => $this->ifEmpty($pkg, 'qinst', true),
-            'qstart'       => $this->ifEmpty($pkg, 'start', true),
-            'qupgrade'     => $this->ifEmpty($pkg, 'qupgrade', true),
+            'qinst'        => $pkg->qinst,
+            'qstart'       => $pkg->qstart,
+            'qupgrade'     => $pkg->qupgrade,
             'depsers'      => $this->ifEmpty($pkg, 'start_dep_services'), // required started packages
             'deppkgs'      => $deppkgs,
             'conflictpkgs' => null,
@@ -121,6 +121,7 @@ auto_upgrade_from - version number (optional)
             'maintainer_url'  => $this->ifEmpty($pkg, 'maintainer_url', $this->config->packages['maintainer_url']),
             'distributor'     => $this->ifEmpty($pkg, 'distributor', $this->config->packages['distributor']),
             'distributor_url' => $this->ifEmpty($pkg, 'distributor_url', $this->config->packages['distributor_url']),
+            'support_url'  => $this->ifEmpty($pkg, 'support_url', $this->config->packages['support_url']),
             'changelog'    => $this->ifEmpty($pkg, 'changelog', ''),
             'thirdparty'   => true,
             'category'     => 0,
@@ -129,6 +130,7 @@ auto_upgrade_from - version number (optional)
             'silent_install'   => $this->ifEmpty($pkg, 'silent_install', false),
             'silent_uninstall' => $this->ifEmpty($pkg, 'silent_uninstall', false),
             'silent_upgrade'   => $this->ifEmpty($pkg, 'silent_upgrade', false),
+            'auto_upgrade_from' => $this->ifEmpty($pkg, 'auto_upgrade_from'),
             'beta'         => $pkg->beta, // beta channel
         );
         return $packageJSON;

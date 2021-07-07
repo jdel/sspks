@@ -38,6 +38,11 @@ class PackageFilter
      */
     public function setArchitectureFilter($arch)
     {
+        // Specific corner case
+        if ($arch == '88f6282') {
+            $arch = '88f6281';
+        }
+      
         $dl = new DeviceList($this->config);
         $family = $dl->getFamily($arch);
         $this->filterArch = array_unique(array('noarch', $arch, $family));
@@ -115,7 +120,7 @@ class PackageFilter
         if ($this->filterChannel === false) {
             return true;
         }
-        if ($this->filterChannel == 'stable' && (!isset($package->beta) || $package->beta === false)) {
+        if ($this->filterChannel == 'stable' && $package->isBeta() === false) {
             return true;
         } elseif ($this->filterChannel == 'beta') {
             return true;

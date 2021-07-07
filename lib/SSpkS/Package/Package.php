@@ -15,6 +15,7 @@ namespace SSpkS\Package;
  * @property string $maintainer_url URL of maintainer's web page
  * @property string $distributor Package distributor
  * @property string $distributor_url URL of distributor's web page
+ * @property string $support_url URL of support web page
  * @property array $arch List of supported architectures, or 'noarch'
  * @property array $thumbnail List of thumbnail files
  * @property array $thumbnail_url List of thumbnail URLs
@@ -26,6 +27,10 @@ namespace SSpkS\Package;
  * @property bool $silent_install Allow silent install
  * @property bool $silent_uninstall Allow silent uninstall
  * @property bool $silent_upgrade Allow silent upgrade
+ * @property bool $auto_upgrade_from Allow auto upgrade if version is newer than this field
+ * @property bool $qinst Allow silent install
+ * @property bool $qupgrade Allow silent upgrade
+ * @property bool $qstart Allow automatic start after install
  */
 class Package
 {
@@ -35,6 +40,8 @@ class Package
     private $filename;
     private $filenameNoExt;
     private $metafile;
+    private $wizfile;
+    private $nowizfile;
     private $metadata;
 
     /**
@@ -55,6 +62,10 @@ class Package
         $this->filenameNoExt = basename($filename, '.spk');
         $this->filepathNoExt = $this->config->paths['cache'] . $this->filenameNoExt;
         $this->metafile      = $this->filepathNoExt . '.nfo';
+        $this->wizfile       = $this->filepathNoExt . '.wiz';
+        $this->nowizfile     = $this->filepathNoExt . '.nowiz';
+        // Make sure we have metadata available
+        $this->collectMetadata();        
     }
 
     /**
@@ -65,7 +76,6 @@ class Package
      */
     public function __get($name)
     {
-        $this->collectMetadata();
         return $this->metadata[$name];
     }
 
@@ -77,7 +87,6 @@ class Package
      */
     public function __set($name, $value)
     {
-        $this->collectMetadata();
         $this->metadata[$name] = $value;
     }
 
@@ -89,7 +98,6 @@ class Package
      */
     public function __isset($name)
     {
-        $this->collectMetadata();
         return isset($this->metadata[$name]);
     }
 
@@ -100,7 +108,6 @@ class Package
      */
     public function __unset($name)
     {
-        $this->collectMetadata();
         unset($this->metadata[$name]);
     }
 
@@ -152,14 +159,18 @@ class Package
         $this->fixBoolIfExist('silent_uninstall');
         $this->fixBoolIfExist('silent_upgrade');
 
-        if (isset($this->metadata['beta']) && in_array($this->metadata['beta'], array('true', '1', 'beta'))) {
+        if ($this->isBeta()) {
             $this->metadata['beta'] = true;
         } else {
             $this->metadata['beta'] = false;
         }
 
+        $qValue = $this->hasWizardDir()? false : true;
         $this->metadata['thumbnail'] = $this->getThumbnails();
         $this->metadata['snapshot']  = $this->getSnapshots();
+        $this->metadata['qinst']     = !empty($this->metadata['qinst'])? parseBool($this->metadata['qinst']):$qValue;
+        $this->metadata['qupgrade']  = !empty($this->metadata['qupgrade'])? parseBool($this->metadata['qupgrade']):$qValue;
+        $this->metadata['qstart']    = !empty($this->metadata['qstart'])? parseBool($this->metadata['qstart']):$qValue;
     }
 
     /**
@@ -169,10 +180,9 @@ class Package
      */
     public function getMetadata()
     {
-        $this->collectMetadata();
         return $this->metadata;
     }
-
+      
     /**
      * Extracts $inPkgName from package to $targetFile, if it doesn't
      * already exist. Needs the phar.so extension and allow_url_fopen.
@@ -190,13 +200,13 @@ class Package
         }
         // Try to extract file
         $tmp_dir = sys_get_temp_dir();
-        $free_tmp = disk_free_space($tmp_dir);
-        if ($free_tmp < 2048) {
-            throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes space available. Disk full!');
+        $free_tmp = @disk_free_space($tmp_dir);
+        if (!empty($free_tmp) && $free_tmp < 2048) {
+            throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes available. Disk full!');
         }
-        $free = disk_free_space(dirname($targetFile));
-        if ($free < 2048) {
-            throw new \Exception('Package folder only has ' . $free . ' Bytes space available. Disk full!');
+        $free = @disk_free_space(dirname($targetFile));
+        if (!empty($free) && $free < 2048) {
+            throw new \Exception('Package folder only has ' . $free . ' Bytes available. Disk full!');
         }
         try {
             $p = new \PharData($this->filepath, \Phar::CURRENT_AS_FILEINFO | \Phar::KEY_AS_FILENAME);
@@ -212,6 +222,37 @@ class Package
         $p->extractTo($tmp_dir, $inPkgName);
         rename($tmpExtractedFilepath, $targetFile);
         return true;
+    }
+
+    /**
+     * Returns a true if the package contains WIZARD_UIFILES.
+     *
+     * @return bool Package has a wizard
+     */
+    public function hasWizardDir()
+    {
+        if (file_exists($this->wizfile)) {
+            return true;
+        }
+
+        if (file_exists($this->nowizfile)) {
+            return false;
+        }
+
+        try {
+            $p = new \PharData($this->filepath, \Phar::CURRENT_AS_FILEINFO | \Phar::KEY_AS_FILENAME);
+        } catch (\UnexpectedValueException $e) {
+            rename($this->filepath, $this->filepath . '.invalid');
+            throw new \Exception('Package ' . $this->filepath . ' not readable! Will be ignored in the future. Please try again!');
+        }
+        foreach ($p as $file) {
+            if (substr($file, strrpos($file, '/') + 1) == 'WIZARD_UIFILES') {
+                touch($this->wizfile);
+                return true;
+            }
+        }
+        touch($this->nowizfile);
+        return false;
     }
 
     /**
@@ -240,7 +281,6 @@ class Package
                 $this->extractIfMissing($sourceList['file'], $thumbName);
             } catch (\Exception $e) {
                 // Check if icon is in metadata
-                $this->collectMetadata();
                 if (isset($this->metadata[$sourceList['info']])) {
                     file_put_contents($thumbName, base64_decode($this->metadata[$sourceList['info']]));
                 }
@@ -292,8 +332,6 @@ class Package
      */
     public function isCompatibleToArch($arch)
     {
-        // Make sure we have metadata available
-        $this->collectMetadata();
         // TODO: Check arch family, too?
         return (in_array($arch, $this->metadata['arch']) || in_array('noarch', $this->metadata['arch']));
     }
@@ -306,7 +344,6 @@ class Package
      */
     public function isCompatibleToFirmware($version)
     {
-        $this->collectMetadata();
         return version_compare($this->metadata['firmware'], $version, '<=');
     }
 
@@ -317,7 +354,6 @@ class Package
      */
     public function isBeta()
     {
-        $this->collectMetadata();
-        return (isset($this->metadata['beta']) && $this->metadata['beta'] == true);
+        return (isset($this->metadata['beta']) && $this->parseBool($this->metadata['beta']));
     }
 }

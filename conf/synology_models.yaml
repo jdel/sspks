@@ -29,9 +29,6 @@ armada38x:
         - DS416slim
         - RS217
         - RS816
-
-armada38x:
-    armada38x:
         - DS419slim
 
 armadaxp:
@@ -98,11 +95,12 @@ armv8:
         - DS118
         - DS218
         - DS218play
+        - DS220j
         - DS418j
         - DS418
         - DS420j
         - RS819
-
+        
 comcerto2k:
     comcerto2k:
         - DS214air
@@ -175,19 +173,18 @@ x86_64:
         - DS1817+
         - DS2415+
         - RS815(RP)+
-        - RS818(RP)+
         - RS1219+
         - RS2416(RP)+
-        - RS1219+
         - RS2416+/RS2416RP+
         - RS815+/RS815RP+
-        - RS818+/RS818RP+
+        - RS818+
+        - RS818RP+
     braswell:
         - DS216+
         - DS216+II
+        - DS416play
         - DS716+
         - DS716+II
-        - DS416play
         - DS916+
     broadwell:
         - DS3617xs
@@ -202,8 +199,13 @@ x86_64:
         - RS4017xs+
         - RS18017xs+
     broadwellnk:
+        - DS1621xs+
         - DS3018xs
         - FS1018
+        - FS3600
+        - RS3621RPxs
+        - RS3621xs+
+        - RS4021xs+
         - SA3400
         - SA3600
     broadwellntbap:
@@ -258,6 +260,12 @@ x86_64:
         - RS2418+/RS2418RP+
         - RS2818RP+
         - RS820+/RS820RP+
+    geminilake:
+        - DS220+
+        - DS420+
+        - DS720+
+        - DS920+
+        - DS1520+
     dockerx64:
         - DockerDSM
     grantley:
@@ -266,6 +274,14 @@ x86_64:
         - VirtualDSM
     purley:
         - FS6400
+    v1000:
+        - DS1621+
+        - DS1821+
+        - RS1221+
+        - RS1221RP+
+        - RS2421+
+        - RS2421RP+
+        - RS2821RP+
     x86:
         - DS1010+
         - DS1511+

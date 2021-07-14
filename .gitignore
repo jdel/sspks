@@ -1,6 +1,8 @@
 /clover.xml
 /composer.phar
 /cache/*.nfo
+/cache/*.nowiz
+/cache/*.wiz
 /cache/*.png
 /packages/*.spk
 /vendor/*

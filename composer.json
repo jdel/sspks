@@ -1,5 +1,5 @@
 {
-    "name": "SSpkS",
+    "name": "jdel/sspks",
     "description": "Simple SPK Server",
     "require": {
         "php": ">=5.3.0",

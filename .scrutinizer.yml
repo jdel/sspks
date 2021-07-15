@@ -127,7 +127,7 @@ tools:
 build:
     environment:
         timezone: "Europe/Berlin"
-        php: "7.0"
+        php: "7.3"
         mysql: false
         postgresql: false
         redis: false

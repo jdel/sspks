@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add GitPod Support [@strausmann](https://github.com/strausmann)
 * Update with all new models [@strausmann](https://github.com/strausmann)
 
+### Changed
+
+* Description for Docker ENV added to the README.md
 ## [1.1.4] - 2022-02-22
 ### Changed
 

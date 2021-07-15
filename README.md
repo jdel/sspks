@@ -15,16 +15,15 @@ This php script will serve SPKs to a Synology Package Center
 while also offering regular HTTP browsing through the available
 SPKs.
 
-
 Installation
 ============
 
 Please see the [INSTALL](INSTALL.md) file for instructions.
 
 Docker
-===========
+======
 
-Docker images are built automatically from this repository and are available on [Docker Hub](https://hub.docker.com/r/jdel/sspks/tags/). 
+Docker images are built automatically from this repository and are available on [Docker Hub](https://hub.docker.com/r/jdel/sspks/tags/).
 
 In order to use them you will need a working installation of Docker.
 
@@ -42,15 +41,18 @@ docker run -d --name sspks \
 
 More environment variables are available to configure `SSPKS`:
 
-  - SSPKS_SITE_NAME
-  - SSPKS_SITE_THEME
-  - SSPKS_SITE_REDIRECTINDEX
-  - SSPKS_PACKAGES_FILE_MASK
-  - SSPKS_PACKAGES_MAINTAINER
-  - SSPKS_PACKAGES_MAINTAINER_URL
-  - SSPKS_PACKAGES_DISTRIBUTOR
-  - SSPKS_PACKAGES_DISTRIBUTOR_URL
-  - SSPKS_PACKAGES_SUPPORT_URL
+
+| Variables                      | Description                                                                                             | Values                      |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| SSPKS_SITE_NAME                | Define the Site Name                                                                                    | Synology Repository         |
+| SSPKS_SITE_THEME               | Allows the selection of the theme used                                                                  | classic, material (default) |
+| SSPKS_PACKAGES_FILE_MASK       | Defines the format of the package to be processed.                                                      | *.spk                       |
+| SSPKS_PACKAGES_MAINTAINER      | Name of the developer                                                                                   | String                      |
+| SSPKS_PACKAGES_MAINTAINER_URL  | Url of the developer, if available the maintainer is shown as link                                      | URL                         |
+| SSPKS_PACKAGES_DISTRIBUTOR     | Package Center shows the publisher of the package                                                       | String                      |
+| SSPKS_PACKAGES_DISTRIBUTOR_URL | If a package is installed and has a "help" webpage, Package Center will show a link to let user open it | URL                         |
+| SSPKS_PACKAGES_SUPPORT_URL     | Package Center shows a support link to allow users to seek technical support when needed                | URL                         |
+| SSPKS_SITE_REDIRECTINDEX       | Instead of listing the packages, a direct redirect to the defined URL is set.                           | URL                         |
 
 In the command above, replace `/path/to/your/local/packages` with the directory containing your packages, `/path/to/your/local/cache` with the directory that will hold the cache files and `-p 9999` with the port you intend to serve packages on.
 

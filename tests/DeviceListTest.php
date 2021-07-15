@@ -12,7 +12,7 @@ class DeviceListTest extends TestCase
     private $goodFile = __DIR__ . '/example_devicelists/models.yaml';
     private $badFile  = __DIR__ . '/example_devicelists/models_bad.yaml';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config(__DIR__, '/example_configs/sspks.yaml');
     }

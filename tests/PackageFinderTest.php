@@ -11,7 +11,7 @@ class PackageFinderTest extends TestCase
     private $config;
     private $testFolder = __DIR__ . '/example_packageset';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
     }

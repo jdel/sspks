@@ -13,7 +13,7 @@ class PackageFilterTest extends TestCase
     private $testFolder = __DIR__ . '/example_packageset/';
     private $testList;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
         $this->config->paths = array_merge(
@@ -87,7 +87,7 @@ class PackageFilterTest extends TestCase
         $this->assertCount(0, $newList);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $del = array_merge(glob($this->testFolder . '*.nfo'), glob($this->testFolder . '*.png'));
         foreach ($del as $file) {

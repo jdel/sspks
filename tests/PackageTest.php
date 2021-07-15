@@ -11,7 +11,7 @@ class PackageTest extends TestCase
     private $config;
     private $tempPkg;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
         $this->config->paths = array_merge(
@@ -130,7 +130,7 @@ class PackageTest extends TestCase
         $this->assertEquals($file_stat, stat($test_file));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $mask = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '*';
         $del_files = glob($mask);

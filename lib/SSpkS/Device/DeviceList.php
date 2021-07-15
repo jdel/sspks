@@ -44,16 +44,20 @@ class DeviceList
         }
         $idx = 0;
         $sortkey = array();
-        foreach ($archlist as $family => $archlist) {
-            foreach ($archlist as $arch => $archmodels) {
-                foreach ($archmodels as $model) {
-                    $this->devices[$idx] = array(
-                        'arch'   => $arch,
-                        'name'   => $model,
-                        'family' => $family,
-                    );
-                    $sortkey[$idx] = $model;
-                    $idx++;
+        if (is_array($archlist) || is_object($archlist)) {
+            foreach ($archlist as $family => $archlist) {
+                if (is_array($archlist) || is_object($archlist)) {
+                    foreach ($archlist as $arch => $archmodels) {
+                        foreach ($archmodels as $model) {
+                            $this->devices[$idx] = array(
+                                'arch' => $arch,
+                                'name' => $model,
+                                'family' => $family,
+                            );
+                            $sortkey[$idx] = $model;
+                            $idx++;
+                        }
+                    }
                 }
             }
         }

@@ -2,7 +2,7 @@
     "name": "jdel/sspks",
     "description": "Simple SPK Server",
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=7.0",
         "ext-phar": "*",
         "symfony/yaml": "*",
         "mustache/mustache": "~2.10"

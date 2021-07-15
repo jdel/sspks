@@ -10,21 +10,17 @@ class ConfigTest extends TestCase
     private $goodFile = 'example_configs/sspks.yaml';
     private $badFile  = 'example_configs/sspks_bad.yaml';
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessageRegExp /^Config file ".*nonexist.yaml" not found!$/
-     */
     public function testNonExistYaml()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageMatches("/^Config file \".*nonexist.yaml\" not found!$/");
         new Config(__DIR__, 'nonexist.yaml');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unable to parse at line 6 (near "packages pancakes").
-     */
     public function testBadYaml()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Unable to parse at line 6 (near \"packages pancakes\").");
         new Config(__DIR__, $this->badFile);
     }
 

@@ -16,12 +16,10 @@ class PackageFinderTest extends TestCase
         $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage /nonexistingfolder is not a folder!
-     */
     public function testNotExistFolder()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("/nonexistingfolder is not a folder!");
         $this->config->paths = array_merge(
             $this->config->paths,
             array('packages' => '/nonexistingfolder')
@@ -29,12 +27,10 @@ class PackageFinderTest extends TestCase
         new PackageFinder($this->config);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessageRegExp /.+ is not a folder!/
-     */
     public function testFileInsteadFolder()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageMatches("/.+ is not a folder!/");
         $this->config->paths = array_merge(
             $this->config->paths,
             array('packages' => __FILE__)

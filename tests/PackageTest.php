@@ -76,21 +76,17 @@ class PackageTest extends TestCase
         $this->assertFalse($p->isBeta());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage File badfilename.xyz doesn't have .spk extension!
-     */
     public function testBadFilename()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("File badfilename.xyz doesn't have .spk extension!");
         new Package($this->config, 'badfilename.xyz');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage File notexisting.spk not found!
-     */
     public function testNonExistFile()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("File notexisting.spk not found!");
         new Package($this->config, 'notexisting.spk');
     }
 

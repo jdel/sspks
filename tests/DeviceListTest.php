@@ -17,22 +17,18 @@ class DeviceListTest extends TestCase
         $this->config = new Config(__DIR__, '/example_configs/sspks.yaml');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage DeviceList file nonexist.yaml not found!
-     */
     public function testNonExistYaml()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("DeviceList file nonexist.yaml not found!");
         $this->config->paths = array('models' => 'nonexist.yaml');
         new DeviceList($this->config);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unable to parse at line 2 (near "architecture").
-     */
     public function testBadYaml()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Unable to parse at line 2 (near \"architecture\").");
         $this->config->paths = array('models' => $this->badFile);
         new DeviceList($this->config);
     }

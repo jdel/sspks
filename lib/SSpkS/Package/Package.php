@@ -220,8 +220,8 @@ class Package
 
     /**
      * Ensures there is enough free space on target drive
-     * @param $dir the directory whose volume has to be tested
-     * @param $friendlyName a nice name to display in case of error
+     * @param string $dir the directory whose volume has to be tested
+     * @param string $friendlyName a nice name to display in case of error
      * @throws \Exception
      */
     private static function ensureAvailableSpace($dir, $friendlyName)

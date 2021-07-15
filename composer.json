@@ -8,6 +8,7 @@
         "mustache/mustache": "~2.10"
     },
     "require-dev": {
+        "ext-dom": "*",
         "phpunit/phpunit": ">=9"
     },
     "autoload": {

@@ -21,10 +21,14 @@ class UrlFixerTest extends TestCase
             array('cache' => sys_get_temp_dir() . '/')
         );
         $this->thumbPath = $this->config->paths['themes'] . $this->config->site['theme'] . '/images/';
-        $this->tempPkg = tempnam(sys_get_temp_dir(), 'SSpkS') . '.tar';
+        $tempNoExt = tempnam(sys_get_temp_dir(), 'SSpkS');
+        $this->tempPkg = $tempNoExt . '.tar';
         $phar = new \PharData($this->tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
-        $phar->compress(\Phar::GZ, '.spk');
+        // PHP 7 has a cache in phar and still considers the original spk as un gzipped
+        // so a spk1 is created to leave phar with its utopia
+        $phar->compress(\Phar::GZ, '.spk1');
+        rename($tempNoExt . '.spk1', $tempNoExt . '.spk');
         $tempNoExt = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.'));
         $this->tempPkg = $tempNoExt . '.spk';
         touch($tempNoExt . '_screen_1.png');

@@ -24,7 +24,10 @@ class PackageTest extends TestCase
         $phar = new \PharData($this->tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
         $phar->addFromString('PACKAGE_ICON.PNG', file_get_contents(__DIR__ . '/example_package/PACKAGE_ICON.PNG'));
-        $phar->compress(\Phar::GZ, '.spk');
+        // PHP 7 has a cache in phar and still considers the original spk as un gzipped
+        // so a spk1 is created to leave phar with its daydreams
+        $phar->compress(\Phar::GZ, '.spk1');
+        rename($tempNoExt . '.spk1', $tempNoExt . '.spk');
         $this->tempPkg = $tempNoExt . '.spk';
         touch($tempNoExt . '_screen_1.png');
         touch($tempNoExt . '_screen_2.png');
@@ -97,7 +100,10 @@ class PackageTest extends TestCase
         $tempPkg = $tempNoExt . '.tar';
         $phar = new \PharData($tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
-        $phar->compress(\Phar::GZ, '.spk');
+        // PHP 7 has a cache in phar and still considers the original spk as un gzipped
+        // so a spk1 is created to leave phar with its fantasies
+        $phar->compress(\Phar::GZ, '.spk1');
+        rename($tempNoExt . '.spk1', $tempNoExt . '.spk');
         $tempPkg = $tempNoExt . '.spk';
 
         $p = new Package($this->config, $tempPkg);

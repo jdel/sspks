@@ -47,7 +47,9 @@ class PackageFilterTest extends TestCase
         $pf->setArchitectureFilter('x86_64');
         $newList = $pf->getFilteredPackageList();
         foreach ($newList as $pkg) {
-            $this->assertContains('x86_64 noarch', $pkg->arch[0]);
+            if(is_array($pkg->arch[0]) || is_object($pkg->arch[0])) {
+                $this->assertContains('x86_64 noarch', $pkg->arch[0]);
+            }
         }
 
         $pf->setArchitectureFilter('avoton');

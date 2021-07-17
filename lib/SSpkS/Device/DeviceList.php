@@ -45,8 +45,9 @@ class DeviceList
         $idx = 0;
         $sortkey = array();
         foreach ($familylist as $family => $archlist) {
-            if (!is_array($archlist) && !is_object($archlist))
+            if (!is_array($archlist) && !is_object($archlist)) {
                 throw new \Exception("Models list in $family is not an array");
+            }
             foreach ($archlist as $arch => $archmodels) {
                 foreach ($archmodels as $model) {
                     $this->devices[$idx] = array(

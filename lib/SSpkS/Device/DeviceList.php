@@ -44,8 +44,6 @@ class DeviceList
         }
         $idx = 0;
         $sortkey = array();
-        if (!is_object($familylist))
-            throw new \Exception('Architectures list is not an array');
         foreach ($familylist as $family => $archlist) {
             if (!is_array($archlist) && !is_object($archlist))
                 throw new \Exception("Models list in $family is not an array");

@@ -28,7 +28,8 @@ class DeviceListTest extends TestCase
     public function testBadYaml()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Unable to parse at line 2 (near \"architecture\").");
+        //$this->expectExceptionMessage("Unable to parse at line 2 (near \"architecture\").");
+        $this->expectExceptionMessage("Models list in family1 is not an array");
         $this->config->paths = array('models' => $this->badFile);
         new DeviceList($this->config);
     }

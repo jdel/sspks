@@ -38,6 +38,7 @@ armadaxp:
         - DS414
         - RS214
         - RS814
+        - RS815
 
 armv5:
     88f5281:

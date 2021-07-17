@@ -42,7 +42,7 @@ class UrlFixer
     /**
      * Prepends given prefix to all Packages in array $pkgList.
      *
-     * @param \SSpkS\Package\Package[] List of Packages.
+     * @param \SSpkS\Package\Package[] $pkgList List of Packages.
      */
     public function fixPackageList($pkgList)
     {

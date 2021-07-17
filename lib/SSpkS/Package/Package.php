@@ -168,9 +168,9 @@ class Package
         $qValue = $this->hasWizardDir()? false : true;
         $this->metadata['thumbnail'] = $this->getThumbnails();
         $this->metadata['snapshot']  = $this->getSnapshots();
-        $this->metadata['qinst']     = !empty($this->metadata['qinst'])? parseBool($this->metadata['qinst']):$qValue;
-        $this->metadata['qupgrade']  = !empty($this->metadata['qupgrade'])? parseBool($this->metadata['qupgrade']):$qValue;
-        $this->metadata['qstart']    = !empty($this->metadata['qstart'])? parseBool($this->metadata['qstart']):$qValue;
+        $this->metadata['qinst']     = !empty($this->metadata['qinst'])? $this->parseBool($this->metadata['qinst']):$qValue;
+        $this->metadata['qupgrade']  = !empty($this->metadata['qupgrade'])? $this->parseBool($this->metadata['qupgrade']):$qValue;
+        $this->metadata['qstart']    = !empty($this->metadata['qstart'])? $this->parseBool($this->metadata['qstart']):$qValue;
     }
 
     /**

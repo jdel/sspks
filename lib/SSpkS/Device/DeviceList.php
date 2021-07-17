@@ -44,7 +44,7 @@ class DeviceList
         }
         $idx = 0;
         $sortkey = array();
-        if (!is_array($familylist) && !is_object($familylist))
+        if (!is_object($familylist))
             throw new \Exception('Architectures list is not an array');
         foreach ($familylist as $family => $archlist) {
             if (!is_array($archlist) && !is_object($archlist))
@@ -61,7 +61,7 @@ class DeviceList
                 }
             }
         }
-        array_multisort($sortkey, $this->devices, SORT_NATURAL | SORT_FLAG_CASE);
+        array_multisort($sortkey/*, SORT_NATURAL | SORT_FLAG_CASE*/, $this->devices);
     }
 
     /**

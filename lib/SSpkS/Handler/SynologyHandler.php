@@ -68,6 +68,8 @@ class SynologyHandler extends AbstractHandler
 
         $jo = new JsonOutput($this->config);
         $jo->setExcludedServices($this->config->excludedSynoServices);
-        $jo->outputPackages($filteredPkgList, $language);
+        if($major >= 7) // DSM does always hides packages marked as beta
+            $hideKeys = array('beta');
+        $jo->outputPackages($filteredPkgList, $language, $hideKeys);
     }
 }

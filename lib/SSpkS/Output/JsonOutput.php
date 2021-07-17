@@ -48,8 +48,9 @@ class JsonOutput
      * @param \SSpkS\Package\Package $pkg Package
      * @param string $language The output language (this has impact on display name and description)
      * @return array JSON-ready array of $pkg.
+     * @param array $hideKeys Keys to be removed from output
      */
-    private function packageToJson($pkg, $language)
+    private function packageToJson($pkg, $language, ?array $hideKeys)
     {
 /*
 package
@@ -133,6 +134,13 @@ auto_upgrade_from - version number (optional)
             'auto_upgrade_from' => $this->ifEmpty($pkg, 'auto_upgrade_from'),
             'beta'         => $pkg->beta, // beta channel
         );
+
+        if(isset( $hideKeys )) {
+            foreach ($hideKeys as $hideKey) {
+                unset($packageJSON[$hideKey]);
+            }
+        }
+
         return $packageJSON;
     }
 
@@ -141,14 +149,15 @@ auto_upgrade_from - version number (optional)
      *
      * @param \SSpkS\Package\Package[] $pkgList List of packages to output.
      * @param string $language The output language (this has impact on display name and description)
+     * @param array $hideKeys Keys to be removed from output
      */
-    public function outputPackages($pkgList, $language = 'enu')
+    public function outputPackages($pkgList, $language = 'enu', $hideKeys = null)
     {
         $jsonOutput = array(
             'packages' => array(),
         );
         foreach ($pkgList as $pkg) {
-            $pkgJson = $this->packageToJson($pkg, $language);
+            $pkgJson = $this->packageToJson($pkg, $language, $hideKeys);
             $jsonOutput['packages'][] = $pkgJson;
         }
 

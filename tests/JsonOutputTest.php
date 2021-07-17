@@ -80,6 +80,32 @@ class JsonOutputTest extends TestCase
         );
     }
 
+    public function testJsonConversionExcludeKeys()
+    {
+        $p = new Package($this->config, $this->tempPkg);
+        $pl = array($p);
+
+        $uf = new UrlFixer('http://prefix');
+        $uf->fixPackageList($pl);
+
+        $jo = new JsonOutput($this->config);
+
+        $jo->outputPackages($pl, null, array('beta'));
+
+        $pkgMd5  = md5_file($this->tempPkg);
+        $pkgSize = filesize($this->tempPkg);
+
+        $this->expectOutputString(
+            '{"packages":[{"package":"Docker","version":"1.11.1-0265","dname":"Docker","desc":"Docker is a lightweight virtualization application that ' .
+            'gives you the ability to run thousands of containers created by developers from all over the world on DSM. The hugely popular built-in image repository, Docker ' .
+            'Hub, allows you to find shared applications from other talented developers.","price":0,"download_count":0,"recent_download_count":0,"link":"http://prefix' . $this->tempPkg .
+            '","size":' . $pkgSize . ',"md5":"' . $pkgMd5 . '","thumbnail":["http://prefix' . $p->thumbnail[0] . '","http://prefix' . $p->thumbnail[1] . '"],' .
+            '"snapshot":["http://prefix' . $p->snapshot[0] . '","http://prefix' . $p->snapshot[1] . '"],"qinst":true,"qstart":true,"qupgrade":true,"depsers":null,"deppkgs"' .
+            ':null,"conflictpkgs":null,"start":true,"maintainer":"Synology Inc.","maintainer_url":"http://dummy.org/","distributor":"SSpkS","distributor_url":"http://dummy.org/","support_url":"http://dummy.org/",' .
+            '"changelog":"","thirdparty":true,"category":0,"subcategory":0,"type":0,"silent_install":true,"silent_uninstall":true,"silent_upgrade":true,"auto_upgrade_from":null}],"keyrings":["test\n12345"]}'
+        );
+    }
+
     public function tearDown(): void
     {
         $mask = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '*';

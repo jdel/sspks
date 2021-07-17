@@ -165,12 +165,12 @@ class Package
             $this->metadata['beta'] = false;
         }
 
-        $qValue = $this->hasWizardDir()? false : true;
+        $qValue = $this->hasWizardDir() ? false : true;
         $this->metadata['thumbnail'] = $this->getThumbnails();
-        $this->metadata['snapshot']  = $this->getSnapshots();
-        $this->metadata['qinst']     = !empty($this->metadata['qinst'])? parseBool($this->metadata['qinst']):$qValue;
-        $this->metadata['qupgrade']  = !empty($this->metadata['qupgrade'])? parseBool($this->metadata['qupgrade']):$qValue;
-        $this->metadata['qstart']    = !empty($this->metadata['qstart'])? parseBool($this->metadata['qstart']):$qValue;
+        $this->metadata['snapshot'] = $this->getSnapshots();
+        $this->metadata['qinst'] = !empty($this->metadata['qinst']) ? $this->parseBool($this->metadata['qinst']) : $qValue;
+        $this->metadata['qupgrade'] = !empty($this->metadata['qupgrade']) ? $this->parseBool($this->metadata['qupgrade']) : $qValue;
+        $this->metadata['qstart'] = !empty($this->metadata['qstart']) ? $this->parseBool($this->metadata['qstart']) : $qValue;
     }
 
     /**
@@ -200,14 +200,8 @@ class Package
         }
         // Try to extract file
         $tmp_dir = sys_get_temp_dir();
-        $free_tmp = @disk_free_space($tmp_dir);
-        if (!empty($free_tmp) && $free_tmp < 2048) {
-            throw new \Exception('TMP folder only has ' . $free_tmp . ' Bytes available. Disk full!');
-        }
-        $free = @disk_free_space(dirname($targetFile));
-        if (!empty($free) && $free < 2048) {
-            throw new \Exception('Package folder only has ' . $free . ' Bytes available. Disk full!');
-        }
+        self::ensureAvailableSpace($tmp_dir, 'TMP');
+        self::ensureAvailableSpace(dirname($targetFile), 'Package');
         try {
             $p = new \PharData($this->filepath, \Phar::CURRENT_AS_FILEINFO | \Phar::KEY_AS_FILENAME);
         } catch (\UnexpectedValueException $e) {
@@ -222,6 +216,20 @@ class Package
         $p->extractTo($tmp_dir, $inPkgName);
         rename($tmpExtractedFilepath, $targetFile);
         return true;
+    }
+
+    /**
+     * Ensures there is enough free space on target drive
+     * @param string $dir the directory whose volume has to be tested
+     * @param string $friendlyName a nice name to display in case of error
+     * @throws \Exception
+     */
+    private static function ensureAvailableSpace($dir, $friendlyName)
+    {
+        $free = @disk_free_space($dir);
+        if (!empty($free) && $free < 2048) {
+            throw new \Exception($friendlyName . ' folder only has ' . $free . ' Bytes available. Disk full!');
+        }
     }
 
     /**

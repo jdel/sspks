@@ -13,7 +13,7 @@ class JsonOutputTest extends TestCase
     private $config;
     private $tempPkg;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
         $this->config->paths = array_merge(
@@ -23,8 +23,11 @@ class JsonOutputTest extends TestCase
         $this->tempPkg = tempnam(sys_get_temp_dir(), 'SSpkS') . '.tar';
         $phar = new \PharData($this->tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
-        $phar->compress(\Phar::GZ, '.spk');
         $tempNoExt = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.'));
+        // PHP 7 has a cache in phar and still considers the original spk as un gzipped
+        // so a spk1 is created to leave phar with its hopes
+        $phar->compress(\Phar::GZ, '.spk1');
+        rename($tempNoExt . '.spk1', $tempNoExt . '.spk');
         $this->tempPkg = $tempNoExt . '.spk';
         touch($tempNoExt . '_screen_1.png');
         touch($tempNoExt . '_screen_2.png');
@@ -77,7 +80,7 @@ class JsonOutputTest extends TestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $mask = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '*';
         $del_files = glob($mask);

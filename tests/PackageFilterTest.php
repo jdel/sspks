@@ -13,7 +13,7 @@ class PackageFilterTest extends TestCase
     private $testFolder = __DIR__ . '/example_packageset/';
     private $testList;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
         $this->config->paths = array_merge(
@@ -47,7 +47,9 @@ class PackageFilterTest extends TestCase
         $pf->setArchitectureFilter('x86_64');
         $newList = $pf->getFilteredPackageList();
         foreach ($newList as $pkg) {
-            $this->assertContains($pkg->arch[0], 'x86_64 noarch');
+            if(is_array($pkg->arch[0]) || is_object($pkg->arch[0])) {
+                $this->assertContains('x86_64 noarch', $pkg->arch[0]);
+            }
         }
 
         $pf->setArchitectureFilter('avoton');
@@ -87,7 +89,7 @@ class PackageFilterTest extends TestCase
         $this->assertCount(0, $newList);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $del = array_merge(glob($this->testFolder . '*.nfo'), glob($this->testFolder . '*.png'));
         foreach ($del as $file) {

@@ -127,18 +127,14 @@ tools:
 build:
     environment:
         timezone: "Europe/Berlin"
-        php: "5.6.16"
+        php: "7.3"
         mysql: false
         postgresql: false
         redis: false
-    dependencies:
-        before:
-            - sudo composer selfupdate
-            - composer global require "fxp/composer-asset-plugin:~1.1" --no-update
     tests:
         override:
-            -
-                command: "vendor/bin/phpunit"
-                coverage:
-                    file: "clover.xml"
-                    format: "clover"
+            - php-scrutinizer-run
+            - command: "vendor/bin/phpunit"
+              coverage:
+                  file: "clover.xml"
+                  format: "clover"

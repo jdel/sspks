@@ -11,7 +11,7 @@ class PackageTest extends TestCase
     private $config;
     private $tempPkg;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config(__DIR__, 'example_configs/sspks.yaml');
         $this->config->paths = array_merge(
@@ -24,7 +24,10 @@ class PackageTest extends TestCase
         $phar = new \PharData($this->tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
         $phar->addFromString('PACKAGE_ICON.PNG', file_get_contents(__DIR__ . '/example_package/PACKAGE_ICON.PNG'));
-        $phar->compress(\Phar::GZ, '.spk');
+        // PHP 7 has a cache in phar and still considers the original spk as un gzipped
+        // so a spk1 is created to leave phar with its daydreams
+        $phar->compress(\Phar::GZ, '.spk1');
+        rename($tempNoExt . '.spk1', $tempNoExt . '.spk');
         $this->tempPkg = $tempNoExt . '.spk';
         touch($tempNoExt . '_screen_1.png');
         touch($tempNoExt . '_screen_2.png');
@@ -76,21 +79,17 @@ class PackageTest extends TestCase
         $this->assertFalse($p->isBeta());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage File badfilename.xyz doesn't have .spk extension!
-     */
     public function testBadFilename()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("File badfilename.xyz doesn't have .spk extension!");
         new Package($this->config, 'badfilename.xyz');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage File notexisting.spk not found!
-     */
     public function testNonExistFile()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("File notexisting.spk not found!");
         new Package($this->config, 'notexisting.spk');
     }
 
@@ -101,7 +100,10 @@ class PackageTest extends TestCase
         $tempPkg = $tempNoExt . '.tar';
         $phar = new \PharData($tempPkg);
         $phar->addFromString('INFO', file_get_contents(__DIR__ . '/example_package/INFO'));
-        $phar->compress(\Phar::GZ, '.spk');
+        // PHP 7 has a cache in phar and still considers the original spk as un gzipped
+        // so a spk1 is created to leave phar with its fantasies
+        $phar->compress(\Phar::GZ, '.spk1');
+        rename($tempNoExt . '.spk1', $tempNoExt . '.spk');
         $tempPkg = $tempNoExt . '.spk';
 
         $p = new Package($this->config, $tempPkg);
@@ -130,7 +132,7 @@ class PackageTest extends TestCase
         $this->assertEquals($file_stat, stat($test_file));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $mask = substr($this->tempPkg, 0, strrpos($this->tempPkg, '.')) . '*';
         $del_files = glob($mask);

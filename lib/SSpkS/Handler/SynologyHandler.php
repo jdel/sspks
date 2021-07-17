@@ -39,11 +39,11 @@ class SynologyHandler extends AbstractHandler
     public function handle()
     {
         // Synology request --> show JSON
-        $arch     = trim($_REQUEST['arch']);
-        $major    = trim($_REQUEST['major']);
-        $minor    = trim($_REQUEST['minor']);
-        $build    = trim($_REQUEST['build']);
-        $channel  = trim($_REQUEST['package_update_channel']);
+        $arch = trim($_REQUEST['arch']);
+        $major = trim($_REQUEST['major']);
+        $minor = trim($_REQUEST['minor']);
+        $build = trim($_REQUEST['build']);
+        $channel = trim($_REQUEST['package_update_channel']);
         if (isset($_REQUEST['language'])) {
             $language = trim($_REQUEST['language']);
         } else {
@@ -68,8 +68,10 @@ class SynologyHandler extends AbstractHandler
 
         $jo = new JsonOutput($this->config);
         $jo->setExcludedServices($this->config->excludedSynoServices);
-        if($major >= 7) // DSM does always hides packages marked as beta
-            $hideKeys = array('beta');
+        $hideKeys = array();
+        if ($major >= 7) {// DSM does always hides packages marked as beta
+            array_push($hideKeys, 'beta');
+        }
         $jo->outputPackages($filteredPkgList, $language, $hideKeys);
     }
 }

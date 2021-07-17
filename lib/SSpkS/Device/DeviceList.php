@@ -37,19 +37,22 @@ class DeviceList
     private function parseYaml()
     {
         try {
-            /** @var array $archlist */
-            $archlist = Yaml::parse(file_get_contents($this->yamlFilepath));
+            /** @var array $familylist */
+            $familylist = Yaml::parse(file_get_contents($this->yamlFilepath));
         } catch (ParseException $e) {
             throw new \Exception($e->getMessage());
         }
         $idx = 0;
         $sortkey = array();
-        foreach ($archlist as $family => $archlist) {
+        foreach ($familylist as $family => $archlist) {
+            if (!is_array($archlist) && !is_object($archlist)) {
+                throw new \Exception("Models list in $family is not an array");
+            }
             foreach ($archlist as $arch => $archmodels) {
                 foreach ($archmodels as $model) {
                     $this->devices[$idx] = array(
-                        'arch'   => $arch,
-                        'name'   => $model,
+                        'arch' => $arch,
+                        'name' => $model,
                         'family' => $family,
                     );
                     $sortkey[$idx] = $model;
@@ -57,7 +60,7 @@ class DeviceList
                 }
             }
         }
-        array_multisort($sortkey, SORT_NATURAL | SORT_FLAG_CASE, $this->devices);
+        array_multisort($sortkey/*, SORT_NATURAL | SORT_FLAG_CASE*/, $this->devices);
     }
 
     /**

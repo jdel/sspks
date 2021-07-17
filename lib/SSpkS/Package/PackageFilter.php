@@ -89,7 +89,7 @@ class PackageFilter
         if ($this->filterArch === false) {
             return true;
         }
-        $matches = array_intersect($this->filterArch, $package->arch);
+        $matches = array_intersect(/** @scrutinizer ignore-type */ $this->filterArch, $package->arch);
         return (count($matches) > 0);
     }
 
@@ -105,7 +105,7 @@ class PackageFilter
         if ($this->filterFwVersion === false) {
             return true;
         }
-        return (version_compare($package->firmware, $this->filterFwVersion, '<='));
+        return (version_compare($package->firmware, /** @scrutinizer ignore-type */ $this->filterFwVersion, '<='));
     }
 
     /**

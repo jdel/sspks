@@ -4,20 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-## [1.1.5] - 2021-05-10	
+## [1.1.6] - 2021-07-19	
 ### Added
 
+* Support for DSM 7
+* Support for locales
 * Add GitPod Support [@strausmann](https://github.com/strausmann)
 * Update with all new models [@strausmann](https://github.com/strausmann)
 
 ### Changed
 
-* Description for Docker ENV added to the README.md
-## [1.1.4] - 2022-02-22
-### Changed
-
+* Description for Docker ENV added to the `README.md`
 * Update with all new models
 * Added new x86_64 avoton models (#60) [@eburud](https://github.com/eburud)
 
@@ -30,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Upgrade Docker to jdel/alpine:3.8, php7, composer 1.6.5, remove supervisor, change volumes to `/packages` and `/cache`
-* Update README with docker instructions
+* Update `README` with docker instructions
 * Update synology models (#50) [@4sag](https://github.com/4sag)
 
 

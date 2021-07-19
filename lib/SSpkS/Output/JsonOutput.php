@@ -48,47 +48,48 @@ class JsonOutput
      * @param \SSpkS\Package\Package $pkg Package
      * @param string $language The output language (this has impact on display name and description)
      * @return array JSON-ready array of $pkg.
+     * @param array $hideKeys Keys to be removed from output
      */
-    private function packageToJson($pkg, $language)
+    private function packageToJson($pkg, $language, ?array $hideKeys)
     {
-/*
-package
-version
-dname - displayed name
-desc
-price - 0
-download_count - overall DL count
-recent_download_count - DL count of last month?
-link - URL
-size
-md5
-thumbnail - array[URL]
-thumbnail_retina - array[URL] (optional)
-snapshot - array[URL] (optional)
-qinst - true/false (optional)
-qstart - true/false (optional)
-qupgrade - true/false (optional)
-depsers - "pgsql" (optional)
-deppkgs - Pkg1>Version:Pkg2:Pkg3 (optional)
-conflictpkgs - Pkg1<Version:Pkg2:Pkg3<Version (optional)
-start - true/false (optional)
-maintainer - name
-maintainer_url - URL (optional)
-distributor - name (optional)
-distributor_url - URL (optional)
-changelog - HTML
-support_url - URL (optional)
-thirdparty - true/false (optional)
-category - 0-128 (bits, for multiple categories?)
-subcategory - 0
-type - 0 = normal, 1 = driver?, 2 = service?
-silent_install - true/false (optional)
-silent_uninstall - true/false (optional)
-silent_upgrade - true/false (optional)
-conf_deppkgs - array[Package[dsm_max_ver, pkg_min_ver]] (optional)
-support_conf_folder - true/false (optional)
-auto_upgrade_from - version number (optional)
-*/
+        /*
+        package
+        version
+        dname - displayed name
+        desc
+        price - 0
+        download_count - overall DL count
+        recent_download_count - DL count of last month?
+        link - URL
+        size
+        md5
+        thumbnail - array[URL]
+        thumbnail_retina - array[URL] (optional)
+        snapshot - array[URL] (optional)
+        qinst - true/false (optional)
+        qstart - true/false (optional)
+        qupgrade - true/false (optional)
+        depsers - "pgsql" (optional)
+        deppkgs - Pkg1>Version:Pkg2:Pkg3 (optional)
+        conflictpkgs - Pkg1<Version:Pkg2:Pkg3<Version (optional)
+        start - true/false (optional)
+        maintainer - name
+        maintainer_url - URL (optional)
+        distributor - name (optional)
+        distributor_url - URL (optional)
+        changelog - HTML
+        support_url - URL (optional)
+        thirdparty - true/false (optional)
+        category - 0-128 (bits, for multiple categories?)
+        subcategory - 0
+        type - 0 = normal, 1 = driver?, 2 = service?
+        silent_install - true/false (optional)
+        silent_uninstall - true/false (optional)
+        silent_upgrade - true/false (optional)
+        conf_deppkgs - array[Package[dsm_max_ver, pkg_min_ver]] (optional)
+        support_conf_folder - true/false (optional)
+        auto_upgrade_from - version number (optional)
+        */
 
         if (!empty($pkg->install_dep_services)) {
             $deppkgs = trim(str_replace($this->excludedServices, '', $pkg->install_dep_services));
@@ -97,42 +98,49 @@ auto_upgrade_from - version number (optional)
         }
 
         $packageJSON = array(
-            'package'      => $pkg->package,
-            'version'      => $pkg->version,
-            'dname'        => $this->ifEmpty($pkg, 'displayname_' . $language, $pkg->displayname),
-            'desc'         => $this->ifEmpty($pkg, 'description_' . $language, $pkg->description),
-            'price'        => 0,
-            'download_count'        => 0, // Will only display values over 1000, do not display it by default
+            'package' => $pkg->package,
+            'version' => $pkg->version,
+            'dname' => $this->ifEmpty($pkg, 'displayname_' . $language, $pkg->displayname),
+            'desc' => $this->ifEmpty($pkg, 'description_' . $language, $pkg->description),
+            'price' => 0,
+            'download_count' => 0, // Will only display values over 1000, do not display it by default
             'recent_download_count' => 0,
-            'link'         => $pkg->spk_url,
-            'size'         => filesize($pkg->spk),
-            'md5'          => md5_file($pkg->spk),
-            'thumbnail'    => $pkg->thumbnail_url,
-            'snapshot'     => $pkg->snapshot_url,
+            'link' => $pkg->spk_url,
+            'size' => filesize($pkg->spk),
+            'md5' => md5_file($pkg->spk),
+            'thumbnail' => $pkg->thumbnail_url,
+            'snapshot' => $pkg->snapshot_url,
             // quick install/start/upgrade
-            'qinst'        => $pkg->qinst,
-            'qstart'       => $pkg->qstart,
-            'qupgrade'     => $pkg->qupgrade,
-            'depsers'      => $this->ifEmpty($pkg, 'start_dep_services'), // required started packages
-            'deppkgs'      => $deppkgs,
+            'qinst' => $pkg->qinst,
+            'qstart' => $pkg->qstart,
+            'qupgrade' => $pkg->qupgrade,
+            'depsers' => $this->ifEmpty($pkg, 'start_dep_services'), // required started packages
+            'deppkgs' => $deppkgs,
             'conflictpkgs' => null,
-            'start'        => true,
-            'maintainer'      => $this->ifEmpty($pkg, 'maintainer', $this->config->packages['maintainer']),
-            'maintainer_url'  => $this->ifEmpty($pkg, 'maintainer_url', $this->config->packages['maintainer_url']),
-            'distributor'     => $this->ifEmpty($pkg, 'distributor', $this->config->packages['distributor']),
+            'start' => true,
+            'maintainer' => $this->ifEmpty($pkg, 'maintainer', $this->config->packages['maintainer']),
+            'maintainer_url' => $this->ifEmpty($pkg, 'maintainer_url', $this->config->packages['maintainer_url']),
+            'distributor' => $this->ifEmpty($pkg, 'distributor', $this->config->packages['distributor']),
             'distributor_url' => $this->ifEmpty($pkg, 'distributor_url', $this->config->packages['distributor_url']),
-            'support_url'  => $this->ifEmpty($pkg, 'support_url', $this->config->packages['support_url']),
-            'changelog'    => $this->ifEmpty($pkg, 'changelog', ''),
-            'thirdparty'   => true,
-            'category'     => 0,
-            'subcategory'  => 0,
-            'type'         => 0,
-            'silent_install'   => $this->ifEmpty($pkg, 'silent_install', false),
+            'support_url' => $this->ifEmpty($pkg, 'support_url', $this->config->packages['support_url']),
+            'changelog' => $this->ifEmpty($pkg, 'changelog', ''),
+            'thirdparty' => true,
+            'category' => 0,
+            'subcategory' => 0,
+            'type' => 0,
+            'silent_install' => $this->ifEmpty($pkg, 'silent_install', false),
             'silent_uninstall' => $this->ifEmpty($pkg, 'silent_uninstall', false),
-            'silent_upgrade'   => $this->ifEmpty($pkg, 'silent_upgrade', false),
+            'silent_upgrade' => $this->ifEmpty($pkg, 'silent_upgrade', false),
             'auto_upgrade_from' => $this->ifEmpty($pkg, 'auto_upgrade_from'),
-            'beta'         => $pkg->beta, // beta channel
+            'beta' => $pkg->beta, // beta channel
         );
+
+        if (isset($hideKeys)) {
+            foreach ($hideKeys as $hideKey) {
+                unset($packageJSON[$hideKey]);
+            }
+        }
+
         return $packageJSON;
     }
 
@@ -141,14 +149,15 @@ auto_upgrade_from - version number (optional)
      *
      * @param \SSpkS\Package\Package[] $pkgList List of packages to output.
      * @param string $language The output language (this has impact on display name and description)
+     * @param array $hideKeys Keys to be removed from output
      */
-    public function outputPackages($pkgList, $language = 'enu')
+    public function outputPackages($pkgList, $language = 'enu', $hideKeys = null)
     {
         $jsonOutput = array(
             'packages' => array(),
         );
         foreach ($pkgList as $pkg) {
-            $pkgJson = $this->packageToJson($pkg, $language);
+            $pkgJson = $this->packageToJson($pkg, $language, $hideKeys);
             $jsonOutput['packages'][] = $pkgJson;
         }
 

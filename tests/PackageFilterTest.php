@@ -73,6 +73,9 @@ class PackageFilterTest extends TestCase
         $pf->setFirmwareVersionFilter('1.0-1234');
         $newList = $pf->getFilteredPackageList();
         $this->assertCount(5, $newList);
+        $pf->setFirmwareVersionFilter('7.0-40000');
+        $newList = $pf->getFilteredPackageList();
+        $this->assertCount(0, $newList);
     }
 
     public function testChannelFilter()

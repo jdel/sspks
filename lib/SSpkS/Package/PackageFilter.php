@@ -100,12 +100,27 @@ class PackageFilter
      * @param \SSpkS\Package\Package $package Package to test.
      * @return bool TRUE if matching, or FALSE.
      */
-    public function isMatchingFirmwareVersion($package)
+    public function isMatchingFirmwareVersion(\SSpkS\Package\Package $package): bool
     {
         if ($this->filterFwVersion === false) {
             return true;
         }
-        return (version_compare($package->firmware, /** @scrutinizer ignore-type */ $this->filterFwVersion, '<='));
+        if(version_compare(/** @scrutinizer ignore-type */ $this->filterFwVersion, '7', '<'))
+            return $this->isMatchingFirmwareVersionPre7($package);
+        return $this->isMatchingFirmwareVersionPost7($package);
+    }
+
+    private function isMatchingFirmwareVersionPre7(\SSpkS\Package\Package $package): bool
+    {
+        // on DSM6 or less, package must be <= to filter
+        return version_compare($package->firmware, /** @scrutinizer ignore-type */ $this->filterFwVersion, '<=');
+    }
+
+    private function isMatchingFirmwareVersionPost7(\SSpkS\Package\Package $package): bool
+    {
+        // on DSM7 or above (hypothetically), package must be <= to filter
+        return version_compare($package->firmware, /** @scrutinizer ignore-type */ '7', '>=')
+        && version_compare($package->firmware, /** @scrutinizer ignore-type */ $this->filterFwVersion, '<=');
     }
 
     /**

@@ -15,7 +15,7 @@ namespace SSpkS\Package;
  * @property string $maintainer_url URL of maintainer's web page
  * @property string $distributor Package distributor
  * @property string $distributor_url URL of distributor's web page
- * @property string $support_url URL of support web page
+ * @property string $support_url URL of support web page 
  * @property array $arch List of supported architectures, or 'noarch'
  * @property array $thumbnail List of thumbnail files
  * @property array $thumbnail_url List of thumbnail URLs
@@ -171,6 +171,10 @@ class Package
         $this->metadata['qinst'] = !empty($this->metadata['qinst']) ? $this->parseBool($this->metadata['qinst']) : $qValue;
         $this->metadata['qupgrade'] = !empty($this->metadata['qupgrade']) ? $this->parseBool($this->metadata['qupgrade']) : $qValue;
         $this->metadata['qstart'] = !empty($this->metadata['qstart']) ? $this->parseBool($this->metadata['qstart']) : $qValue;
+        
+        if (isset($this->metadata['os_min_ver'])) {
+           $this->metadata['firmware'] = $this->metadata['os_min_ver'];
+        }
     }
 
     /**

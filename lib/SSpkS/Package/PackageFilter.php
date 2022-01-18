@@ -113,7 +113,8 @@ class PackageFilter
     private function isMatchingFirmwareVersionPre7(\SSpkS\Package\Package $package): bool
     {
         // on DSM6 or less, package must be <= to filter
-        return version_compare($package->firmware, /** @scrutinizer ignore-type */ $this->filterFwVersion, '<=');
+        return version_compare($package->firmware, /** @scrutinizer ignore-type */ '7', '<')
+        && version_compare($package->firmware, /** @scrutinizer ignore-type */ $this->filterFwVersion, '<=');
     }
 
     private function isMatchingFirmwareVersionPost7(\SSpkS\Package\Package $package): bool

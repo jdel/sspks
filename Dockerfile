@@ -1,4 +1,4 @@
-FROM jdel/alpine:3.8
+FROM composer:2.2.6
 LABEL maintainer="Julien Del-Piccolo <julien@del-piccolo.com>"
 LABEL branch=${BRANCH}
 LABEL commit=${COMMIT}
@@ -10,7 +10,7 @@ COPY . /var/www/localhost/htdocs/
 RUN apk update && apk add --no-cache apache2 php7-apache2 php7-phar php7-ctype php7-json \
  && apk add --virtual=.build-dependencies curl openssl php7 php7-openssl git \
  && rm -f /var/www/localhost/htdocs/index.html \
- && curl -sSL https://getcomposer.org/download/1.6.5/composer.phar -o /usr/local/bin/composer \
+ && curl -sSL https://getcomposer.org/download/2.2.6/composer.phar -o /usr/local/bin/composer \
  && chmod +x /usr/local/bin/composer \
  && cd /var/www/localhost/htdocs \
  && composer install --no-dev \

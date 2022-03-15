@@ -1,5 +1,9 @@
+.gitpod.Dockerfile
+.gitpod.yml
 .git
+.github
 .gitignore
+.gp
 .scrutinizer.yml
 .travis.yml
 .vscode

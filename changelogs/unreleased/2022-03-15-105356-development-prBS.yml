@@ -1,4 +1,4 @@
 title: 'Cleanup docker build image in .dockerignore'
-type: other
-author: ''
+type: changed
+author: 'Björn Strausmann'
 group: ''

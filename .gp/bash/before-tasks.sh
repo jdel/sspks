@@ -58,3 +58,17 @@ if [[ -n $GPG_KEY && -n $GPG_KEY_ID ]]; then
   fi
 fi
 # END: Enable GPG key to sign Git commits.
+
+# Auto activate intelephense if license key is available
+if [[ -n $INTELEPHENSE_LICENSEKEY ]]; then
+  msg="creating $HOME/intelephense/licence.txt"
+  echo "INTELEPHENSE_LICENSEKEY environment variable found, $msg"
+  mkdir -p "$HOME/intelephense" &&
+  echo "$INTELEPHENSE_LICENSEKEY" > "$HOME/intelephense/licence.txt" &&
+  ec=$?
+  if [[ $ec -eq 0 ]]; then 
+    echo "SUCCESS: $msg"
+  else
+    echo "ERROR: $msg"
+  fi
+fi

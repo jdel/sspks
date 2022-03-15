@@ -33,4 +33,7 @@ USER gitpod
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer global require churchtools/changelogger
 
 # Add composer bin folder to $PATH
-ENV PATH="$PATH:/home/gitpod/.config/composer/vendor/bin"
+#ENV PATH="$PATH:/home/gitpod/.config/composer/vendor/bin"
+
+# Add Workspace/Project composer bin folder to $PATH
+ENV PATH="$PATH:$HOME/.config/composer/vendor/bin:$GITPOD_REPO_ROOT/vendor/bin"

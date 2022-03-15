@@ -2,7 +2,9 @@
 .gitignore
 .scrutinizer.yml
 .travis.yml
-CHANGELOG
+.vscode
+changelogs
+CHANGELOG.md
 Dockerfile
 INSTALL.md
 LICENSE

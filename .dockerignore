@@ -1,8 +1,14 @@
+.gitpod.Dockerfile
+.gitpod.yml
 .git
+.github
 .gitignore
+.gp
 .scrutinizer.yml
 .travis.yml
-CHANGELOG
+.vscode
+changelogs
+CHANGELOG.md
 Dockerfile
 INSTALL.md
 LICENSE

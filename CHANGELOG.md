@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- CHANGELOGGER -->
+
+## [1.2.1] - 2022-03-16
+
+### Feature removal (1 change)
+
+- Remove Krypt.co client (props Björn Strausmann)
+
+### Feature change (2 changes)
+
+- Cleanup docker build image in .dockerignore (props Björn Strausmann)
+- Changed ENV vendor/bin for composer (props Björn Strausmann)
+
+### New feature (4 changes)
+
+- Added changelogs/unreleased folder structure (props Björn Strausmann)
+- Added git commit with gpg signature support (props Björn Strausmann)
+- Added automatic activate the intelephense license (props Björn Strausmann)
+- Added optimize the detection of https requrest (props Björn Strausmann)
+
+
+## [1.2.0] - 2022-02-19
+
+### Feature change (2 changes)
+
+- Filtering differently on DSM <7 and >=7 by @picrap in #84
+- Better DSM 7 support by @MartinRothschink in #88
+- Fix/update alpine php by @jdel in #90
+- Migrate to Github Actions by @jdel in #91
+
 ## [1.1.6] - 2021-07-19	
 ### Added
 

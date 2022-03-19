@@ -18,9 +18,6 @@ RUN wget http://xdebug.org/files/xdebug-2.9.1.tgz \
     && sudo cp modules/xdebug.so /usr/lib/php/20190902 \
     && sudo bash -c "echo -e '\nzend_extension = /usr/lib/php/20190902/xdebug.so\n[XDebug]\nxdebug.remote_enable = 1\nxdebug.remote_autostart = 1\n' >> /etc/php/7.4/cli/php.ini"
 
-# Install Krypton
-RUN sudo curl https://krypt.co/kr | sh
-
 # Install latest composer v2 release
 RUN curl -s https://getcomposer.org/installer | php \
     && sudo mv composer.phar /usr/bin/composer \
@@ -33,4 +30,7 @@ USER gitpod
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer global require churchtools/changelogger
 
 # Add composer bin folder to $PATH
-ENV PATH="$PATH:/home/gitpod/.config/composer/vendor/bin"
+#ENV PATH="$PATH:/home/gitpod/.config/composer/vendor/bin"
+
+# Add Workspace/Project composer bin folder to $PATH
+ENV PATH="$PATH:$HOME/.config/composer/vendor/bin:$GITPOD_REPO_ROOT/vendor/bin"

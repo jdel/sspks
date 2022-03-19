@@ -58,6 +58,30 @@ In the command above, replace `/path/to/your/local/packages` with the directory 
 
 Should you want SSL/TLS (you really should), you need to handle SSL/TLS termination externally, for example with [Traefik](https://traefik.io/) that will automatically fetch [Let's Encrypt](https://letsencrypt.org/) certificates for you.
 
+<br>
+
+Gitpod Environment Variables
+==========
+
+The following features can be enabled through environment variables that have been set in your [Gitpod preferences](https://gitpod.io/variables).:
+<br />
+\* _Please note that storing sensitive data in environment variables is not ultimately secure but should be OK for most development situations._
+- ### Sign Git commits with a GPG key
+   - `GPG_KEY_ID` (required)
+     - The ID of the GPG key you want to use to sign your git commits
+   - `GPG_KEY` (required)
+     - Base64 encoded private GPG key that corresponds to your `GPG_KEY_ID`
+   - `GPG_MATCH_GIT_TO_EMAIL` (optional)
+     - Sets your git user.email in `~/.gitconfig` to the value provided
+   - `GPG_AUTO_ULTIMATE_TRUST` (optional)
+     - If the value is set to `yes` or `YES` then your `GPG_KEY` will be automatically ultimately trusted
+- ### Activate an Intelliphense License Key
+  - `INTELEPHENSE_LICENSEKEY`
+    - Creates `~/intelephense/licence.txt` and will contain the value provided
+    - This will activate [Intelliphense](https://intelephense.com/) for you each time the workspace is created or restarted
+
+<br>
+
 Contribute
 ==========
 

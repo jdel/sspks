@@ -25,6 +25,7 @@ paths:
 excludedSynoServices:
     - apache-sys
     - apache-web
+    - mysql
     - mdns
     - samba
     - db

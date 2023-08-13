@@ -96,6 +96,9 @@ class JsonOutput
         } else {
             $deppkgs = null;
         }
+        if ($deppkgs == "") {
+            $deppkgs = null;
+        }
 
         $packageJSON = array(
             'package' => $pkg->package,

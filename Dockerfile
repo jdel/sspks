@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 LABEL maintainer="Julien Del-Piccolo <julien@del-piccolo.com>"
 LABEL branch=${BRANCH}
 LABEL commit=${COMMIT}
@@ -11,7 +11,7 @@ RUN apk update && apk add --no-cache ca-certificates curl apache2 php81-apache2 
  && apk add --virtual=.build-dependencies openssl php81 php81-openssl php81-iconv php81-mbstring git \
  && ln -sf /usr/bin/php81 /usr/local/bin/php \
  && rm -f /var/www/localhost/htdocs/index.html \
- && curl -sSL https://getcomposer.org/download/2.5.1/composer.phar -o /usr/local/bin/composer \
+ && curl -sSL https://getcomposer.org/download/2.6.5/composer.phar -o /usr/local/bin/composer \
  && chmod +x /usr/local/bin/composer \
  && cd /var/www/localhost/htdocs \
  && composer install --no-dev \

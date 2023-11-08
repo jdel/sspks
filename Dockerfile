@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 LABEL maintainer="Julien Del-Piccolo <julien@del-piccolo.com>"
 LABEL branch=${BRANCH}
 LABEL commit=${COMMIT}
